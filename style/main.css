@@ -24,6 +24,6 @@ a.hint:link{text-decoration: none; color: green}
 a.hint:visited{text-decoration: none; color: green}
 a.hint:hover{text-decoration: underline; color: #ff0000}
 
-th, td {font-size: 80%}
+# th, td {font-size: 80%}
 
 p{text-indent: 1.5em;}
