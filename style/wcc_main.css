@@ -32,5 +32,23 @@ table {
 }
 */
 
-
 /* p{text-indent: 1.5em;} */
+
+ol {
+  counter-reset: item;
+  display: flex;
+  flex-direction: column-reverse;
+}
+li#ref {
+  display: block;
+  list-style-position: outside;
+}
+li#ref::before {
+  content: "[" counter(item) "]";
+  counter-increment: item;
+  display: inline-block;
+  list-style-position: outside;
+  text-indent: 0.5em;
+  margin-left: -2.5em;
+  width: 2.3em;
+}
