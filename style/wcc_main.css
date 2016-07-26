@@ -26,12 +26,6 @@ a.hint:link{text-decoration: none; color: green}
 a.hint:visited{text-decoration: none; color: green}
 a.hint:hover{text-decoration: underline; color: #ff0000}
 
-/* th, td {font-size: 80%}
-table {
-  width: 100%;
-}
-*/
-
 /* p{text-indent: 1.5em;} */
 
 ol {
@@ -51,4 +45,16 @@ li#ref::before {
   text-indent: 0.5em;
   margin-left: -2.5em;
   width: 2.3em;
+}
+li#rev {
+  display: block;
+  list-style-position: outside;
+}
+li#rev::before {
+  content: counter(item) ".";
+  counter-increment: item -1;
+  display: inline-block;
+  list-style-position: outside;
+  margin-left: -1.2em;
+  width: 1.2em;
 }
