@@ -34,10 +34,11 @@
 #navbar-darkblue.navbar-default .navbar-nav>li>a,
 #navbar-darkblue.navbar-default .navbar-nav>li>ul>li>a, 
 #navbar-darkblue.navbar-default .navbar-brand {
-    color: #999999; 
+    color: #ffffff; 
 }
 #navbar-darkblue.navbar-default .navbar-toggle .icon-bar,
 #navbar-darkblue.navbar-default .navbar-toggle:hover .icon-bar,
 #navbar-darkblue.navbar-default .navbar-toggle:focus .icon-bar {
-    background-color: #ffffff; 
+    background-color: #222222; 
+    color: #cc0000;
 }
