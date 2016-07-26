@@ -37,7 +37,7 @@ table {
 ol {
   counter-reset: item;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 li#ref {
   display: block;
@@ -45,7 +45,7 @@ li#ref {
 }
 li#ref::before {
   content: "[" counter(item) "]";
-  counter-increment: item;
+  counter-increment: item -1;
   display: inline-block;
   list-style-position: outside;
   text-indent: 0.5em;
