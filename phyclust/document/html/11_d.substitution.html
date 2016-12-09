@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Substitution Models for Mutation Processes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for .substitution.model {phyclust}"><tr><td>.substitution.model {phyclust}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Substitution Models for Mutation Processes</h2>
+
+<h3>Description</h3>
+
+<p>An object stores substitution models for mutation processes
+for Continuous Time Markov Chain theory.
+<STRONG>This is a read-only object and the elemental order is followed in C.</STRONG>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>.substitution.model</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame contains two character vectors, <code>mode</code> and <code>code.type</code>.
+</p>
+
+
+<h3>Details</h3>
+
+<p>This data frame indicates substitution models implemented in C.
+</p>
+
+<ul>
+<li><p> 'model': names of substitution models for mutations.
+</p>
+</li>
+<li><p> 'code.type': code types of substitution models, either NUCLEOTIDE or SNP.
+</p>
+</li></ul>
+
+<p>The major models are:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td align="left">
+    Model </td><td align="left"> Author and Publication            </td><td align="left"> Parameter </td>
+</tr>
+<tr>
+ <td align="left">
+    JC69  </td><td align="left"> Jukes and Cantor 1969.            </td><td align="left"> <i>t</i> </td>
+</tr>
+<tr>
+ <td align="left">
+    K80   </td><td align="left"> Kimura 1980.                      </td><td align="left"> <i>kappa, t</i> </td>
+</tr>
+<tr>
+ <td align="left">
+    F81   </td><td align="left"> Felsenstein 1981.                 </td><td align="left"> <i>pi, t</i> </td>
+</tr>
+<tr>
+ <td align="left"> 
+    HKY85 </td><td align="left"> Hasegawa, Kishino, and Yano 1985. </td><td align="left"> <i>kappa, pi, t</i> </td>
+</tr>
+<tr>
+ <td align="left">
+  </td>
+</tr>
+
+</table>
+
+<p>Other models starting with <code>E_</code> use empirical frequencies for
+equilibrium probabilities.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://thirteen-01.stat.iastate.edu/snoweye/phyclust/">http://thirteen-01.stat.iastate.edu/snoweye/phyclust/</a>
+</p>
+<p>Jukes, T. H. and Cantor, C. R. (1969)
+&ldquo;Evolution of Protein Molecules&rdquo;,
+<EM>Mammalian Protein Metabolism</EM>, <B>3</B>, 21-132
+</p>
+<p>Kimura, M. (1980)
+&ldquo;A Simple Method for Estimating Evolutionary Rates of Base
+Substitutions through Comparative Studies of Nucleotide Sequences&rdquo;,
+<EM>Journal of Molecular Evolution</EM>, <B>16</B>, 111-120
+</p>
+<p>Felsenstein, J. (1981)
+&ldquo;Evolutionary Trees from DNA Sequences: A Maximum Likelihood
+Approach&rdquo;,
+<EM>Journal of Molecular Evolution</EM>, <B>17</B>, 368-376
+</p>
+<p>Hasegawa, M. and Kishino, H. and Yano, T. (1985)
+&ldquo;Dating of the Human-Ape Splitting by a Molecular Clock of
+Mitochondrial DNA&rdquo;,
+<EM>Journal of Molecular Evolution</EM>, <B>22:2</B>, 160-174
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.code.type.html">.code.type</a></code>,
+<code><a href="11_d.identifier.html">.identifier</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+.substitution.model
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>phyclust</em> version 0.1-16 <a href="00Index.html">Index</a>]</div>
+</body></html>

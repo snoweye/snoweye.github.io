@@ -1,0 +1,164 @@
+<?
+
+  @ include "../inc/conf_main.htm";
+
+?>
+<!-- begin of up page -->
+<html>
+<head>
+<title>Phyloclustering -- Phylogenetic Clustering.
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+<meta name="keywords" content="phylogenetic clustering,phyloclustering,phylogenetics,statistics,model-based clustering,R package,phyclust,ms,seq-gen,Hap-Clustering,em algorithm">
+<link rel="stylesheet" type="text/css" href="../inc/conf_css.htm">
+</head>
+<body link="#0000ff" vlink="#0000ff" bgcolor="#f8f4e7">
+
+
+
+<center>
+<table width="98%">
+<tr>
+  <td align="center">
+<a href="http://thirteen-01.stat.iastate.edu/snoweye/phyclust">
+<b><font color="green" size=-1>
+Phyloclustering -- Phylogenetic Clustering</font></b></a>
+</table>
+<hr width="98%">
+
+<!--table width="95%">
+<tr>
+  <td align="left">
+</table-->
+
+<!-- begin of menu page -->
+<table border="1" cellpadding="5" cellspacing="0" width="95%">
+<tr>
+  <td>
+<!-- begin of content page -->
+
+
+<b><font color="#800000">Useful Documents:</font></b>
+<p>
+The documents for the most stable version of <code>phyclust</code> is on
+<a href="http://cran.r-project.org/web/packages/phyclust/index.html" target="_blank">CRAN</a> or
+<a href="http://cran.r-project.org/mirrors.html" target="_blank">mirror sites</a>
+from <a href="http://www.r-project.org" target="_blnak">R-project</a>.
+The docuements for the newest version of phyclust is available on this website.
+<ul>
+<li>
+The quick guide of <code>phyclust</code> (vignette):
+[
+<a href="./phyclust-guide.pdf" target="_blank">pdf</a>
+]
+
+<li>
+The help pages of <code>phyclust</code> (manual):
+[
+<a href="./html/index.php" target="_blank">html</a> |
+<a href="./phyclust-help.pdf">pdf</a>
+]
+
+<li>
+The manual of <code>ms</code>
+(<a href="http://home.uchicago.edu/~rhudson1/source/mksamples.html" target="_blank">original source</a>):
+[
+<a href="./msdoc.pdf">pdf</a>
+]
+
+<li>
+The manual of <code>seq-gen</code>
+(<a href="http://tree.bio.ed.ac.uk/software/seqgen/" target="_blank">original source</a>):
+[
+<a href="./Seq-Gen.v.1.3.2/Seq-Gen.Manual.html" target="_blank">html</a>
+]
+</ul>
+
+
+
+
+<b><font color="#800000">Old Documents:</font></b>
+<br>
+
+<br>
+The quick guide of <code>phyclust</code> (vignette):
+<br>
+<?
+
+  $dir = "./old/";
+  $files = scandir($dir, 1);
+
+  foreach($files as $value){
+    $ret = preg_match("/^phyclust_.*-guide\.pdf$/", $value, $matche);
+    if($ret == 1){
+      echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .
+           "<img src=\"../inc/Adobe_PDF_32.png\" width=\"20\">\n" .
+           "&nbsp;<a href=\"" . $dir . $value . "\">" . $value . "</a>" .
+           " &nbsp;&nbsp; " .
+           date("d-M-Y H:i:s", filemtime($dir . $value)) . " " .
+           round(filesize($dir . $value)/1024) . " K <br>\n";
+    }
+  }
+
+?>
+
+
+
+
+<br>
+The help pages of <code>phyclust</code> (manual):
+<br>
+<?
+
+  $dir = "./old/";
+  $files = scandir($dir, 1);
+
+  foreach($files as $value){
+    $ret = preg_match("/^phyclust_.*-help\.pdf$/", $value, $matche);
+    if($ret == 1){
+      echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" .
+           "<img src=\"../inc/Adobe_PDF_32.png\" width=\"20\">\n" .
+           "&nbsp;<a href=\"" . $dir . $value . "\">" . $value . "</a>" .
+           " &nbsp;&nbsp; " .
+           date("d-M-Y H:i:s", filemtime($dir . $value)) . " " .
+           round(filesize($dir . $value)/1024) . " K <br>\n";
+    }
+  }
+
+?>
+
+
+
+
+</table>
+<table width="95%">
+<tr>
+  <td align="left">
+  <td align="right">
+  <a href="#top">Top</font></a>
+</table>
+
+<!-- begin of end page -->
+<hr width="98%">
+<table border="0" width="98%">
+<tr>
+  <td align="left" valign="top">
+    <b><font color="green" size=-1>
+    Created: <? echo $conf_down["created"]; ?> <br>
+    Last Revised: <? echo $conf_down["last_revised"]; ?> <br>
+    Maintain: <? echo $conf_down["by"]; ?> <br>
+    E-Mail: <? echo $conf_down["email"]; ?> <br>
+    </font></b>
+  <td align="right" valign="top">
+    <b><font color="green" size=-1>Best Resolution <br>
+       Firefox 3.5 <br>
+       1024x768 <br>
+       small font</font></b>
+    <br>
+</table>
+</center>
+
+</body>
+</html>
+

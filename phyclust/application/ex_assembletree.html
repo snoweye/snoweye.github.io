@@ -1,0 +1,79 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_K = " [tex]K[/tex] ";
+  $text_K_4 = " [tex]K = 4[/tex] ";
+?>
+
+<b><font color="#800000">
+Assemble tree -- Assemble phylogenetic trees
+</font></b>
+
+<p>
+A relative topic to this page is the Supertree, see wiki at
+<a href="http://en.wikipedia.org/wiki/Supertree" target="_blank">
+http://en.wikipedia.org/wiki/Supertree</a> for more information.
+Here, I only introduce a three-stages approach to construct a
+phylogeny on the EIAV dataset. The detail steps are the following:
+<ol>
+<li>
+apply <code>phyclust</code> to get
+<? echo latex_content($text_K); ?>
+clusters,
+<li>
+apply <code>paml.baseml</code> on central sequences to obtain the stem tree,
+<li>
+apply <code>paml.baseml</code> on sequences of each clusters to obtain
+<? echo latex_content($text_K); ?>
+leaves trees, then
+<li>
+adjoint the
+<? echo latex_content($text_K); ?>
+leaves trees to the stem tree.
+</ol>
+The <code>R</code> script
+(<a href="./application/ex_assembletree.r">ex_assembletree.r</a>)
+uses the above steps to analysis
+<a href="./example/pony625.txt">pony625.fas</a> and
+to generate two figures below.
+I arbitrary choose
+<? echo latex_content($text_K_4); ?>
+clusters.
+The full tree is assemble from the stem tree with the four
+leaves trees attached to each node of the stem tree, and
+the colors indicate clusters.
+
+<p>
+<font color="red">Warning:</font> If the number of sequences of a leaves tree
+is large, it may take extremely long time to find one tree by the function
+<code>paml.baseml</code> given a model, not to mention to find
+the best tree/model. Also, this function may dump large output files
+even under the settings restricting minimum messages.
+
+<p>
+<b>Opening questions:</b>
+<ol>
+<li> Is a phylogenetic tree reasonable to the data for rapid evolving viruses
+     or close related subspecies?
+<li> How small are the clusters appropriate for constructing leaves trees?
+<li> What does this assemble tree approach mean/want to say? Reasonable?
+<li> How do we adjoin the unrooted leaves trees to the stem tree?
+<li> Do we have to scale leaves trees before adjoint to the stem tree?
+<li> Are there other ways to construct/search a tree?
+<li> How about to use the assembled star trees as the initial trees and search
+     an optimized/restricted tree based on this initial?
+<li> How close is this optimized/restricted tree comparing to the
+     best/true tree or the neighbor-joining tree?
+<li> Would PHYLIP provide better tree results?
+</ol>
+
+<p>
+The results of the three-stages approach are displayed in the following figure
+(click to enlarge.)
+The top is the stem tree, the middle is the scaled leaves trees, and
+the bottom is the assemble tree.
+<center>
+<a href="./application/ex_assembletree.png" target="_blank">
+<img src="./application/ex_assembletree.png" width=800></a>
+</center>
+

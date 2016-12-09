@@ -1,0 +1,8 @@
+@Manual{,
+  title = {Overlapping Codon Model, Phylogenetic Clustering, and Alternative
+           Partial Expectation Conditional Maximization Algorithm},
+  author = {{Chen} and {W.-C.}},
+  journal = {Ph.D. Diss., Iowa Stat University},
+  year = {2011},
+  url = {http://gradworks.umi.com/34/73/3473002.html},
+}

@@ -1,0 +1,86 @@
+
+<b><font color="#800000">
+<code>.EMC</code> -- Examples of <code>.EMControl()</code></font></b>
+
+<p>
+<code>.EMC</code> is a reserved object storing all options for
+<code>phyclust()</code>, <code>find.best()</code>, and other related
+functions, and it is created by a function <code>.EMControl()</code>
+providing default values for EM steps and initialization.
+Examples are given in the following, copy and paste to R to see the results,
+and the details are available by using <code>help(.EMControl)</code>.
+<br>
+<center>
+<table>
+<table cellpadding="5">
+<tr>
+<td bgcolor="#dddddd" align="top">
+<code>
+<pre>
+.EMControl()
+.show.option()
+
+EMC.1 <- .EMC
+EMC.1$substitution.model <- "HKY85"
+EMC.1$identifier <- "EV"
+EMC.2 <- .EMControl(substitution.model = "HKY85",
+                    identifier = "EV")
+
+EMC.3 <- .EMC
+EMC.3$substitution.model <- "SNP_JC69"
+EMC.3$edist.model <- "HAMMING"
+EMC.3$code.type <- "SNP"
+EMC.4 <- .EMControl(substitution.model = "SNP_JC69",
+                    edist.model = "HAMMING",
+                    code.type = "SNP")
+
+EMC.5 <- .EMControl(init.procedure = "RndEM",
+                    init.method = "randomNJ",
+                    substitution.model = "K80",
+                    identifier = "EV",
+                    em.method = "ACEM")
+
+EMC.6 <- .EMControl(EM.eps = 1e-8,
+                    nm.abstol.Mu.given.QA = 1e-16,
+                    nm.reltol.Mu.given.QA = 1e-8,
+                    nm.maxit.Mu.given.QA = 500,
+                    nm.abstol.QA.given.Mu = 1e-16,
+                    nm.reltol.QA.given.Mu = 1e-8,
+                    nm.maxit.QA.given.Mu = 500)
+</pre>
+</code>
+<td bgcolor="#dddddd" valign="top">
+<code>
+<pre>
+<- This gives a return object as .EMC.
+<- This prints all options. 
+
+<- These 3 lines provide EMC.1 which is
+exactly the same as EMC.2 using "HKY85"
+for the Q matrix, and time t is varied for
+clusters. EMC.1 and EMC.2 can be used
+in phyclust() or find.best().
+
+<- These 4 lines provide EMC.3 which is
+exactly the same as EMC.4 using "SNP_JC69"
+for the Q matrix, HAMMING distance for
+initialization, and the data should be
+SNP sequences.
+
+
+
+<- This line changes more options
+including initialization procedure,
+initialization method, model for
+the Q matrix, identifier, and the EM
+algorithm.
+
+<- This line uses a convergent condition
+looser than the default, and originally
+conditions in optim() for the Nelder-Mead
+method.
+
+</pre>
+</code>
+</table>
+</center>

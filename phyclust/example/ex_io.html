@@ -1,0 +1,120 @@
+
+<b><font color="#800000">
+file I/O -- Input and output sequence data.
+</font></b>
+
+<p>
+<b>Input</b>:
+<code>Phyclust</code> accepts three types of input:
+<ol>
+<li>
+Data read from a text file in PHYLIP format.
+<li>
+Data read from a text file in FASTA format.
+<li>
+Data simulated by the
+<a href="<? echo "$PHP_SELF?item=example&subitem=ex_msseqgen" ?>">
+<code>ms+seqgen</code></a>
+approach.
+</ol>
+The data reading functions <code>read.*()</code> will return a list object of 
+class <code>seq.data</code>.
+Suppose we call the returned list object <code>ret</code>.
+Then, <code>ret$org.code</code> and <code>ret$org</code> are two matrices that
+store the data.
+Matrix <code>ret$org.code</code> contains the original data, e.g. A,G,C,T for
+nucleotide, and
+<code>ret$org</code> contains the data formatted for
+the computer, e.g. 0,1,2,3 for nucleotide.
+
+Matrix <code>ret$org</code> is translated from <code>ret$org.code</code>
+according to the standard encoding of the chosen data type, and most
+calculations are done with <code>ret$org</code>.
+
+<p>
+<b>Output</b>:
+<code>Phyclust</code> outputs sequence data in two formats:
+PHYLIP or FASTA.
+
+
+<p>
+We use "<code>Great pony EIAV rev datasets</code>" as examples,
+<a href="./example/pony524.txt" target="_blank">pony524.phy</a>
+in <code>PHYLIP</code> format and
+<a href="./example/pony625.txt" target="_blank">pony625.fas</a>
+in <code>FASTA</code> format.
+The other example for the data sets can be found at
+<a href="<? echo "$PHP_SELF?item=example&subitem=ex_eiav" ?>">
+here</a>.
+The following code will read in two file, create objects with class
+<code>seq.data</code>, and save the data matrix in two new files in
+the working directory.
+
+<p>
+<b>Read a PHYLIP file</b>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+> data.path <- paste(.libPaths()[1], "/phyclust/data/pony524.phy", sep = "")
+> (my.pony.524 <- read.phylip(data.path))
+code.type: NUCLEOTIDE, n.seq: 146, seq.len: 405.
+> str(my.pony.524)
+List of 7
+ $ code.type: chr "NUCLEOTIDE"
+ $ info     : chr " 146 405"
+ $ nseq     : num 146
+ $ seqlen   : num 405
+ $ seqname  : Named chr [1:146] "AF314258" "AF314259" "AF314260" "AF314261" ...
+  ..- attr(*, "names")= chr [1:146] "1" "2" "3" "4" ...
+ $ org.code : chr [1:146, 1:405] "g" "g" "g" "g" ...
+ $ org      : num [1:146, 1:405] 1 1 1 1 1 1 1 1 1 1 ...
+ - attr(*, "class")= chr "seq.data"
+</pre>
+</code>
+</table>
+
+<p>
+<b>Read a FASTA file</b>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+> data.path <- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
+> (my.pony.625 <- read.fasta.nucleotide(data.path))
+code.type: NUCLEOTIDE, n.seq: 62, seq.len: 406.
+> str(my.pony.625)
+List of 6
+ $ code.type: chr "NUCLEOTIDE"
+ $ nseq     : num 62
+ $ seqlen   : int 406
+ $ seqname  : chr [1:62] "AF512608" "AF512609" "AF512610" "AF512611" ...
+ $ org.code : chr [1:62, 1:406] "G" "G" "G" "G" ...
+ $ org      : num [1:62, 1:406] 1 1 1 1 1 1 1 1 1 1 ...
+ - attr(*, "class")= chr "seq.data"
+</pre>
+</code>
+</table>
+
+<p>
+<b>Save files</b>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+> # PHYLIp
+> write.phylip(my.pony.625$org, "new.625.txt")
+> edit(file = "new.625.txt")
+> # FASTA
+> write.fasta(my.pony.524$org, "new.524.txt")
+> edit(file = "new.524.txt")
+</pre>
+</code>
+</table>
+

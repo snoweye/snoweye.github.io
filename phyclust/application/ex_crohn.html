@@ -1,0 +1,34 @@
+
+<b><font color="#800000">
+Crohn's Disease -- An application for SNP data.</font></b>
+
+<p>
+The R script
+(<a href="./application/ex_crohn.r" target="_blank">ex_crohn.r</a>)
+demonstrates the settings for SNP data set, runs the <code>phyclust()</code>
+by two clusters, calculates distances, builds
+a neighbor-joining tree, and applies the <code>plotnj()</code>
+to draw the tree by the <code>HAMMING</code> distance.
+The data set has 1102 SNP sequences in 8 loci, and 39 sequences are unique.
+In the following,
+<ul>
+<li>
+The data set is available in <code>phyclust</code> and
+original from Hugot, J.P., et al. (2001).
+<li>
+The left plot draws the leaf edges in a standard scale, and clusters are
+showed in colors but only the unique sequences are clear.
+<li>
+The right plot draws the leaf edges in a larger scale, and the duplicated
+sequences are condensed to the unique sequences.
+</ul>
+
+<center>
+<table border="0" cellpadding="5" cellspacing="5">
+<tr align="center">
+<td>
+<img src="./application/ex_crohn_stand.png">
+<td>
+<img src="./application/ex_crohn_large.png">
+</table>
+</center>

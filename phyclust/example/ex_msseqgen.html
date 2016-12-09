@@ -1,0 +1,98 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_kappa = " [tex]\kappa[/tex] ";
+  $text_pi = " [tex]\pi_{A}, \pi_{G}, \pi_{C}, \pi_{T}[/tex] ";
+?>
+
+<b><font color="#800000">
+ms+seqgen -- Simulation sequences according a tree. 
+</font></b>
+
+<p>
+In the following, we demonstrate the <code>ms+seqgen</code> approach
+to generate sequences. The result is a character
+vector of class <code>seqgen</code>, which contains 5 sequences, 
+each of 40 bases (<code>seq-gen</code> option <code>-l40</code>).
+The option <code>-mHKY</code> specifies the HKY85
+model of evolution (Hasegawa et al. 1985).
+Without further options, HKY85 is equivalent to the JC69
+model (Jukes and Cantor 1969).
+Note that the <code>seqgen()</code> function requires a rooted tree
+in NEWICK format or an object of class <code>phylo</code>.
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+> set.seed(123)
+> ret.ms <- ms(nsam = 5, nreps = 1, opts = "-T")
+> tree.anc <- read.tree(text = ret.ms[3])
+> set.seed(123)
+> seqgen(opts = "-mHKY -l40", newick.tree = ret.ms[3])
+ 5 40
+s1        CTCTCATTGGACGCACACTTTAGGGGGGGATTGCACTGCA
+s5        CTCTCTCTGGACGCACACTTTAAGGGGGGATTGAACTACA
+s2        CTCTTCGGGCTCGGATAAGTTTGGAGGGTTGTTCTCTACA
+s3        CTCTGAGTGCTCGGATTAGTTAGGGGGAATGACGTCTACA
+s4        CTCTTATCTCTCGGATAAGTTGGGGGTGATGGCTTTTACA
+> set.seed(123)
+> (ret.seq <- seqgen(opts = "-mHKY -l40", rooted.tree = tree.anc))
+ 5 40
+s1        CTCTCATTGGACGCACACTTTAGGGGGGGATTGCACTGCA
+s5        CTCTCTCTGGACGCACACTTTAAGGGGGGATTGAACTACA
+s2        CTCTTCGGGCTCGGATAAGTTTGGAGGGTTGTTCTCTACA
+s3        CTCTGAGTGCTCGGATTAGTTAGGGGGAATGACGTCTACA
+s4        CTCTTATCTCTCGGATAAGTTGGGGGTGATGGCTTTTACA
+> str(ret.seq)
+Class 'seqgen'  chr [1:6] " 5 40" "s1        CTCTCATTGGACGCACACTTTAGGGGGG ...
+</pre>
+</code>
+</table>
+
+<p>
+The following example generates a tree and provides an ancestral
+sequence. Function <code>seqgen()</code> will use
+parameters <? echo latex_content($text_kappa); ?> (<code>kappa</code>) and
+<? echo latex_content($text_pi); ?> 
+(<code>pi.HKY</code>)
+to evolve the ancestral sequence
+(<code>anc.HKY</code>) down the tree.
+The function <code>read.seqgen()</code> reads the <code>seqgen()</code>
+object and returns a new data set of class <code>seq.data</code>
+for use by the function <code>phyclust()</code>.
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+> # Generate a tree
+> set.seed(1234)
+> ret.ms <- ms(nsam = 5, nreps = 1, opts = "-T")
+> tree.ms <- read.tree(text = ret.ms[3])
+> 
+> # Generate nucleotide sequences
+> (anc.HKY <- rep(0:3, 3))
+ [1] 0 1 2 3 0 1 2 3 0 1 2 3
+> paste(nid2code(anc.HKY, lower.case = FALSE), collapse = "")
+[1] "AGCTAGCTAGCT"
+> pi.HKY <- c(0.2, 0.2, 0.3, 0.3)
+> kappa <- 1.1
+> L <- length(anc.HKY)
+> set.seed(1234)
+> (HKY.1 <- gen.seq.HKY(tree.ms, pi.HKY, kappa, L, anc.seq = anc.HKY))
+ 5 12
+s1        AGCTTGACCGGC
+s3        AGCTTCACCGGT
+s2        ACCTCGCTAGCT
+s4        ACGACGCTCGCT
+s5        CCTACGCTAGCT
+> (ret <- read.seqgen(HKY.1))
+code.type: NUCLEOTIDE, n.seq: 5, seq.len: 12.
+</pre>
+</code>
+</table>
+
