@@ -59,11 +59,11 @@ for more information.
 Here, I only introduce a three-stages approach to construct a
 phylogeny on the EIAV dataset. The detail steps are the following:
 
-- apply <code>phyclust</code> to get $K$ clusters,
-- apply <code>paml.baseml</code> on central sequences to obtain the stem tree,
-- apply <code>paml.baseml</code> on sequences of each clusters to obtain
-  $K$ leaves trees, then
-- adjoint the $K$ leaves trees to the stem tree.
+1. apply <code>phyclust</code> to get $K$ clusters,
+2. apply <code>paml.baseml</code> on central sequences to obtain the stem tree,
+3. apply <code>paml.baseml</code> on sequences of each clusters to obtain
+   $K$ leaves trees, then
+4. adjoint the $K$ leaves trees to the stem tree.
 
 The <code>R</code> script
 (<a href="./ex_assembletree.r">ex_assembletree.r</a>)
@@ -85,18 +85,18 @@ even under the settings restricting minimum messages.
 
 ##### <b>Opening questions:</b>
 
-- Is a phylogenetic tree reasonable to the data for rapid evolving viruses
-  or close related subspecies?
-- How small are the clusters appropriate for constructing leaves trees?
-- What does this assemble tree approach mean/want to say? Reasonable?
-- How do we adjoin the unrooted leaves trees to the stem tree?
-- Do we have to scale leaves trees before adjoint to the stem tree?
-- Are there other ways to construct/search a tree?
-- How about to use the assembled star trees as the initial trees and search
-  an optimized/restricted tree based on this initial?
-- How close is this optimized/restricted tree comparing to the
-  best/true tree or the neighbor-joining tree?
-- Would PHYLIP provide better tree results?
+1. Is a phylogenetic tree reasonable to the data for rapid evolving viruses
+   or close related subspecies?
+2. How small are the clusters appropriate for constructing leaves trees?
+3. What does this assemble tree approach mean/want to say? Reasonable?
+4. How do we adjoin the unrooted leaves trees to the stem tree?
+5. Do we have to scale leaves trees before adjoint to the stem tree?
+6. Are there other ways to construct/search a tree?
+7. How about to use the assembled star trees as the initial trees and search
+   an optimized/restricted tree based on this initial?
+8. How close is this optimized/restricted tree comparing to the
+   best/true tree or the neighbor-joining tree?
+9. Would PHYLIP provide better tree results?
 
 The results of the three-stages approach are displayed in the following figure
 (click to enlarge.)

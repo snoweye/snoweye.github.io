@@ -28,7 +28,7 @@ a.hint:hover{text-decoration: underline; color: #ff0000}
 
 /* p{text-indent: 1.5em;} */
 
-ol {
+ol#custom {
   counter-reset: item;
   display: flex;
   flex-direction: column;
