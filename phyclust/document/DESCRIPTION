@@ -1,14 +1,13 @@
 Package: phyclust
-Version: 0.1-15
-Date: 2013-07-03
+Version: 0.1-18
+Date: 2016-12-10
 Title: Phylogenetic Clustering (Phyloclustering)
 Authors@R: c(person("Wei-Chen", "Chen", role = c("aut", "cre"), email =
         "wccsnow@gmail.com"), person("Karin", "Dorman", role =
         "aut"))
-Depends: R (>= 2.14.0), ape
+Depends: R (>= 3.0.0), ape
 LazyLoad: yes
 LazyData: yes
-SystemRequirements: GNU make
 Copyright: See phyclust/inst/Documents/ for files in src/msdir/,
         src/seq-gen/, src/paml_baseml, and R/ttzeng-*.r.
 Description: Phylogenetic clustering (phyloclustering) is an evolutionary
@@ -25,9 +24,8 @@ Description: Phylogenetic clustering (phyloclustering) is an evolutionary
         simulating data, additional analyses, and searching the best tree.
         See the phyclust website for more information, documentations and
         examples.
+BugReports: https://github.com/snoweye/phyclust/issues
 License: GPL (>= 2)
-URL: http://thirteen-01.stat.iastate.edu/snoweye/phyclust/
-Packaged: 2013-07-03 16:43:24 UTC; snoweye
-Author: Wei-Chen Chen [aut, cre],
-  Karin Dorman [aut]
+URL: http://snoweye.github.io/phyclust/phyclust/
+NeedsCompilation: yes
 Maintainer: Wei-Chen Chen <wccsnow@gmail.com>
