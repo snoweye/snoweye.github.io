@@ -1,9 +1,58 @@
-<b><font color="#800000">
-phyclust+paml.baseml --
-Combinations of phyloclustering and maximum likelihood tree.
-</font></b>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
 
-<p>
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="../preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="../index.html">Home</a></li>
+    <li class=""><a href="../overview.html">Overview</a></li>
+    <li class=""><a href="../method.html">Method</a></li>
+    <li class=""><a href="../download.html">Download</a></li>
+    <li class=""><a href="../document.html">Document</a></li>
+    <li class=""><a href="../jargon.html">Jargon</a></li>
+    <li class="active"><a href="#">Example</a></li>
+    <li class=""><a href="../application.html">Application</a></li>
+  </ul>
+
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../example.html">Example</a></li> /
+    <li class="active">ex_phyclustpamlbaseml</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### phyclust+paml.baseml -- Combinations of phyloclustering and maximum likelihood tree.
+
 In the following, we demonstrate the <code>phyclust+paml.baseml</code> approach
 to build a phylogeny for central/ancestral sequences. The <code>phyclust</code>
 will identify clusters and centers of clusters, then followed by
@@ -18,50 +67,34 @@ Note that the appropriate number of clusters and the best evolutionary model
 for the phylogeny are required to be determined by either information criteria
 or bootstrap.
 
-<p>
 <b>Opening questions:</b>
-<ol>
-<li>
-Is this two-stages approach meaningful?
-When does this approach work or fail?
-<li>
-Is it possible to compare this two-stages approach with the single-stage
-approach? How? By simulation?
-<li>
-How accurate are these two approaches compare to the true tree based on
-simulation studies?
-<li>
-Is it possible or accurate to apply the single-stage approach
-on 
-<a href="../application/ex_hiv.html"
-target="_blank">the application pages of HIV</a>
-which has more than 5,000 short-read fragments?
-<li>
-How about the <font color="#800000">three-stages approach</font>?
-See the application page of
-<a href="../application/ex_supertree.html"
-target="_blank">the application page of Supertree</a>
-for detail.
-<li>
-How about Bayesian framework to the above questions?
-<li>
-Can we control the evolving viruses by drugs?
-</ol>
 
-<p>
+- Is this two-stages approach meaningful?
+  When does this approach work or fail?
+- Is it possible to compare this two-stages approach with the single-stage
+  approach? How? By simulation?
+- How accurate are these two approaches compare to the true tree based on
+  simulation studies?
+- Is it possible or accurate to apply the single-stage approach on 
+  <a href="../application/ex_hiv.html">the application pages of HIV</a>
+  which has more than 5,000 short-read fragments?
+- How about the <font color="#800000">three-stages approach</font>?
+  See the application page of
+  <a href="../application/ex_supertree.html">the application page of
+  Supertree</a>
+  for detail.
+- How about Bayesian framework to the above questions?
+- Can we control the evolving viruses by drugs?
+
 The following code will generate a tree which is close to the true.
 This tree based on maximum likelihood approach is different to the last
 figure in the
-<a href="./ex_demo.html" target="_blank">demo</a>
+<a href="./ex_demo.html">demo</a>
 example based on distance approach.
 Note that PAML uses multifurcation at root for an unrooted tree as
 the default value <code>clock = 0</code>.
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+
+```
 > ### Fit a EE, JC69 model using emEM and fit an ancestral tree.
 > EMC <- .EMControl(init.procedure = "emEM")
 > set.seed(1234)
@@ -86,25 +119,35 @@ Unrooted; includes branch lengths.
 + }
 > est.class <- rep(1:K, ret.K$n.class)
 > plotnj(unroot(tree.est), X.class = est.class, main = "tree of sequences")
-</pre>
-</code>
-</table>
+```
 
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#cccccc">
-<img src="./ex_phyclustpamlbaseml.png">
-<td>
+<center>
+<img src="./ex_phyclustpamlbaseml.png"></img>
+</center>
+
 The colored branches are estimated by <code>phyclust</code>, and each
 color represents a cluster characterized by a central sequences.
-Using these four central sequences, the internal branches are constructed
-and estimated by <code>paml.baseml</code>.
+Using these four central sequences, the internal branches are
+constructed and estimated by <code>paml.baseml</code>.
 This is exactly the same topology where this toy data generated from
 except the length of branches may not estimate accurately.
-While the last
-figure in the
-<a href="./ex_demo.html" target="_blank">demo</a>
+While the last figure in the <a href="./ex_demo.html">demo</a>
 example based on distance approach gives the other illustration for the
 same dataset.
-</table>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

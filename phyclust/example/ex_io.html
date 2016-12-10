@@ -1,21 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
 
-<b><font color="#800000">
-file I/O -- Input and output sequence data.
-</font></b>
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
 
-<p>
-<b>Input</b>:
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="../preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="../index.html">Home</a></li>
+    <li class=""><a href="../overview.html">Overview</a></li>
+    <li class=""><a href="../method.html">Method</a></li>
+    <li class=""><a href="../download.html">Download</a></li>
+    <li class=""><a href="../document.html">Document</a></li>
+    <li class=""><a href="../jargon.html">Jargon</a></li>
+    <li class="active"><a href="#">Example</a></li>
+    <li class=""><a href="../application.html">Application</a></li>
+  </ul>
+
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../example.html">Example</a></li> /
+    <li class="active">ex_io</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### File I/O -- Input and output sequence data.
+
+---
+##### <b>Input</b>
 <code>Phyclust</code> accepts three types of input:
-<ol>
-<li>
-Data read from a text file in PHYLIP format.
-<li>
-Data read from a text file in FASTA format.
-<li>
-Data simulated by the
-<a href="./ex_msseqgen.html"><code>ms+seqgen</code></a>
-approach.
-</ol>
+
+- Data read from a text file in PHYLIP format.
+- Data read from a text file in FASTA format.
+- Data simulated by the
+  <a href="./ex_msseqgen.html"><code>ms+seqgen</code></a>
+  approach.
+
 The data reading functions <code>read.*()</code> will return a list object of 
 class <code>seq.data</code>.
 Suppose we call the returned list object <code>ret</code>.
@@ -30,13 +76,12 @@ Matrix <code>ret$org</code> is translated from <code>ret$org.code</code>
 according to the standard encoding of the chosen data type, and most
 calculations are done with <code>ret$org</code>.
 
-<p>
-<b>Output</b>:
+
+---
+##### <b>Output</b>
 <code>Phyclust</code> outputs sequence data in two formats:
 PHYLIP or FASTA.
 
-
-<p>
 We use "<code>Great pony EIAV rev datasets</code>" as examples,
 <a href="./pony524.txt" target="_blank">pony524.phy</a>
 in <code>PHYLIP</code> format and
@@ -48,14 +93,10 @@ The following code will read in two file, create objects with class
 <code>seq.data</code>, and save the data matrix in two new files in
 the working directory.
 
-<p>
-<b>Read a PHYLIP file</b>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+
+---
+##### <b>Read a PHYLIP file</b>
+```
 > data.path <- paste(.libPaths()[1], "/phyclust/data/pony524.phy", sep = "")
 > (my.pony.524 <- read.phylip(data.path))
 code.type: NUCLEOTIDE, n.seq: 146, seq.len: 405.
@@ -70,18 +111,12 @@ List of 7
  $ org.code : chr [1:146, 1:405] "g" "g" "g" "g" ...
  $ org      : num [1:146, 1:405] 1 1 1 1 1 1 1 1 1 1 ...
  - attr(*, "class")= chr "seq.data"
-</pre>
-</code>
-</table>
+```
 
-<p>
-<b>Read a FASTA file</b>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+
+---
+##### <b>Read a FASTA file</b>
+```
 > data.path <- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
 > (my.pony.625 <- read.fasta.nucleotide(data.path))
 code.type: NUCLEOTIDE, n.seq: 62, seq.len: 406.
@@ -94,25 +129,33 @@ List of 6
  $ org.code : chr [1:62, 1:406] "G" "G" "G" "G" ...
  $ org      : num [1:62, 1:406] 1 1 1 1 1 1 1 1 1 1 ...
  - attr(*, "class")= chr "seq.data"
-</pre>
-</code>
-</table>
+```
 
-<p>
-<b>Save files</b>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+
+---
+##### <b>Save files</b>
+```
 > # PHYLIp
 > write.phylip(my.pony.625$org, "new.625.txt")
 > edit(file = "new.625.txt")
 > # FASTA
 > write.fasta(my.pony.524$org, "new.524.txt")
 > edit(file = "new.524.txt")
-</pre>
-</code>
-</table>
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
 

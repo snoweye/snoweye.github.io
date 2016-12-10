@@ -1,79 +1,132 @@
-<?
-  @include_once "./latexrender/latex.php";
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
 
-  $text_K = " [tex]K[/tex] ";
-  $text_K_4 = " [tex]K = 4[/tex] ";
-?>
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
 
-<b><font color="#800000">
-Assemble tree -- Assemble phylogenetic trees
-</font></b>
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 
-<p>
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="../preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="../index.html">Home</a></li>
+    <li class=""><a href="../overview.html">Overview</a></li>
+    <li class=""><a href="../method.html">Method</a></li>
+    <li class=""><a href="../download.html">Download</a></li>
+    <li class=""><a href="../document.html">Document</a></li>
+    <li class=""><a href="../jargon.html">Jargon</a></li>
+    <li class=""><a href="../example.html">Example</a></li>
+    <li class="active"><a href="#">Application</a></li>
+  </ul>
+
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../application.html">Application</a></li> /
+    <li class="active">ex_assembletree</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### Assemble tree -- Assemble phylogenetic trees
+
 A relative topic to this page is the Supertree, see wiki at
-<a href="http://en.wikipedia.org/wiki/Supertree" target="_blank">
-http://en.wikipedia.org/wiki/Supertree</a> for more information.
+<a href="http://en.wikipedia.org/wiki/Supertree"
+target="_blank">http://en.wikipedia.org/wiki/Supertree</a>
+for more information.
 Here, I only introduce a three-stages approach to construct a
 phylogeny on the EIAV dataset. The detail steps are the following:
-<ol>
-<li>
-apply <code>phyclust</code> to get
-<? echo latex_content($text_K); ?>
-clusters,
-<li>
-apply <code>paml.baseml</code> on central sequences to obtain the stem tree,
-<li>
-apply <code>paml.baseml</code> on sequences of each clusters to obtain
-<? echo latex_content($text_K); ?>
-leaves trees, then
-<li>
-adjoint the
-<? echo latex_content($text_K); ?>
-leaves trees to the stem tree.
-</ol>
+
+- apply <code>phyclust</code> to get $K$ clusters,
+- apply <code>paml.baseml</code> on central sequences to obtain the stem tree,
+- apply <code>paml.baseml</code> on sequences of each clusters to obtain
+  $K$ leaves trees, then
+- adjoint the $K$ leaves trees to the stem tree.
+
 The <code>R</code> script
 (<a href="./ex_assembletree.r">ex_assembletree.r</a>)
 uses the above steps to analysis
 <a href="../example/pony625.txt">pony625.fas</a> and
 to generate two figures below.
 I arbitrary choose
-<? echo latex_content($text_K_4); ?>
+$K = 4$
 clusters.
 The full tree is assemble from the stem tree with the four
 leaves trees attached to each node of the stem tree, and
 the colors indicate clusters.
 
-<p>
 <font color="red">Warning:</font> If the number of sequences of a leaves tree
 is large, it may take extremely long time to find one tree by the function
 <code>paml.baseml</code> given a model, not to mention to find
 the best tree/model. Also, this function may dump large output files
 even under the settings restricting minimum messages.
 
-<p>
-<b>Opening questions:</b>
-<ol>
-<li> Is a phylogenetic tree reasonable to the data for rapid evolving viruses
-     or close related subspecies?
-<li> How small are the clusters appropriate for constructing leaves trees?
-<li> What does this assemble tree approach mean/want to say? Reasonable?
-<li> How do we adjoin the unrooted leaves trees to the stem tree?
-<li> Do we have to scale leaves trees before adjoint to the stem tree?
-<li> Are there other ways to construct/search a tree?
-<li> How about to use the assembled star trees as the initial trees and search
-     an optimized/restricted tree based on this initial?
-<li> How close is this optimized/restricted tree comparing to the
-     best/true tree or the neighbor-joining tree?
-<li> Would PHYLIP provide better tree results?
-</ol>
+##### <b>Opening questions:</b>
 
-<p>
+- Is a phylogenetic tree reasonable to the data for rapid evolving viruses
+  or close related subspecies?
+- How small are the clusters appropriate for constructing leaves trees?
+- What does this assemble tree approach mean/want to say? Reasonable?
+- How do we adjoin the unrooted leaves trees to the stem tree?
+- Do we have to scale leaves trees before adjoint to the stem tree?
+- Are there other ways to construct/search a tree?
+- How about to use the assembled star trees as the initial trees and search
+  an optimized/restricted tree based on this initial?
+- How close is this optimized/restricted tree comparing to the
+  best/true tree or the neighbor-joining tree?
+- Would PHYLIP provide better tree results?
+
 The results of the three-stages approach are displayed in the following figure
 (click to enlarge.)
 The top is the stem tree, the middle is the scaled leaves trees, and
 the bottom is the assemble tree.
+
 <center>
-<a href="./ex_assembletree.png" target="_blank">
-<img src="./ex_assembletree.png" width=800></a>
+<a href="./ex_assembletree.png"
+target="_blank"><img src="./ex_assembletree.png"></img></a>
 </center>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
 
