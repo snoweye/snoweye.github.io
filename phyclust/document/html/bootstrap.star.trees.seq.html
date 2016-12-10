@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bootstrap Sequences from a Fitted Model.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bootstrap.star.trees.seq {phyclust}"><tr><td>bootstrap.star.trees.seq {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bootstrap Sequences from a Fitted Model.</h2>
+
+<h3>Description</h3>
+
+<p>This function bootstraps sequences from a model fitted by <code>phyclust</code>
+by combining two functions <code>bootstrap.star.trees</code> and
+<code>bootstrap.seq</code>.
+The fitted model can be varied in <code>.identifier</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bootstrap.star.trees.seq(ret.phyclust, min.n.class = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ret.phyclust</code></td>
+<td>
+<p>a phyclust object in <code>Class phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>min.n.class</code></td>
+<td>
+<p>minimum number of sequences for a cluster.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ret.phyclust</code> is a phyclust object in <code>Class phyclust</code> which is usually
+fitted by <code>phyclust</code>, or returned by <code>phyclust.m.step</code>.
+</p>
+<p><code>min.n.class</code> is a boundary condition to avoid degenerate clusters
+when some population proportions, <i>eta_k</i>, are small in the
+fitted model.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a list containing two elements, and both are corresponding to the
+model of <code>ret.phyclust</code>, including:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>trees</code></td>
+<td>
+<p>a list, <i>K</i> star trees according to <code>ret.phyclust</code></p>
+</td></tr>
+<tr valign="top"><td><code>seq</code></td>
+<td>
+<p>a list, sequences in <i>K</i> clusters</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="bootstrap.star.trees.html">bootstrap.star.trees</a></code>,
+<code><a href="bootstrap.seq.html">bootstrap.seq</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+EMC.1 &lt;- .EMC
+EMC.1$EM.iter &lt;- 1
+# the same as EMC.1 &lt;- .EMControl(EM.iter = 1)
+
+ret.1 &lt;- phyclust(seq.data.toy$org, 2, EMC = EMC.1)
+ret.all &lt;- bootstrap.star.trees.seq(ret.1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

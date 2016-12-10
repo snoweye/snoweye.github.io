@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Functions for Printing or Summarizing Objects According to...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for print.object {phyclust}"><tr><td>print.object {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Functions for Printing or Summarizing Objects According to Classes</h2>
+
+<h3>Description</h3>
+
+<p>Several classes are declared in <span class="pkg">phyclust</span>, and these are functions
+to print and summary objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'baseml'
+print(x, ...)
+## S3 method for class 'ms'
+print(x, ...)
+## S3 method for class 'phyclust'
+print(x, digits = max(4, getOption("digits") - 3), ...)
+## S3 method for class 'Pt'
+print(x, ...)
+## S3 method for class 'RRand'
+print(x, digits = max(4, getOption("digits") - 3), ...)
+## S3 method for class 'seq.data'
+print(x, ...)
+## S3 method for class 'seqgen'
+print(x, ...)
+## S3 method for class 'phyclust'
+summary(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object with the class attributes.</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>for printing out numbers.</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object with the class attributes.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other possible options.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These are useful functions for summarizing and debugging.
+</p>
+<p>For <code>ms</code>, <code>seqgen</code>, and <code>paml.baseml</code>, it will show the
+result as standalone versions on the STDOUT out with line by line.
+</p>
+<p>For other functions, they only show summaries of objects. Use
+<code>names</code> or <code>str</code> to explore the details.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The results will cat or print on the STDOUT by default.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ms.html">ms</a></code>,
+<code><a href="paml.baseml.html">paml.baseml</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="phyclust.Pt.html">phyclust.Pt</a></code>,
+<code><a href="RRand.html">RRand</a></code>,
+<code><a href="seqgen.html">seqgen</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# Functions applied by directly type the names of objects.
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

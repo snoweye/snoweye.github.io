@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot Histogram to Compare Number of Mutations.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plothist {phyclust}"><tr><td>plothist {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot Histogram to Compare Number of Mutations.</h2>
+
+<h3>Description</h3>
+
+<p>Plot histogram to compare number of mutations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plothist(X, X.class = NULL, Mu = NULL, fill.color = .Color,
+   draw.all = TRUE, main = "Mutation counts",
+   xlab = "Difference", ylab = "Counts", append = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>X.class</code></td>
+<td>
+<p>class ids indicated for all sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>Mu</code></td>
+<td>
+<p>a central sequence with length <i>L</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>fill.color</code></td>
+<td>
+<p>color to fill the histogram.</p>
+</td></tr>
+<tr valign="top"><td><code>draw.all</code></td>
+<td>
+<p>draw a histogram use all sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main label, default = &quot;Mutation counts&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis label, default = &quot;Difference&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-axis label, default = &quot;Counts&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>append</code></td>
+<td>
+<p>overwrite histograms.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>X.class</code> is set, the histograms will be drawn by classes and
+all sequences will be compared to the central sequence <code>Mu</code>.
+Otherwise, all sequences will be used to count mutations.
+<code>draw.all</code> is not effect if <code>X.class</code> is not set.
+</p>
+<p>If <code>Mu</code> is set, it will be used to compare to all other sequences
+to count mutations. Otherwise, the first sequence of <code>X</code> will be
+used, and the first sequence in the first class will be used if
+<code>X.class</code> is set. If <code>Mu</code> is a matrix, the first row will be
+used as the central sequence.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Histograms will be drawn to show the number of mutations away from
+the central sequence.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqgen.html">seqgen</a></code>,
+<code><a href="plotdots.html">plotdots</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+X &lt;- seq.data.toy$org
+plothist(X)
+
+# With class ids
+X.class &lt;- as.numeric(gsub(".*-(.*)", "\\1", seq.data.toy$seqname))
+plothist(X, X.class)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

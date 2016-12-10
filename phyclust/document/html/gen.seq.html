@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate Sequences Given a Rooted Tree.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gen.seq {phyclust}"><tr><td>gen.seq {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate Sequences Given a Rooted Tree.</h2>
+
+<h3>Description</h3>
+
+<p>These functions call <code>seqgen</code> to generate sequences by
+evolutions models based on a rooted tree. <code>gen.seq.HKY</code> is to
+generate nucleotide sequences, and <code>gen.seq.SNP</code> is to generate
+SNP sequences.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gen.seq.HKY(rooted.tree, pi, kappa, L, rate.scale = 1,
+            anc.seq = NULL)
+gen.seq.SNP(rooted.tree, pi, L, rate.scale = 1, anc.seq = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rooted.tree</code></td>
+<td>
+<p>a rooted tree in <code>Class phylo</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pi</code></td>
+<td>
+<p>equilibrium probabilities, sums to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+<p>transition and transversion bias.</p>
+</td></tr>
+<tr valign="top"><td><code>L</code></td>
+<td>
+<p>number of sites.</p>
+</td></tr>
+<tr valign="top"><td><code>rate.scale</code></td>
+<td>
+<p>a scale to all branch lengths.</p>
+</td></tr>
+<tr valign="top"><td><code>anc.seq</code></td>
+<td>
+<p>an ancestral sequence either in nids or sids, length = <i>L</i>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>rooted.tree</code> should be in a <code>phylo</code> class of <span class="pkg">ape</span>,
+and may be created by <code>ms</code>.
+</p>
+<p>The <code>pi</code> has length 4 for nucleotide sequences, and 2 for SNP sequences.
+</p>
+<p>The <code>rate.scale</code> is equivalent to rescale the height of
+<code>rooted.tree</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return an object in <code>Class seqgen</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gen.star.tree.html">gen.star.tree</a></code>,
+<code><a href="seqgen.html">seqgen</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# Generate a tree
+set.seed(1234)
+ret.ms &lt;- ms(nsam = 5, nreps = 1, opts = "-T")
+tree.ms &lt;- read.tree(text = ret.ms[3])
+
+# Generate nucleotide sequences
+anc.HKY &lt;- rep(0:3, 3)
+pi.HKY &lt;- c(0.2, 0.2, 0.3, 0.3)
+kappa &lt;- 1.1
+L &lt;- length(anc.HKY)
+set.seed(1234)
+paste(nid2code(anc.HKY, lower.case = FALSE), collapse = "")
+(HKY.1 &lt;- gen.seq.HKY(tree.ms, pi.HKY, kappa, L, anc.seq = anc.HKY))
+
+# evolve 5 times longer
+(HKY.2 &lt;- gen.seq.HKY(tree.ms, pi.HKY, kappa, L,
+                      rate.scale = 5, anc.seq = anc.HKY))
+
+# Generate SNP sequences
+anc.SNP &lt;- rep(0:1, 6)
+pi.SNP &lt;- c(0.4, 0.6)
+L &lt;- length(anc.SNP)
+set.seed(1234)
+paste(sid2snp(anc.SNP), collapse = "")
+(SNP.1 &lt;- gen.seq.SNP(tree.ms, pi.SNP, L, anc.seq = anc.SNP))
+
+# evolve 5 times longer
+(SNP.2 &lt;- gen.seq.SNP(tree.ms, pi.SNP, L, rate.scale = 5,
+                      anc.seq = anc.SNP))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

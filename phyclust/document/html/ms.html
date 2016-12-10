@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generating Samples under a Wright-Fisher Neutral Model of...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ms {phyclust}"><tr><td>ms {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generating Samples under a Wright-Fisher Neutral Model of Genetic Variation</h2>
+
+<h3>Description</h3>
+
+<p>This function modifies the original standalone code of <code>ms()</code> developed by
+Hudson (2002) for generating samples/coalescent trees under a Wright-Fisher
+neutral model.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ms(nsam = NULL, nreps = 1, opts = NULL, temp.file = NULL,
+   tbs.matrix = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nsam</code></td>
+<td>
+<p>number of samples/coalescent trees, usually greater than 2.</p>
+</td></tr>
+<tr valign="top"><td><code>nreps</code></td>
+<td>
+<p>number of replications.</p>
+</td></tr>
+<tr valign="top"><td><code>opts</code></td>
+<td>
+<p>options as the standalone version.</p>
+</td></tr>
+<tr valign="top"><td><code>temp.file</code></td>
+<td>
+<p>temporary file for ms output.</p>
+</td></tr>
+<tr valign="top"><td><code>tbs.matrix</code></td>
+<td>
+<p>a matrix for 'tbs' options given in opts.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function directly reuses the C code of <code>ms</code> by arguments
+as input from the <code>opts</code>. The options <code>opts</code> is followed from the
+original <code>ms</code> except <code>nsam</code> and <code>nreps</code>.
+Note that stdin, stdout, and pipe are all disable from <code>opts</code>.
+</p>
+<p>For examples, options commonly used in <span class="pkg">phyclust</span> are:
+</p>
+
+<ul>
+<li><p> &quot;-T&quot;: generate trees in a neutral model.
+</p>
+</li>
+<li><p> &quot;-G&quot;: generate trees with a population growth rate, e.g. &quot;-G 0.5&quot;.
+</p>
+</li></ul>
+
+<p>These will return trees in a NEWICK format which can be read by the
+<code>read.tree()</code> of <span class="pkg">ape</span> and passed to <code>seqgen()</code> to generate
+sequences. 
+</p>
+<p><code>temp.file</code> allows users to specify ms output file themselves, but
+this file will not be deleted nor converted into R after the call to
+<code>ms()</code>. Users should take care the readings. By default, <code>ms()</code>
+uses a system temp file to store the output which is converted into R
+after the call and is deleted after converting.
+</p>
+<p><code>tbs.matrix</code> is a matrix to specify the values of <code>tbs</code> given
+in <code>opts</code>. See <code>demo('simu_ms_tbs')</code> for an example how to
+use this additional option. This option has been slightly tweaked by
+utilizing <code>tbs</code> options in the standalone <code>ms</code>. However,
+the output format is not the same as that in the standalone <code>ms</code>.
+Post-process is required with caution.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns a vector, and each element stores one line of STDOUT
+of <code>ms()</code> separated by newline. The vector stores in a class <code>ms</code>.
+The details of output format can found on the website
+<a href="http://home.uchicago.edu/~rhudson1/source.html">http://home.uchicago.edu/~rhudson1/source.html</a> and its manual.
+</p>
+
+
+<h3>Warning(s)</h3>
+
+<p>Carefully read the <code>ms</code>'s original document before using the <code>ms()</code>
+function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hudson, R.R. (2002).
+</p>
+<p>Maintain: Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Hudson, R.R. (2002)
+&ldquo;Generating Samples under a Wright-Fisher Neutral Model of Genetic
+Variation&rdquo;,
+<em>Bioinformatics</em>, <b>18</b>, 337-338.
+<a href="http://home.uchicago.edu/~rhudson1/source.html">http://home.uchicago.edu/~rhudson1/source.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="print.summary.html">print.ms</a>()</code>,
+<code><a href="../../ape/html/read.tree.html">read.tree</a>()</code>,
+<code><a href="../../ape/html/bind.tree.html">bind.tree</a>()</code>,
+<code><a href="seqgen.html">seqgen</a>()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+ms()
+
+# an ancestral tree
+set.seed(1234)
+(ret.ms &lt;- ms(nsam = 3, opts = "-T -G 0.1"))
+(tree.anc &lt;- read.tree(text = ret.ms[3]))
+tree.anc$tip.label &lt;- paste("a", 1:K, sep = "")
+
+# adjacent descendant trees to the ancestral tree
+K &lt;- 3
+N &lt;- 12
+N.k &lt;- c(3, 4, 5)
+ms.dec &lt;- NULL         # a list to store trees of ms
+tree.dec &lt;- NULL       # a list to store the trees in phylo class
+tree.joint &lt;- tree.anc
+for(k in 1:K){
+  ms.dec[[k]] &lt;- ms(N.k[k], opts = "-T -G 1.0")
+  tree.dec[[k]] &lt;- read.tree(text = ms.dec[[k]][3])
+  tree.dec[[k]]$tip.label &lt;- paste("d", k, ".", 1:N.k[k], sep = "")
+  tree.joint &lt;- bind.tree(tree.joint, tree.dec[[k]],
+                          where = which(tree.joint$tip.label ==
+                                        paste("a", k, sep = "")))
+}
+str(tree.joint)
+
+# plot trees
+par(mfrow = c(2, 3))
+plot(tree.anc, main = paste("anc (", K, ")", sep = ""))
+axis(1)
+for(k in 1:K){
+  plot(tree.dec[[k]], main = paste("dec", k, " (", N.k[k], ")", sep = ""))
+  axis(1)
+}
+plot(tree.joint, main = paste("joint (", N, ")", sep = ""))
+axis(1)
+
+# use tbs option (an example from msdoc.pdf by Hudson, R.R.)
+tbs.matrix &lt;- matrix(c(3.0, 3.5, 5.0, 8.5), nrow = 2)
+ret &lt;- ms(nsam = 5, nreps = 2, opts = "-t tbs -r tbs 1000",
+          tbs.matrix = tbs.matrix)
+print(ret)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

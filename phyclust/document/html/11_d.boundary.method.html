@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Boundary Methods for Population Proportions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .boundary.method {phyclust}"><tr><td>.boundary.method {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Boundary Methods for Population Proportions</h2>
+
+<h3>Description</h3>
+
+<p>Methods used in EM Algorithms to deal with boundary problems of
+population proportions, <i>eta_k</i>.
+The first element is the default value.
+<strong>This is a read-only object and the elemental order is followed in C.</strong>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>.boundary.method</pre>
+
+
+<h3>Format</h3>
+
+<p>A character vector contains implemented boundary methods in C.
+</p>
+
+
+<h3>Details</h3>
+
+<p>The boundary value 0 of the population proportions makes the log
+likelihood as -Inf. Since degeneracy of subpopulations can affect
+the maximizing processes in EM steps. This problem is usually caused
+by bad initializations, and may suggest that number of cluster
+<i>K</i> may be too large.
+</p>
+<p>Two methods have been implemented when any <i>eta_k</i> less than
+the lower bound (<i>1/N</i> or <i>1e-16</i>).
+The <code>ADJUST</code> (default) will adjust the <i>eta_k</i> to the
+lower bound, and the <code>IGNORE</code> will stop the iterations and return
+errors.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.init.procedure.html">.init.procedure</a></code>,
+<code><a href="11_d.init.method.html">.init.method</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+.boundary.method
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

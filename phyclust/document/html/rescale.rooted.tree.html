@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rescale a Rooted Tree's Height</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rescale.rooted.tree {phyclust}"><tr><td>rescale.rooted.tree {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rescale a Rooted Tree's Height</h2>
+
+<h3>Description</h3>
+
+<p>This function rescaled the input rooted tree height by a scale.height.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rescale.rooted.tree(rooted.tree, scale.height = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rooted.tree</code></td>
+<td>
+<p>a rooted tree in <code>Class phylo</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>scale.height</code></td>
+<td>
+<p>a scale to all branch lengths.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>rooted.tree</code> should be in a <code>phylo</code> class of <span class="pkg">ape</span>,
+and may be created by <code>ms</code>.
+</p>
+<p><code>scale.height</code> is a positive number multiplying on the lengths of
+all branches of the rooted tree.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a rooted tree in <code>Class phylo</code> with scaled branches.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ms.html">ms</a></code>,
+<code><a href="../../ape/html/read.tree.html">read.tree</a></code>,
+<code><a href="../../ape/html/as.phylo.html">as.phylo</a></code>,
+<code><a href="get.rooted.tree.height.html">get.rooted.tree.height</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+ret.ms &lt;- ms(5, 1, opts = paste("-T", sep = " "))
+tree.ms &lt;- read.tree(text = ret.ms[3])
+get.rooted.tree.height(tree.ms)
+
+tree.scaled &lt;- rescale.rooted.tree(tree.ms, scale.height = 2)
+get.rooted.tree.height(tree.scaled)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

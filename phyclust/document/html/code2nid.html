@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transfer Codes (A, G, C, T, -) and nids (0, 1, 2, 3, 4)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for code2nid {phyclust}"><tr><td>code2nid {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transfer Codes (A, G, C, T, -) and nids (0, 1, 2, 3, 4)</h2>
+
+<h3>Description</h3>
+
+<p>Transfer nucleotide codes (A, G, C, T, -) and nucleotide ids (0, 1, 2, 3, 4).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+### S3 methods for a list, vector or matrix (default).
+code2nid(codeseq)
+nid2code(nidseq, lower.case = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>codeseq</code></td>
+<td>
+<p>a character vector contains nucleotide codes, A, G, C, T, or -.</p>
+</td></tr>
+<tr valign="top"><td><code>nidseq</code></td>
+<td>
+<p>a numerical vector contains nucleotide ids, 0, 1, 2, 3, or 4.</p>
+</td></tr>
+<tr valign="top"><td><code>lower.case</code></td>
+<td>
+<p>transfer in lower cases.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are based on the internal object <code>.nucleotide</code> to
+transfer codes and nids.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>code2nid</code> returns a numerical vector containing nucleotide ids, and
+<code>nid2code</code> returns a character vector containing nucleotide codes. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.standard.code.html">.nucleotide</a></code>,
+<code><a href="snp2sid.html">snp2sid</a></code>,
+<code><a href="snp2sid.html">sid2snp</a></code>,
+<code><a href="code2snp.html">code2snp</a></code>,
+<code><a href="code2snp.html">snp2code</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+a &lt;- c("A", "C", "G", "-", "T")
+code2nid(a)
+nid2code(code2nid(a)) 
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

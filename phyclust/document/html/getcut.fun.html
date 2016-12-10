@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tzeng's Method: Finding the Best Number of Clusters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getcut.fun {phyclust}"><tr><td>getcut.fun {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tzeng's Method: Finding the Best Number of Clusters</h2>
+
+<h3>Description</h3>
+
+<p>For SNP sequences only, Tzeng's method (2005) uses an evolution approach
+to group haplotypes based on a deterministic transformation of haplotype
+frequency. This function find the best number of clusters based on
+Shannon information content.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getcut.fun(pp.org, nn, plot = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>pp.org</code></td>
+<td>
+<p>frequency of haplotypes, sorted in decreasing order.</p>
+</td></tr>
+<tr valign="top"><td><code>nn</code></td>
+<td>
+<p>number of haplotypes.</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>illustrated in a plot.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>pp.org</code> is summarized from <code>X</code> in <code>haplo.post.prob</code>,
+<code>nn</code> is equal to the number of rows of <code>X</code>.
+</p>
+<p>This function is called by <code>haplo.post.prob</code> to determine
+the best guess of number of clusters.
+See Tzeng (2005) and Shannon (1948) for details.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return the best guess of number of clusters.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jung-Ying Tzeng.
+</p>
+<p>Maintain: Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Tzeng, J.Y. (2005)
+&ldquo;Evolutionary-Based Grouping of Haplotypes in Association Analysis&rdquo;,
+<em>Genetics Epidemiology</em>, <b>28</b>, 220-231.
+<a href="http://www4.stat.ncsu.edu/~jytzeng/software.php">http://www4.stat.ncsu.edu/~jytzeng/software.php</a>
+</p>
+<p>Shannon, C.E. (1948)
+&ldquo;A mathematical theory of communication&rdquo;,
+<em>Bell System Tech J</em>, <b>27</b>, 379-423, 623-656.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="haplo.post.prob.html">haplo.post.prob</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/crohn.phy", sep = "")
+my.snp &lt;- read.phylip(data.path, code.type = "SNP")
+ret &lt;- haplo.post.prob(my.snp$org, ploidy = 1)
+getcut.fun(sort(ret$haplo$hap.prob, decreasing = TRUE),
+           nn = my.snp$nseq, plot = 1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

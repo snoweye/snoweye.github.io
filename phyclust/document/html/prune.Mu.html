@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Prune the Center Sequences Mu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for prune.Mu {phyclust}"><tr><td>prune.Mu {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Prune the Center Sequences Mu</h2>
+
+<h3>Description</h3>
+
+<p>This function prune the center sequences Mu where the sites will be reset
+as GAPs if all members within the same cluster are all GAPs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+prune.Mu(X, X.class, Mu, code.type = .code.type[1])
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>numerical data matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>X.class</code></td>
+<td>
+<p>class ids indicated for all sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>Mu</code></td>
+<td>
+<p>a center sequence with length <i>L</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For each cluster indicated by <code>X.class</code>, this function will prune
+<code>Mu</code> and reset the sites as GAPs if all members within cluster
+are all GAPs. <code>Mu</code> are usually the returning values of
+<code>phyclust()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A pruned <code>Mu</code> will be returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+X &lt;- seq.data.toy$org
+X[, 5] &lt;- .nucleotide$nid[.nucleotide$code == "-"]
+ret &lt;- phyclust(X, 2)
+Mu.GAPs &lt;- prune.Mu(X, ret$class.id, ret$Mu)
+
+ret$Mu[, 5]
+Mu.GAPs[, 5]  # Replace by GAPs.
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

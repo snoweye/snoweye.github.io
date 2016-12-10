@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tzeng's Method: Haplotype Grouping for SNP Sequences</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for haplo.post.prob {phyclust}"><tr><td>haplo.post.prob {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tzeng's Method: Haplotype Grouping for SNP Sequences</h2>
+
+<h3>Description</h3>
+
+<p>For SNP sequences only, Tzeng's method (2005) uses an evolution approach
+to group haplotypes based on a deterministic transformation of haplotype
+frequency. This is a modified version of original function,
+<code>haplo.score.RD.unphased.fun</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  haplo.post.prob(X, ploidy = 2, skip.haplo = 1e-07, K = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>ploidy</code></td>
+<td>
+<p>ploidy, no effect for phase known, keep consistence only.</p>
+</td></tr>
+<tr valign="top"><td><code>skip.haplo</code></td>
+<td>
+<p>lower bound of haplotypes frequencies.</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>X</code> should be a phase known haplotype data. For phase unknown and
+Tzeng's method (2006) are not tested yet.
+</p>
+<p>If <code>K</code> is NULL, the result of <code>getcut.fun</code> will be used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>See the original paper and source codes' documents for details.
+The function returns a list contains:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>'haplo'</code></td>
+<td>
+<p>summarized data set in a list contains:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+      'haplotype' </td><td style="text-align: left;"> unique haplotypes, dim = <i>N.X.unique * L</i>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      'hap.prob'  </td><td style="text-align: left;"> frequency of haplotypes. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      'post'      </td><td style="text-align: left;"> posterior probabilities of phase unknown haplotypes. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      'hap1code'  </td><td style="text-align: left;"> unique ids of 'haplotype'. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      'hap2code'  </td><td style="text-align: left;"> unique ids of 'haplotype', no effect if ploidy = 2. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      'indx.subj' </td><td style="text-align: left;"> id of subjects. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    </td>
+</tr>
+
+</table>
+
+</td></tr>
+<tr valign="top"><td><code>'FD.id'</code></td>
+<td>
+<p>unique ids of 'haplotype' for full dimension analysis.</p>
+</td></tr>
+<tr valign="top"><td><code>'RD.id'</code></td>
+<td>
+<p>unique ids of 'haplotype' for reduced dimension analysis.</p>
+</td></tr>
+<tr valign="top"><td><code>'FD.post'</code></td>
+<td>
+<p>posterior probabilities for full dimension analysis.</p>
+</td></tr>
+<tr valign="top"><td><code>'RD.post'</code></td>
+<td>
+<p>posterior probabilities for reduced dimension analysis.</p>
+</td></tr>
+<tr valign="top"><td><code>'g.truncate'</code></td>
+<td>
+<p>number of clusters</p>
+</td></tr>
+</table>
+
+
+<h3>ToDo(s)</h3>
+
+
+<ul>
+<li><p> test codes for phased unknown cases.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Jung-Ying Tzeng.
+</p>
+<p>Maintain: Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Tzeng, J.Y. (2005)
+&ldquo;Evolutionary-Based Grouping of Haplotypes in Association Analysis&rdquo;,
+<em>Genetics Epidemiology</em>, <b>28</b>, 220-231.
+<a href="http://www4.stat.ncsu.edu/~jytzeng/software.php">http://www4.stat.ncsu.edu/~jytzeng/software.php</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="getcut.fun.html">getcut.fun</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/crohn.phy", sep = "")
+my.snp &lt;- read.phylip(data.path, code.type = "SNP")
+ret &lt;- haplo.post.prob(my.snp$org, ploidy = 1)
+str(ret)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>
