@@ -43,6 +43,7 @@
     background-color: #222222; 
 }
 
+/*
 .navbar-nav>li>a {
     padding-top:5px !important;
     padding-bottom:5px !important;
@@ -50,14 +51,15 @@
 .navbar {
     min-height:20px !important;
 }
+*/
 
 .nav-tabs>li>a {
-    padding-top:5px !important;
-    padding-bottom:5px !important;
+    padding-top:3px !important;
+    padding-bottom:3px !important;
     padding-right:5px !important;
     padding-left:5px !important;
-    margin-right:2px !important;
-    margin-left:2px !important;
+    margin-right:1px !important;
+    margin-left:1px !important;
 }
 .nav-tabs {
     min-height:20px !important;
