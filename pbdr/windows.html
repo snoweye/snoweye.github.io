@@ -1,0 +1,96 @@
+<b><font color="#800000">Install Prebuild Binary pbdR Packages on Windows 7</font></b>
+<p>
+This is a temporary solution for installing pre-build binary pbdR packages
+on Windows 7.
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+R> brary(RCurl) <br>
+R> github.dir <- "https://raw.githubusercontent.com/snoweye/pbdR_winbin/master/" <br>
+R> install <- paste(github.dir, "install_dp_pbdR.r", sep = "") <br>
+R> eval(parse(text = getURL(install, ssl.verifypeer = FALSE))) <br>
+</code>
+</table>
+<br>
+
+
+<b><font color="#800000">Build Binary pbdR Packages on Windows</font></b>
+<p>
+This section demonstrate how to build binary <code>pbd</code> packages from
+source code on Windows machines, and use <code>pbdMPI</code>
+as an example since this is the key
+step of all <code>pbd</code> packages.
+If you already have R and MS-MPI, you can just download the binary file
+from the download page, install by
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+SHELL> R CMD INSTALL pbdMPI_0.2-3.zip
+</code>
+</table>
+and skip rest of this section. Otherwise,
+all files you needs are
+<ul>
+<li>
+"R-3.0.1-win.exe",
+"<a href="http://cran.r-project.org/bin/windows/Rtools/Rtools31.exe" target="_blank">Rtools31.exe</a>",
+<code>R</code> packages
+"<a href="http://cran.r-project.org/bin/windows/contrib/r-release/rlecuyer_0.3-3.zip" target="_blank">rlecuyer_0.3.zip</a>"
+(binary), and
+"<a href="http://cran.r-project.org/src/contrib/pbdMPI_0.2-3.tar.gz" target="_blank">pbdMPI_0.2-3.tar.gz</a>"
+(source) from
+<a href="http://cran.r-project.org" target="_blank">CRAN</a>;
+
+<li>
+Microsoft MPI, MS-MPI,
+(HPC Pack 2012 R2 MS-MPI Redistributable Package) from
+<a href="http://http://www.microsoft.com/en-us/download/" target="_blank">
+Microsoft Developer Network</a>
+or
+<a href="http://msdn.microsoft.com/en-us/library/bb524831%28v=vs.85%29.aspx" target="_blank">
+here</a>;
+
+<li> Batch file
+"<a href="./download/build_pbdMPI.bat" target="_blank">
+build_pbdMPI.bat</a>".
+
+</ul>
+
+I assume all files are installed using default settings in most steps.
+Please click the following subsections:
+<ol>
+<li>
+<a href="<? echo "$PHP_SELF?item=windows&subitem=install_r"; ?>">
+Install R</a>.
+<li>
+<a href="<? echo "$PHP_SELF?item=windows&subitem=install_rtools"; ?>">
+Install Rtools</a>.
+<li>
+<a href="<? echo "$PHP_SELF?item=windows&subitem=install_msmpi"; ?>">
+Install MS-MPI</a>.
+<li>
+<a href="<? echo "$PHP_SELF?item=windows&subitem=install_pbdmpi"; ?>">
+Install pbdMPI</a>.
+</ol>
+<?
+
+  echo "\n" .
+       "<hr width=\"98%\" align=\"left\"><br>\n";
+
+  $subitem = $_GET['subitem'];
+  if(isset($subitem) &
+     in_array($subitem,
+              array("install_r", "install_rtools", "install_msmpi",
+                    "install_pbdmpi"
+                   ))){
+    include "./windows/$subitem";
+  } else{
+    include "./windows/install_r";
+  }
+
+?>
+

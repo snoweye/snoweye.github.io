@@ -1,0 +1,56 @@
+<p>
+This Tutorial 5 is all about <code>pbdZMQ+remoter</code> packages using
+Linux as a server and windows as a client. The server generates
+a plot but the client displaies the plot.
+The server has ip address "192.168.56.101" which is a xubuntu system
+run in a VM where the host is Windows 8.
+A newer demo can be found on my github repo at
+<a href="https://github.com/snoweye/user2016.demo" target="_blank">
+snoweye/user2016.demo</a> or in next.
+<br>
+<center>
+<img src="https://raw.githubusercontent.com/snoweye/user2016.demo/master/pics/demo_pbdr_cs_01.gif" align="top" border="1" width="95%">
+</center>
+
+
+<p>
+The next may be out of date but shows the main idea.
+The server commands are to show ip address and run a server (remoter) as
+<br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="dddddd">
+<code>
+<pre>
+SHELL> ifconfig enp0s8
+SHELL> Rscript -e "remoter::server()"
+</pre>
+</code>
+</table>
+
+<p>
+The client code is to generate two plots on the server but display on the local
+devices. The code is as simple as the next.
+<br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="dddddd">
+<code>
+<pre>
+R> library(remoter, quietly = TRUE)
+R> client("192.168.56.101")
+remoter> a <- function() plot(1:5)
+remoter> rrpng(a)
+remoter> dev.newc()
+remoter> b <- function() plot(iris$Sepal.Length, iris$Petal.Length)
+remoter> rrpng(b)
+remoter> dev.curc()
+remoter> dev.offc(2)
+remoter> dev.offc(3)
+remoter> q()
+</pre>
+</code>
+</table>
+<br>

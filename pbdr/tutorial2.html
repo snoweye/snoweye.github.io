@@ -1,0 +1,43 @@
+
+<p>
+This Tutorial 2 provides codes for
+different ways of task parallelism which is useful for Statistics especially
+when independent jobs are assumed, for example, Monte Carlo, resampling,
+bootstrap, multiple testing, etc.
+We continuously use <code>iris</code> dataset to perform the next
+short examples to compute 95&#37; confidence intervals for the mean of
+each variable based on nonparametric bootstrap.
+The wiki page
+<a href="http://en.wikipedia.org/wiki/Iris_flower_data_set" target="_blank">
+<i>Iris</i> flower data set</a> gives the detail description.
+
+<ol>
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial2&subitem=boot_spmd"; ?>">
+  Bootstrap Iris in SPMD</a>.
+
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial2&subitem=boot_pull"; ?>">
+  Bootstrap Iris in Task Pull</a>.
+
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial2&subitem=boot_push"; ?>">
+  Bootstrap Iris in Task Push</a>.
+
+</ol>
+<?
+
+  echo "\n" .
+       "<hr width=\"98%\" align=\"left\"><br>\n";
+
+  $subitem = $_GET['subitem'];
+  if(isset($subitem) &
+     in_array($subitem,
+              array("boot_spmd", "boot_pull", "boot_push"
+                   ))){
+    include "./tutorial2/$subitem";
+  } else{
+    include "./tutorial2/boot_pull";
+  }
+
+?>

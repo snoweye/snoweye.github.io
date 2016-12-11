@@ -1,0 +1,56 @@
+<p>
+This Tutorial 4 is all about two new <code>pbdR</code> packages,
+<code>pbdCS</code> and <code>pbdZMQ</code>, on windows system.
+The simple four steps are given in next with very brief explanations.
+
+<ul>
+<li> <b><font color="#800000">Step 0:</font></b>
+     Start a windows command prompt by typing <code>cmd.exe</code> to
+     "Start -> Search programs and files -> cmd.exe".
+<br>
+<img src="./figures_pbdcs/pbdcs_step_0.png" align="top" border="1">
+<br>
+<br>
+
+
+<li> <b><font color="#800000">Step 1:</font></b>
+     Set path to <code>R</code> and <code>MPI</code>.
+<br>
+<img src="./figures_pbdcs/pbdcs_step_1.png" align="top" border="1">
+<br>
+<br>
+
+
+<li> <b><font color="#800000">Step 2:</font></b>
+<ol>
+<li> Run <code>R</code> from command line.
+<li> Load <code>pbdCS</code> and <code>pbdZMQ</code> libraries
+     inside <code>R</code>.
+<li> Launch 4 <code>pbdR</code> servers by
+     <code>pbd_launch_servers(nranks = 4)</code>.
+<li> Launch <code>pbdR</code> client by
+     <code>pbd_launch_client()</code>.
+<li> Ask servers to do the works, such as
+     <code>allreduce(5)</code>.<br>
+     Note that there are 4 servers, so the results should be 20.
+<li> Run <code>Rgui.exe</code> to have a <code>R</code> GUI and go to next
+     <b><font color="#800000">Step 3</font></b>.
+</ol>
+<br>
+<img src="./figures_pbdcs/pbdcs_step_2.png" align="top" border="1">
+<br>
+<br>
+
+
+<li> <b><font color="#800000">Step 3:</font></b>
+     Do the same things as <b><font color="#800000">Step 2</font></b>,
+     but in <code>R</code> GUI instead typing in the command line.<br>
+     Note that this <code>R</code> is executed from a command line with
+     <code>MPI</code> in the environment variable <code>PATH</code>
+     in order to have 4 servers run correctly.
+<br>
+<img src="./figures_pbdcs/pbdcs_step_3.png" align="top" border="1">
+<br>
+<br>
+
+</ul>

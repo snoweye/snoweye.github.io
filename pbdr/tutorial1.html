@@ -1,0 +1,43 @@
+
+<p>
+This Tutorial provides codes which are designed for
+demonstrating how similar of <code>pbdR</code> and serial <code>R</code>.
+The famous small dataset <code>iris</code> is used in all the next three
+short examples to show
+matrix operation, covariance computing, SVD, subset data,
+k-means, and model-based clustering, etc.
+The wiki page
+<a href="http://en.wikipedia.org/wiki/Iris_flower_data_set" target="_blank">
+<i>Iris</i> flower data set</a> gives the detail description.
+
+<ol>
+
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial&subitem=iris_ser"; ?>">
+  Iris example in serial</a>.
+
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial&subitem=iris_spmd"; ?>">
+  Iris example in SPMD</a>.
+
+<li>
+  <a href="<? echo "$PHP_SELF?item=tutorial&subitem=iris_dmat"; ?>">
+  Iris example in ddmatrix</a>.
+
+</ol>
+<?
+
+  echo "\n" .
+       "<hr width=\"98%\" align=\"left\"><br>\n";
+
+  $subitem = $_GET['subitem'];
+  if(isset($subitem) &
+     in_array($subitem,
+              array("iris_ser", "iris_spmd", "iris_dmat"
+                   ))){
+    include "./tutorial/$subitem";
+  } else{
+    include "./tutorial/iris_ser";
+  }
+
+?>

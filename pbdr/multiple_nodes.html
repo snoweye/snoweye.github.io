@@ -1,0 +1,60 @@
+
+<b><font color="#800000">Build Multiple Nodes for pbdMPI</font></b>
+<p>
+This section demonstrate how to install OpenMPI and pbdMPI on multiple nodes
+and form a cluster to run SPMD codes across nodes. I use VM to build the first
+template machine (vb1) and clone it to second machine (vb2). With a few
+modification on vb2 to avoid conflicts with vb1, I can have the same account,
+local file, environment on both machines at the same, and can login/ssh from
+and to both machines without password. Then, I can utilize two machines
+freely to perform SPMD computing from vb1 along. Unlike
+<a href="<? echo "$PHP_SELF?item=aws_ec2"; ?>">AWS EC2</a>,
+I only do a minimun requirement manually for this task.
+
+<ol>
+<li>
+See
+<a href="<? echo "$PHP_SELF?item=vm"; ?>">Install VirtualBox</a>
+to learn how to install and create a VM.
+
+<li>
+Download the
+<a href="https://drive.google.com/file/d/0Bw33sMSttKpQc2trb0ZGZjVuLWs/view?usp=sharing" target="_blank">multiple_nodes image (2.7GB)</a>
+which contains two machines vb1 and vb2.
+Import this image into the VirtualBox
+as the same way in
+<a href="<? echo "$PHP_SELF?item=vm&subitem=pbdr_image"; ?>">Install pbdR Image</a>
+<li>
+This image contains
+<ul>
+<li> Xubuntu 14.04 without firewall
+<li> vb1 at 192.168.1.1 and vb2 at 192.168.1.2
+<li> ssh, NFS, git, r-base from Ubuntu default
+<li> local built OpenMPI-1.8.4, pbdMPI 2.6
+</ul>
+
+<li>
+The detail steps are in the file
+<a href="./download/multiple_nodes.txt" target="_blank">multiple_nodes.txt</a>.
+</ol>
+
+<p>
+I test the SPMD code and it works by using two machines with a collective
+call. In the same way, one can (linked) clone vb1 to other machines to form
+a larger cluster easily.
+In the example, I rebuild new OpenMPI and install R packages locally
+(/home/pbdr/work-my/local/R_libs) which is shared by all nodes.
+
+<p>
+One may also use Ubuntu's default packages, "openmpi-bin" and "libopenmpi-dev",
+to run with pbdMPI. However, it could have network routing problem if
+<code>eth0</code> is for NAT/host and <code>eth1</code> is for internal MPI
+communication. It will be easy to bring <code>eth0</code>
+down by `<code>sudo ip link set eth0 down</code>' on all machines.
+
+<p>
+Potential extension including install NIS and rsh, drop ssh, and install all
+other pbdR packages.
+Also, simplification can be done by moving /etc and /home
+to external disk that can reduce management.
+

@@ -1,0 +1,138 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_N = " [tex]N[/tex] ";
+  $text_pi = " [tex]\pi \approx 3.1415926[/tex]. ";
+?>
+
+
+<b><font color="#800000">A Quick Example</font></b> (NOT Hellow World!)
+<p>
+This is a standard example coming with <code>Rmpi</code> to approximate
+<? echo latex_content($text_pi); ?>
+<br>
+<br>
+
+<b>SPMD Basic Steps:</b>
+<br>
+<table>
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<th valign="top"> Step:
+<td align="left">
+0. Initialize. (<code>init</code>)<br>
+1. Read data partially by workers. <br>
+2. Compute.
+   (<code>send</code>, <code>recv</code>, <code>barrier</code>, ...) <br>
+3. Receive results among workers.
+   (<code>gather</code>, <code>allgather</code>, <code>reduce</code>,
+    <code>allreduce</code>, ...) <br>
+4. Finalize (<code>finalize</code>).
+</table>
+<br>
+
+
+<b>Parallel (SPMD) code:</b>
+(<a href="./cookbook/ex_pi_spmd.r" target="_blank">ex_pi_spmd.r</a>
+for ultra-large/unlimited <? echo latex_content($text_N); ?>)
+<br>
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_pi_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_pi_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Compute pi.
+n <- 1000
+totalcpu <- .comm.size
+id <- .comm.rank + 1
+mypi <- 4*sum(1/(1+((seq(id,n,totalcpu)-.5)/n)^2))/n    # The example from Rmpi.
+mypi <- reduce(mypi, op = "sum")
+
+### Output from RANK 0 since mpi.reduce(...) will dump only to 0 by default.
+comm.print(mypi)
+finalize()
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Run SPMD code in a command mode:</b> (Batch Job)
+
+<p>
+Note that the possible commands to invoke MPI could be <code>mpiexec</code>,
+<code>mpiexec</code>, <code>orterun</code>, or <code>mpiexec.exe</code>
+which are totally dependent on the operating systems and the MPI systems.
+Also,
+see
+<?
+  echo "<a href=\"http://thirteen-01.stat.iastate.edu/snoweye/hpsc/?item=rscript\">Rscript</a> ";
+?>
+for the usages.
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+SHELL> mpiexec -np 2 Rscript --vanilla ex_pi_spmd.r
+</code>
+</table>
+<br>
+
+
+<b>Run SPMD code in an interactive mode:</b>
+(Master/Worker)
+
+<p>
+For OpenMPI, you need a file
+<font color="red"><b><code>.Rprofile</code></b></font> in the working directory
+or your home directory. This file can be copied from the installed
+directory of <code>Rmpi</code>. By default, it is located at
+<font color="red"><b><code>$R_HOME/library/Rmpi/Rprofile</code></b></font>.
+Then, you can have an interactive mode
+by initial <code>mpirun</code> and <code>R</code>
+(NOT <code>Rscript</code>) at which <code>.Rprofile</code> is located.
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+SHELL> mpirun -np 2 R --no-save -q
+###
+### Some messages will show the workers are running.
+### The "spawn" is no needed for OpenMPI anymore.
+###
+R> # library(Rmpi)
+R> # mpi.spawn.Rslaves()                    # Require for LAM/MPI.
+
+R> mpi.bcast.cmd(source("ex_pi_spmd.r"))    # Worker go first and wait Manager.
+R> source("ex_pi_spmd.r")                   # Manager runs and collects results.
+
+### Remark mpi.quit() in "ex_pi_spmd.r" to avoid terminate mpirun and R.
+</pre>
+</table>
+
+
+
+<b>More Examples:</b>
+<p>
+There are more <code>pbdMPI</code> examples can be found in
+the
+<a href="http://thirteen-01.stat.iastate.edu/snoweye/hpsc/?item=cookbook">
+Cookbook</a>
+section of
+<a href="http://thirteen-01.stat.iastate.edu/snoweye/hpsc/">
+HPSC</a>
+website.

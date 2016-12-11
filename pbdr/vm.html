@@ -1,0 +1,41 @@
+
+<b><font color="#800000">Run pbdR Packages on Virtual Machine</font></b>
+<p>
+This section demonstrate how to install
+<a href="https://www.virtualbox.org/" target="_blank">Oracle VM VirtualBox</a>
+on a Windows machine, install
+<a href="https://drive.google.com/file/d/0Bw33sMSttKpQNUtWemd6SjZXbnc/view?usp=sharing" target="_blank">pbdR image (1.7GB)</a>
+to the VirtualBox, and
+run a quick test of pbdR.
+The pbdR image contains all installed pbdR packages and environments such as
+MPI, HDF5, and NetCDF libraries.
+
+I assume all files are installed using default settings in most steps.
+Please click the following subsections:
+<ol>
+<li>
+<a href="<? echo "$PHP_SELF?item=vm&subitem=install_vm"; ?>">
+Install VirtualBox</a>.
+<li>
+<a href="<? echo "$PHP_SELF?item=vm&subitem=pbdr_image"; ?>">
+Install pbdR Image</a>.
+<li>
+<a href="<? echo "$PHP_SELF?item=vm&subitem=test_pbdr"; ?>">
+Start and Test pbdR inside VirtualBox</a>.
+</ol>
+<?
+
+  echo "\n" .
+       "<hr width=\"98%\" align=\"left\"><br>\n";
+
+  $subitem = $_GET['subitem'];
+  if(isset($subitem) &
+     in_array($subitem,
+              array("install_vm", "pbdr_image", "test_pbdr"
+                   ))){
+    include "./vm/$subitem";
+  } else{
+    include "./vm/install_vm";
+  }
+
+?>
