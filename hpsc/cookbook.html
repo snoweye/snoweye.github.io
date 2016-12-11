@@ -32,11 +32,11 @@
   <ul class="nav nav-tabs">
     <li class=""><a href="./index.html">About HPSC</a></li>
     <li class=""><a href="./overview.html">Overview</a></li>
-    <li class="active"><a href="#">Rscript</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
     <li class=""><a href="./mw.html">Master/Worker</a></li>
     <li class=""><a href="./spmd.html">SPMD</a></li>
     <li class=""><a href="./example.html">Example</a></li>
-    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class="active"><a href="#">Cookbook</a></li>
     <li class=""><a href="./reference.html">Reference</a></li>
   </ul>
 </div>
@@ -45,127 +45,61 @@
 <xmp theme="readable" style="display:none;">
 
 
-In a newer version of R,
-<code>Rscript</code> or <code>Rscript.exe</code>
-is a command mode of <code>R</code>
-without a terminal and can be used as a shell script.
-It also provides a more convenient interface than traditional ways as
-
-```
-SHELL> R --vanilla < a_rscript.r
-```
-or
-```
-SHELL> R CMD BATCH --vanilla a_rscript.r
-```
-
-or in Windows System,
-
-```
-SHELL> R.exe --vanilla < a_script.r
-```
-and
-```
-SHELL> Rcmd.exe BATCH --vanilla < a_script.r
-```
-or
-```
-SHELL> R.exe CMD BATCH --vanilla a_script.r
-```
-
-where "a_script.r" is an R script file.
-<code>Rscript</code>
-is also especially useful for taking in arguments from STDIN, and it is
-easily utilized by other script language.
-In particular, it can be a shell script as shown in the Example 1 below.
-For parallel computing, "Rscript" provides an elegant way to perform
-a common programming design,
-<a href="./spmd.html">Single Program Multiple Data (SPMD)</a>.
-More examples about batch jobs can be found at
-the section
-"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch"
- target="_blank">Batch jobs</a>"
-and
-"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch_more"
- target="_blank">Batch more</a>"
-on the
-<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/" target="_blank">R_note</a>
-website.
+Note that parallelized codes provided in this page are designed for
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a> and
+<a href="http://r-pbd.org/">pbdMPI</a>
+as default.
+The parallel codes may not be optimized and may only perform efficiently in
+some circumstances, so the reports of performance are all skipped.
+<font color="green"><b>
+The essential purpose is to show how to utilize existed
+serial codes and rewrite/rethink them in parallel.</b></font>
+Although the examples given here are all extremely simplified
+for illustration, these ideas are able to
+extend to more complex cases for real data and in real situation.
+We aim to explain parallel ideas from the view of statistics, and
+the better sense of statistics can help to think in applications
+and redesign algorithms.
+Some recipes for analyzing ultra-large/unlimited datasets are
+available in the following. Click titles to show pages in the bottom.
+For running codes see
+<a href="./rscript.html">Rscript</a> in details.
 
 
----
-#### <b>Example 1:</b>
+1. <a href="./cookbook/ex_binning.html">Binning</a>
+    -- Table Cutting and Binning, simple nonparametric method.
 
-1. <b>Hello world !</b>
+2. <a href="./cookbook/ex_basic.html">Basic</a>
+   -- Sample Mean and Sample Variance.
 
-   In a Unix, one can put the following in a file "an_rscript.r", then
-   execute as scripts in perl, php, python or any other shell scripts.
-   ```
-   #!/usr/bin/Rscript --vanilla --slave
+3. <a href="./cookbook/ex_quantile.html">Quantile</a>
+   -- Quantile or Percentile.
 
-   a <- c("Hello", "world", "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> chmod u+x an_rscript.r
-   SHELL> ./an_rscript.r
-   ```
+4. <a href="./cookbook/ex_ols.html">OLS</a>
+   -- Ordinary Least Squares for Linear Models.
 
-2. <b>Batch From Command</b>
+5. <a href="./cookbook/ex_mvn.html">MVN</a>
+   -- Log Likelihood of Multivariate Normal Distribution.
 
-   Note that the first line <code>#!/usr/bin/Rscript --vanilla --slave</code>
-   is not necessary for <code>Rscript</code>.
-   Of course, one can still use
-   ```
-   SHELL> Rscript an_rscript.r
-   ```
-   or
-   ```
-   SHELL> Rscript -e 'source("an_rscript.r")'
-   ```
-   in command mode, too.
+6. <a href="./cookbook/ex_pca.html">PCA</a>
+   -- Principal Component Analysis.
 
+7. <a href="./cookbook/ex_pmclust.html">Model-Based Clustering</a>
+   -- Finite Mixture Model and EGM Algorithm,
+   and its older brother <a href="./cookbook/ex_pmclust.html">K-means</a>
+   in next.
 
----
-#### <b>Example 2:</b>
+8. <a href="./cookbook/ex_pmclust.html">K-means</a>
+   -- Distance-Based Clustering.
 
-1. <b>Hello world, Cottontail !</b>
-
-   Make a file called "a_cottontail.r" containing the following.
-   ```
-   # File name: a_cottontail.r
-   a <- c("Hello", "world,", argv, "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> Rscript -e 'argv <- "Cottontail"; source("a_cottontail.r")'
-   ```
-
-2. <b>More Cottontails !</b>
-
-   There is the other way to take in arguments from STDIN by using
-   <code>commandArgs()</code> in R. Let's make a file named
-   "cottontails.r" as the following.
-
-   ```
-   # File name: cottontails.r
-   eval(parse(text = rev(commandArgs())[1]))
-
-   a <- c("Hello", "world,", argv, "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> Rscript cottontails.r 'argv <- "Cottontails"'
-   ```
+9. More examples are in
+   <a href="../pbdr/tutorial1.html" target="_blank">Tutorial 1</a>,
+   <a href="../pbdr/tutorial2.html" target="_blank">Tutorial 2</a>, and
+   <a href="../pbdr/tutorial3.html" target="_blank">Tutorial 3</a>
+   of
+   <a href="../pbdr/index.html" target="_blank">pbdR Tech</a> web page
+   including Bootstrap, MCMC, Bayesian Statistics, Logistic Regression, and
+   Generalized Linear Mixed-effect Model.
 
 
 ---

@@ -32,12 +32,12 @@
   <ul class="nav nav-tabs">
     <li class=""><a href="./index.html">About HPSC</a></li>
     <li class=""><a href="./overview.html">Overview</a></li>
-    <li class="active"><a href="#">Rscript</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
     <li class=""><a href="./mw.html">Master/Worker</a></li>
     <li class=""><a href="./spmd.html">SPMD</a></li>
     <li class=""><a href="./example.html">Example</a></li>
     <li class=""><a href="./cookbook.html">Cookbook</a></li>
-    <li class=""><a href="./reference.html">Reference</a></li>
+    <li class="active"><a href="#">Reference</a></li>
   </ul>
 </div>
 
@@ -45,127 +45,50 @@
 <xmp theme="readable" style="display:none;">
 
 
-In a newer version of R,
-<code>Rscript</code> or <code>Rscript.exe</code>
-is a command mode of <code>R</code>
-without a terminal and can be used as a shell script.
-It also provides a more convenient interface than traditional ways as
+The famous websites provide tons of useful information:
 
-```
-SHELL> R --vanilla < a_rscript.r
-```
-or
-```
-SHELL> R CMD BATCH --vanilla a_rscript.r
-```
+- <a href="http://r-pbd.org/"
+  target="_blank">Programming with Big Data in R</a>
 
-or in Windows System,
+- Training of <a href="http://rdav.nics.tennessee.edu/"
+  target="_blank">Remote Data Analysis and Visualization Center</a>
 
-```
-SHELL> R.exe --vanilla < a_script.r
-```
-and
-```
-SHELL> Rcmd.exe BATCH --vanilla < a_script.r
-```
-or
-```
-SHELL> R.exe CMD BATCH --vanilla a_script.r
-```
+- CRAN Task View:
+  <a href="http://cran.r-project.org/web/views/HighPerformanceComputing.html"
+  target="_blank">High-Performance and Parallel Computing with R</a>
 
-where "a_script.r" is an R script file.
-<code>Rscript</code>
-is also especially useful for taking in arguments from STDIN, and it is
-easily utilized by other script language.
-In particular, it can be a shell script as shown in the Example 1 below.
-For parallel computing, "Rscript" provides an elegant way to perform
-a common programming design,
-<a href="./spmd.html">Single Program Multiple Data (SPMD)</a>.
-More examples about batch jobs can be found at
-the section
-"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch"
- target="_blank">Batch jobs</a>"
-and
-"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch_more"
- target="_blank">Batch more</a>"
-on the
-<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/" target="_blank">R_note</a>
-website.
+- Section 
+  <a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=Rmpi"
+  target="_blank">LAM/MPI/Rmpi</a>"
+  of
+  <a href="http://www.math.ncu.edu.tw/~chenwc/R_note" target="_blank">R_note</a>
+  website
+
+- <a href="http://math.acadiau.ca/ACMMaC/Rmpi/"
+  target="_blank">Rmpi Tutorial</a>
+  by
+  <a href="http://math.acadiau.ca/ACMMaC/"
+  target="_blank">Acadia Centre for Mathematical Modelling and Computation</a>
+
+- <a href="http://www.stats.uwo.ca/faculty/yu/Rmpi/"
+  target="_blank">Rmpi for R</a>
+  by
+  <a href="http://www.stats.uwo.ca/faculty/yu/"
+  target="_blank">Dr. Hao Yu</a>
 
 
----
-#### <b>Example 1:</b>
+The famous book provides other parallel techniques in R:
 
-1. <b>Hello world !</b>
-
-   In a Unix, one can put the following in a file "an_rscript.r", then
-   execute as scripts in perl, php, python or any other shell scripts.
-   ```
-   #!/usr/bin/Rscript --vanilla --slave
-
-   a <- c("Hello", "world", "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> chmod u+x an_rscript.r
-   SHELL> ./an_rscript.r
-   ```
-
-2. <b>Batch From Command</b>
-
-   Note that the first line <code>#!/usr/bin/Rscript --vanilla --slave</code>
-   is not necessary for <code>Rscript</code>.
-   Of course, one can still use
-   ```
-   SHELL> Rscript an_rscript.r
-   ```
-   or
-   ```
-   SHELL> Rscript -e 'source("an_rscript.r")'
-   ```
-   in command mode, too.
+- Q.E. McCallum and S. Weston (2011),
+  <i><a href="http://shop.oreilly.com/product/0636920021421.do"
+  target="_blank">Parallel R</a> Data Analysis in the Distributed World</i>,
+  O'Reilly Media.
 
 
----
-#### <b>Example 2:</b>
+The famous mailing list provides a discussion group about high-performance computing in <code>R</code>:
 
-1. <b>Hello world, Cottontail !</b>
-
-   Make a file called "a_cottontail.r" containing the following.
-   ```
-   # File name: a_cottontail.r
-   a <- c("Hello", "world,", argv, "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> Rscript -e 'argv <- "Cottontail"; source("a_cottontail.r")'
-   ```
-
-2. <b>More Cottontails !</b>
-
-   There is the other way to take in arguments from STDIN by using
-   <code>commandArgs()</code> in R. Let's make a file named
-   "cottontails.r" as the following.
-
-   ```
-   # File name: cottontails.r
-   eval(parse(text = rev(commandArgs())[1]))
-
-   a <- c("Hello", "world,", argv, "!")
-   print(a)
-   b <- paste(a, collapse = " ")
-   print(b)
-   ```
-   Executing the script by
-   ```
-   SHELL> Rscript cottontails.r 'argv <- "Cottontails"'
-   ```
+- <a href="https://stat.ethz.ch/mailman/listinfo/r-sig-hpc"
+  target="_blank">R-sig-hpc</a> mailing list.
 
 
 ---

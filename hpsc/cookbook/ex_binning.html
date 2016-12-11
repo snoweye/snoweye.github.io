@@ -1,0 +1,90 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_N = " [tex]N[/tex] ";
+?>
+
+<b><font color="#800000">
+Binning -- Table Cutting, Binning, and Nonparamatric Statistics.
+</font></b>
+
+<p>
+Counting is a fundamental method of Statistics including computing
+frequence, proportion, and probability, ... etc. It is also an essential tool
+for categorial data analysis. A fast implementation for binning data
+given categories/breaks is done in R efficiently for small data.
+Based on the same idea demonstrated here, a lot of statistical concepts can
+be parallelized in the same way for large datasets.
+<br><br>
+
+
+<b>Serial code:</b>
+(<a href="./cookbook/ex_binning_serial.r" target="_blank">ex_binning_serial.r</a>)
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_binning_serial.r
+# Run: Rscript --vanilla ex_binning_serial.r
+
+### A famous example from help("cut") in R.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Based on breaks to count data.
+table(cut(y, breaks = pi / 3 * (-3:3)))
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Parallel (SPMD) code:</b>
+(<a href="./cookbook/ex_binning_spmd.r" target="_blank">ex_binning_spmd.r</a>
+for ultra-large/unlimited <? echo latex_content($text_N); ?>)
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_binning_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_binning_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+y.spmd <- y[id.get]
+
+### Based on breaks to count data.
+bin.spmd <- table(cut(y.spmd, breaks = pi / 3 * (-3:3)))
+bin <- as.array(allreduce(bin.spmd, op = "sum"))
+dimnames(bin) <- dimnames(bin.spmd)
+class(bin) <- class(bin.spmd)
+
+### Output from RANK 0 since reduce(...) will dump only to 0 by default.
+comm.print(bin)
+finalize()
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Exercise:</b>
+<ol>
+<li> Try the R function <code>tabulate()</code> to replace <code>table()</code>.
+</ol>

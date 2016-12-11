@@ -42,3 +42,23 @@
 #navbar-darkblue.navbar-default .navbar-toggle:focus .icon-bar {
     background-color: #222222; 
 }
+
+.navbar-nav>li>a {
+    padding-top:5px !important;
+    padding-bottom:5px !important;
+}
+.navbar {
+    min-height:20px !important;
+}
+
+.nav-tabs>li>a {
+    padding-top:5px !important;
+    padding-bottom:5px !important;
+    padding-right:5px !important;
+    padding-left:5px !important;
+    margin-right:2px !important;
+    margin-left:2px !important;
+}
+.nav-tabs {
+    min-height:20px !important;
+}

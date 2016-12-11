@@ -1,0 +1,68 @@
+
+<b><font color="#800000">
+Model-Based Clustering,
+Finite Mixture Model, EGM Algorithm, and
+K-means.
+</font></b>
+<br><br>
+
+<b>References:</b>
+<ol>
+<li>
+Chen, W.-C. and Maitra, R. (2011),
+``Model-based clustering of regression time series data via
+          APECM -- an AECM algorithm sung to an even faster beat'',
+<i>Statistical Analysis and Data Mining</i>
+<b>4</b>, 567-578.
+
+<li>
+Meng, X.-L. and Van Dyk, D. (1997),
+``The EM Algorithm -- an Old Folk-song Sung to a Fast New Tune'',
+<i>Journal of the Royal Statistical Society Series B</i>,
+<b>59</b>, 511-567.
+
+<li>
+<a href="http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm" target="_blnak">Expectation-maximization algorithm</a>
+on Wikipedia.
+
+<li>
+<a href="http://en.wikipedia.org/wiki/K-means_clustering" target="_blank">k-means clustering</a>
+on Wikipedia.
+
+</ol>
+
+
+<p>
+I have to leave the details of whole algorithm behind a package we implemented,
+and a paper we are trying to finish. It is too tedious to introduce at here, but
+if you want to know the details you can search on Google with keywords
+``Parallel K-means''. This should give you some flavor what the
+``Expectation-Gathering-Maximization (EGM) algorithm''
+should be.
+<p>
+The
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html" target="_blank"><code>pmclust</code></a>
+implements both clustering methods in parallel for ultra-large dataset
+by utilizing Rmpi.
+The newest version of
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html" target="_blank"><code>pmclust</code></a>
+is available on CRAN at
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html" target="_blank">http://cran.r-project.org/web/packages/pmclust/index.html</a>
+including source code and manuals.
+A vignette should be on-line soon at the same address, too.
+The Model-Based Clustering uses finite mixture Gaussion model with unstructured
+dispersions.
+The K-means uses Euclidean distance.
+
+<p>
+The EGM algorithm is implemented for the Model-Based Clustering,
+and other EM-alike algorithms such as AECM and APECM
+are also implemented to boost the convergence
+and reduce computing time.
+The parallel algorithm aims to reduce communications between processors by
+transferring sufficient statistics only which greatly benefits the computing
+performance.
+
+<br>
+<br>
+

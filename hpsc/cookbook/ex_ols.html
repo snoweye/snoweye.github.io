@@ -1,0 +1,136 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_N = " [tex]N[/tex] ";
+  $text_Y_XB = " [tex]\boldsymbol{Y} =
+                      \boldsymbol{X\beta} + \boldsymbol{\epsilon}[/tex] ";
+  $text_beta = " [tex]\boldsymbol{\beta}[/tex] ";
+  $text_beta_hat = " [tex]\boldsymbol{\hat{\beta}} =
+                     (\boldsymbol{X}^t\boldsymbol{X})^{-1}
+                     \boldsymbol{X}^t\boldsymbol{Y}[/tex]. ";
+
+  $text_Y_dim = " [tex]\boldsymbol{Y}_{N\\times 1}[/tex], ";
+  $text_Y_dim = preg_replace('/\\times/', '\\\\times', $text_Y_dim);
+
+  $text_X_dim = " [tex]\boldsymbol{X}_{N\\times p}[/tex], ";
+  $text_X_dim = preg_replace('/\\times/', '\\\\times', $text_X_dim);
+
+  $text_beta_dim = " [tex]\boldsymbol{\beta}_{p\\times 1}[/tex], ";
+  $text_beta_dim = preg_replace('/\\times/', '\\\\times', $text_beta_dim);
+
+  $text_epsilon_dim = " [tex]\boldsymbol{\epsilon}_{N\\times 1}[/tex], ";
+  $text_epsilon_dim = preg_replace('/\\times/', '\\\\times', $text_epsilon_dim);
+
+  $text_N_gt_p = " [tex]N >> p[/tex]. ";
+?>
+
+
+<b><font color="#800000">
+OLS -- Ordinary Least Squares for Linear Models.
+</font></b>
+
+<p>
+<i>Ordinary Least Squares</i> (OLS) is a popular technique
+in Statistics to solve
+the problem
+<? echo latex_content($text_Y_XB); ?>
+where
+<? echo latex_content($text_beta); ?>
+is unknown.
+The dimensions are
+<? echo latex_content($text_Y_dim); ?>
+<? echo latex_content($text_X_dim); ?>
+<? echo latex_content($text_beta_dim); ?> and
+<? echo latex_content($text_epsilon_dim); ?>
+respectively, and
+<? echo latex_content($text_N_gt_p); ?>
+Under some fair assumptions,
+a standard solution with a few linear algebra is
+<? echo latex_content($text_beta_hat); ?>
+This estimate also has several good statistical properties.
+
+<p>
+The extensions and applications of OLS include regression,
+linear model (<code>lm</code>),
+generalized linear model (<code>glm</code>),
+mixed model (<code>lme</code>), ... etc.
+More details about OLS can be found at
+"<a href="http://en.wikipedia.org/wiki/Ordinary_least_squares" target="_blank">Ordinary least squares</a>" on Wikipedia.
+<br><br>
+
+
+<b>Serial code:</b>
+(<a href="./cookbook/ex_ols_serial.r" target="_blank">ex_ols_serial.r</a>)
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_ols_serial.r
+# Run: Rscript --vanilla ex_ols_serial.r
+
+### Main codes stat from here.
+set.seed(1234)
+N <- 100
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+beta <- c(1, 2)
+epsilon <- rnorm(N)
+Y <- X %*% beta + epsilon
+
+### Obtain beta hat.
+(beta.hat <- solve(t(X) %*% X) %*% t(X) %*% Y)
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Parallel (SPMD) code:</b>
+(<a href="./cookbook/ex_ols_spmd.r" target="_blank">ex_ols_spmd.r</a>
+for ultra-large/unlimited <? echo latex_content($text_N); ?>)
+<br>
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_ols_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_ols_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100                # Pretend N is large.
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+beta <- c(1, 2)
+epsilon <- rnorm(N)
+Y <- X %*% beta + epsilon
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+X.spmd <- X[id.get,]
+Y.spmd <- Y[id.get]
+
+### Obtain beta hat.
+t.X.spmd <- t(X.spmd)
+A <- allreduce(t.X.spmd %*% X.spmd, op = "sum")
+B <- allreduce(t.X.spmd %*% Y.spmd, op = "sum")
+beta.hat <- solve(matrix(A, ncol = p)) %*% B
+
+### Output.
+comm.print(beta.hat)
+finalize()
+</pre>
+</code>
+</table>
+<br>
+

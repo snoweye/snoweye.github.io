@@ -1,0 +1,154 @@
+<?
+  @include_once "./latexrender/latex.php";
+
+  $text_32 = " [tex]2^{31} - 1[/tex] ";
+  $text_N = " [tex]N[/tex] ";
+  $text_x = " [tex]\{x_1, x_2, \ldots, x_N\}.[/tex] ";
+  $text_bar_x = " [tex]\bar{x} = \frac{1}{N}\sum_{i = 1}^N x_i[/tex] ";
+  $text_s_x = " [tex]s_x = \frac{1}{N - 1}\sum_{i = 1}^N (x_i - \bar{x})^2[/tex] ";
+?>
+
+
+<b><font color="#800000">
+Basic -- Sample Mean and Sample Variance. 
+</font></b>
+
+<p>
+This topic will introduce two essential statistics, sample mean
+<? echo latex_content($text_bar_x); ?>
+and sample variance
+<? echo latex_content($text_s_x); ?>
+for a dataset with a large number
+<? echo latex_content($text_N); ?>
+of observations
+<? echo latex_content($text_x); ?>
+The data
+are stored in a standard <code>vector</code>, <code>matrix</code>,
+or <code>data.frame</code> format in R, and are
+distributed in several processors. i.e. Each processor owns a part of
+dataset. The direct benefit of this approach is one don't need to worry
+about the memory, length, or dimension limitations such as
+<? echo latex_content($text_32); ?>
+in R.
+<br>
+<br>
+<b>Tricks:</b>
+<ol>
+<li> By default, R uses double for most of the variables.
+<li> <code>length(...)</code> returns an integer in R.
+<li> <code>as.double(...)</code> makes a copy for the input object, so it is
+     not good for big object.
+</ol>
+More fantastic algorithms about calculating variance can be found at
+"<a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance" target="_blank">Algorithms for calculating variance</a>" on Wikipedia.
+One-pass algorithms are achievable for higher moments of statistics, and
+they will reduce computing a lot and better than two or more pass algorithms
+for ultra-large dataset. Of course, lost precision is possible.
+For example,
+<br>
+<br>
+J. Bennett, R. Grout, P. Pebay, D. Roe, and D. Thompson (2009),
+``Numerically Stable, Single-Pass,
+Parallel Statistics Algorithms'',
+In
+<i>
+Proc. 2009 IEEE International Conference on Clustering Computing
+</i>,
+New Orleans, LA, Aug. 2009.
+<br>
+<br>
+The other way
+is to apply sampling techniques on ultra-large dataset.
+<br><br>
+
+
+<b>Serial code:</b>
+(<a href="./cookbook/ex_basic_serial.r" target="_blank">ex_basic_serial.r</a>)
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_basic_serial.r
+# Run: Rscript --vanilla ex_basic_serial.r
+
+### Basic implication
+my.basic <- function(x){
+  ### This is the same as mean(x).
+  N <- length(x)
+  bar.x <- sum(x / N)
+
+  ### This is the same as var(x).
+  s.x <- sum(x^2 / (N - 1)) - bar.x^2 * (N / (N - 1))
+
+  list(mean = bar.x, s = s.x)
+} # End of my.basic().
+
+### Main codes stat from here.
+set.seed(1234)
+N <- 100
+x <- rnorm(N)
+my.basic(x)
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Parallel (SPMD) code:</b>
+(<a href="./cookbook/ex_basic_spmd.r" target="_blank">ex_basic_spmd.r</a>
+for ultra-large/unlimited <? echo latex_content($text_N); ?>)
+<br>
+
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+# File name: ex_basic_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_basic_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Basic implication for workers.
+my.basic.spmd <- function(x.spmd){
+  ### For mean(x).
+  N <- allreduce(length(x.spmd), op = "sum")
+  bar.x.spmd <- sum(x.spmd / N)
+  bar.x <- allreduce(bar.x.spmd, op = "sum")
+
+  ### For var(x).
+  s.x.spmd <- sum(x.spmd^2 / (N - 1))
+  s.x <- allreduce(s.x.spmd, op = "sum") - bar.x^2 * (N / (N - 1))
+
+  list(mean = bar.x, s = s.x)
+} # End of my.basic.spmd().
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100                # Pretend N is large.
+x <- rnorm(N)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+x.spmd <- x[id.get]
+ret.spmd <- my.basic.spmd(x.spmd)
+
+### Output.
+comm.print(ret.spmd)
+finalize()
+</pre>
+</code>
+</table>
+<br>
+
+
+<b>Exercise:</b>
+<ol>
+<li> Try to compute standard deviation.
+</ol>
