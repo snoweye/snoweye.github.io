@@ -53,8 +53,7 @@
 #### File I/O -- Input and output sequence data.
 
 ---
-##### <b>Input</b>
-<code>Phyclust</code> accepts three types of input:
+##### Input <code>Phyclust</code> accepts three types of input:
 
 - Data read from a text file in PHYLIP format.
 - Data read from a text file in FASTA format.
@@ -78,9 +77,7 @@ calculations are done with <code>ret$org</code>.
 
 
 ---
-##### <b>Output</b>
-<code>Phyclust</code> outputs sequence data in two formats:
-PHYLIP or FASTA.
+##### Output <code>Phyclust</code> outputs sequence data in two formats: PHYLIP or FASTA.
 
 We use "<code>Great pony EIAV rev datasets</code>" as examples,
 <a href="./pony524.txt" target="_blank">pony524.phy</a>
@@ -95,7 +92,8 @@ the working directory.
 
 
 ---
-##### <b>Read a PHYLIP file</b>
+##### Read a PHYLIP file
+
 ```
 > data.path <- paste(.libPaths()[1], "/phyclust/data/pony524.phy", sep = "")
 > (my.pony.524 <- read.phylip(data.path))
@@ -115,7 +113,8 @@ List of 7
 
 
 ---
-##### <b>Read a FASTA file</b>
+##### Read a FASTA file
+
 ```
 > data.path <- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
 > (my.pony.625 <- read.fasta.nucleotide(data.path))
@@ -133,7 +132,8 @@ List of 6
 
 
 ---
-##### <b>Save files</b>
+##### Save files
+
 ```
 > # PHYLIp
 > write.phylip(my.pony.625$org, "new.625.txt")

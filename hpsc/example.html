@@ -52,7 +52,7 @@ $\pi \approx 3.1415926$
 
 
 ---
-#### <b>SPMD Basic Steps:</b>
+#### SPMD Basic Steps:
 
 - Step:
   0. Initialize. (<code>init</code>)
@@ -66,7 +66,7 @@ $\pi \approx 3.1415926$
 
 
 ---
-#### <b>Parallel (SPMD) code:</b>
+#### Parallel (SPMD) code:
 
 See <a href="./cookbook/ex_pi_spmd.r" target="_blank">ex_pi_spmd.r</a>
 for ultra-large/unlimited $N$
@@ -93,7 +93,7 @@ finalize()
 
 
 ---
-#### <b>Run SPMD code in a command mode:</b> (Batch Job)
+#### Run SPMD code in a command mode: (Batch Job)
 
 Note that the possible commands to invoke MPI could be <code>mpiexec</code>,
 <code>mpiexec</code>, <code>orterun</code>, or <code>mpiexec.exe</code>
@@ -106,7 +106,7 @@ SHELL> mpiexec -np 2 Rscript --vanilla ex_pi_spmd.r
 
 
 ---
-#### <b>Run SPMD code in an interactive mode:</b> (Master/Worker)
+#### Run SPMD code in an interactive mode: (Master/Worker)
 
 For OpenMPI, you need a file <font
 color="red"><b><code>.Rprofile</code></b></font> in the working directory
