@@ -1,0 +1,100 @@
+###
+# These are some required packages for pbdR, please install them first.
+# Depends: rlecuyer
+# Ehances: maps, RColorBrewer, MixSim, EMCluster, sqldf, phyclust, MASS
+###
+
+### Start here
+rm -rf *-master
+
+### pbdMPI
+wget https://github.com/snoweye/pbdMPI/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdMPI-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdMPI-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdMPI-master/configure \
+          ./pbdMPI-master/cleanup \
+          ./pbdMPI-master/vignettes/*.sh \
+          ./pbdMPI-master
+R CMD INSTALL pbdMPI-master
+
+### pbdSLAP
+wget https://github.com/snoweye/pbdSLAP/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdSLAP-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdSLAP-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdSLAP-master/configure \
+          ./pbdSLAP-master/cleanup \
+          ./pbdSLAP-master/vignettes/*.sh \
+          ./pbdSLAP-master \
+          ./pbdSLAP-master/inst/test_intface/00_make.*
+R CMD INSTALL pbdSLAP-master
+
+### SEXPtools
+wget https://github.com/wrathematics/SEXPtools/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./SEXPtools-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./SEXPtools-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./SEXPtools-master/configure \
+          ./SEXPtools-master/cleanup \
+          ./SEXPtools-master/vignettes/*.sh \
+          ./SEXPtools-master
+R CMD INSTALL SEXPtools-master
+
+### pbdBASE
+wget https://github.com/wrathematics/pbdBASE/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdBASE-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdBASE-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdBASE-master/configure \
+          ./pbdBASE-master/cleanup \
+          ./pbdBASE-master/vignettes/*.sh \
+          ./pbdBASE-master
+R CMD INSTALL pbdBASE-master
+
+### pbdDMAT
+wget https://github.com/wrathematics/pbdDMAT/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdDMAT-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdDMAT-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdDMAT-master/configure \
+          ./pbdDMAT-master/cleanup \
+          ./pbdDMAT-master/vignettes/*.sh \
+          ./pbdDMAT-master
+R CMD INSTALL pbdDMAT-master
+
+### pbdDEMO
+wget https://github.com/wrathematics/pbdDEMO/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdDEMO-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdDEMO-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdDEMO-master/configure \
+          ./pbdDEMO-master/cleanup \
+          ./pbdDEMO-master/vignettes/*.sh \
+          ./pbdDEMO-master
+R CMD INSTALL pbdDEMO-master
+
+### pmclust
+wget https://github.com/snoweye/pmclust/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pmclust-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pmclust-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pmclust-master/configure \
+          ./pmclust-master/cleanup \
+          ./pmclust-master/vignettes/*.sh \
+          ./pmclust-master
+R CMD INSTALL pmclust-master
+
+### pbdNCDF4
+wget https://github.com/snoweye/pbdNCDF4/archive/master.zip
+unzip *.zip; rm -rf *.zip
+find ./pbdNCDF4-master -type f -perm 777 -print -exec chmod 644 {} \;
+find ./pbdNCDF4-master -type d -perm 777 -print -exec chmod 755 {} \;
+chmod 755 ./pbdNCDF4-master/configure \
+          ./pbdNCDF4-master/cleanup \
+          ./pbdNCDF4-master/vignettes/*.sh \
+          ./pbdNCDF4-master
+R CMD INSTALL pbdNCDF4-master --configure-args="--enable-parallel"
+
+### Clean
+rm -rf *-master

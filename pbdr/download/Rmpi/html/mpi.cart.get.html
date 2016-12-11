@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Cart\_get</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.cart.get {Rmpi}"><tr><td>mpi.cart.get {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Cart\_get</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.cart.get</code> provides the user with information on the Cartesian topology
+associated with a comm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mpi.cart.get(comm=3, maxdims)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>Communicator with Cartesian structure</p>
+</td></tr>
+<tr valign="top"><td><code>maxdims</code></td>
+<td>
+<p>length of vectors dims, periods, and coords in the calling program</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The coords are as given for the rank of the calling process as shown.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.cart.get</code> returns a vector containing information on the Cartesian topology 
+associated with comm.  maxdims must be at least ndims as returned by <code>mpi.cartdim.get</code>.  
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alek Hunchak and Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.cart.create.html">mpi.cart.create</a>,<a href="mpi.cartdim.get.html">mpi.cartdim.get</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Need at least 9 slaves
+mpi.bcast.cmd(mpi.cart.create(1,c(3,3),c(F,T)))
+mpi.cart.create(1,c(3,3),c(F,T))
+mpi.remote.exec(mpi.cart.get(3,2))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

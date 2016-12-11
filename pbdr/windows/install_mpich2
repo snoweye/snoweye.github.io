@@ -1,0 +1,79 @@
+<b><font color="#800000">Install MPICH2</font></b>
+
+<ol>
+<li>
+Download both
+"<a href="http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.4.1p1/mpich2-1.4.1p1-win-ia32.msi" target="_blank">mpich2-1.4.1p1-win-i32.msi
+</a>" and
+"<a href="http://www.mcs.anl.gov/research/projects/mpich2/downloads/tarballs/1.4.1p1/mpich2-1.4.1p1-win-x86-64.msi" target="_blank">mpich2-1.4.1p1-win-x86-64.msi
+</a>"
+from
+<a href="http://www.mcs.anl.gov/research/projects/mpich2/" target="_blank">
+Argonne National Laboratory</a>.
+<br>
+<img src="./figures/mpich2_1.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the saved files to start installation.
+<font color="red">The installation requires "Administrator" privilege.</font>
+<br>
+<img src="./figures/mpich2_2.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/mpich2_3.png" align="top">
+<br>
+<br>
+
+<li>
+Choose "I Agree" to accept license, then
+click on the Next button.
+<br>
+<img src="./figures/mpich2_4.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/mpich2_5.png" align="top">
+<br>
+<br>
+
+<li>
+<font color="red">
+By default, 32bits of MPICH2 is installed at
+"<code>C:\Program Files (x86)\MPICH2\</code>" and
+64bits is installled at
+"<code>C:\Program Files\MPICH2\</code>".
+</font>
+I restrict the MPICH2 are used by myself,
+you may choose "Everyone" if this is a shared computer.
+Click on the Next button.
+<br>
+<img src="./figures/mpich2_6.png" align="top">
+<img src="./figures/mpich2_6_1.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/mpich2_7.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Close button.
+<font color="red">You may need to check Windows Update.</font>
+<br>
+<img src="./figures/mpich2_8.png" align="top">
+<br>
+<br>
+
+</ol>

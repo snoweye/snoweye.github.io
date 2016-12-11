@@ -1,0 +1,69 @@
+<b><font color="#800000">Install pbdR Image</font></b>
+
+
+<ol>
+<li>
+Download the pbdR image which is available at
+<a href="https://drive.google.com/file/d/0B9DZ_BJKFAAJMFp1NUV0WU5laUU/edit?usp=sharing" target="_blank">Google Drive</a> (1.7GB).
+<br>
+<br>
+
+<li>
+Open installed Virtual Box.
+<br>
+<img src="./figures_vm/pbdr_01.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the File menu and the "Import Appliance..." option.
+<br>
+<img src="./figures_vm/pbdr_02.png" align="top">
+<br>
+<br>
+
+<li>
+Click on "Open appliance..." button to select the pbdR image.
+<br>
+<img src="./figures_vm/pbdr_03.png" align="top">
+<br>
+<br>
+
+<li>
+Select the pbdR image (pbdr_xubuntu-13.10_img.ova) downloaded from
+<a href="https://drive.google.com/file/d/0B9DZ_BJKFAAJMFp1NUV0WU5laUU/edit?usp=sharing" target="_blank">Google Drive</a> (1.7GB).
+Note that the previous version (xubuntu-13.04*.vba) is used in the next picture.
+<br>
+<img src="./figures_vm/pbdr_04.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button to obtain the pbdR image information.
+<br>
+<img src="./figures_vm/pbdr_05.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Import button to import the pbdR image to the VirtualBox.
+<br>
+<img src="./figures_vm/pbdr_06.png" align="top">
+<br>
+<br>
+
+<li>
+Wait for a few minutes.
+<br>
+<img src="./figures_vm/pbdr_07.png" align="top">
+<br>
+<br>
+
+<li>
+Done.
+<br>
+<img src="./figures_vm/pbdr_08.png" align="top">
+<br>
+<br>
+
+</ol>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Remote Executions on R slaves</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.remote.exec {Rmpi}"><tr><td>mpi.remote.exec {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Remote Executions on R slaves</h2>
+
+<h3>Description</h3>
+
+<p>Remotely execute a command on R slaves spawned by using slavedaemon.R script 
+and return all executed results back to master. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.remote.exec(cmd, ..., simplify = TRUE, comm = 1, ret = TRUE)  
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cmd</code></td>
+<td>
+<p>the command to be executed on R slaves</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>used as arguments to cmd (function command) for passing their 
+(master) values to R slaves, i.e., if &lsquo;myfun(x)&rsquo; will be executed on R slaves 
+with &lsquo;x&rsquo; as master variable, use mpi.remote.exec(cmd=myfun, x).</p>
+</td></tr>
+<tr valign="top"><td><code>simplify</code></td>
+<td>
+<p>logical; should the result be simplified to a data.frame if possible?</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number.</p>
+</td></tr>
+<tr valign="top"><td><code>ret</code></td>
+<td>
+<p>return executed results from R slaves if TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Once R slaves are spawned by <code><a href="mpi.spawn.Rslaves.html">mpi.spawn.Rslaves</a></code> with the 
+slavedaemon.R script, they are waiting for instructions from master. One can 
+use <code><a href="mpi.bcast.cmd.html">mpi.bcast.cmd</a></code> to send a command to R slaves. However it 
+will not return executed results. Hence <code>mpi.remote.exec</code> can be 
+considered an extension to <code><a href="mpi.bcast.cmd.html">mpi.bcast.cmd</a></code>.    
+</p>
+
+
+<h3>Value</h3>
+
+<p>return executed results from R slaves if the argument <code>ret</code> is 
+set to be TRUE. The value could be a data.frame if values 
+(integer or double) from each slave have the same dimension. 
+Otherwise a list is returned.</p>
+
+
+<h3>Warning</h3>
+
+<p><code>mpi.remote.exec</code> may have difficult guessing invisible results 
+on R slaves. Use <code>ret = FALSE</code> instead. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.spawn.Rslaves.html">mpi.spawn.Rslaves</a></code>,
+<code><a href="mpi.bcast.cmd.html">mpi.bcast.cmd</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+mpi.remote.exec(mpi.comm.rank())
+ x=5
+mpi.remote.exec(rnorm,x)
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

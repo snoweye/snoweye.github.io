@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Extension of MPI\_Bcast API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.bcast.cmd {Rmpi}"><tr><td>mpi.bcast.cmd {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Extension of MPI\_Bcast API</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.bcast.cmd</code> is an extension of <code><a href="mpi.bcast.html">mpi.bcast</a></code>. 
+It is mainly used to transmit a command from master to all R slaves 
+spawned by using slavedaemon.R script.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.bcast.cmd(cmd=NULL, ..., rank = 0, comm = 1, nonblock=FALSE, sleep=0.1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cmd</code></td>
+<td>
+<p>a command to be sent from master.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>used as arguments to cmd (function command) for passing their 
+(master) values to R slaves, i.e., if &lsquo;myfun(x)&rsquo; will be executed on R slaves 
+with &lsquo;x&rsquo; as master variable, use mpi.bcast.cmd(cmd=myfun, x=x).</p>
+</td></tr>
+<tr valign="top"><td><code>rank</code></td>
+<td>
+<p>the sender</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>nonblock</code></td>
+<td>
+<p>logical. If TRUE, a nonblock procedure is used on all receivers so that
+they will consume none or little CPUs while waiting.</p>
+</td></tr>
+<tr valign="top"><td><code>sleep</code></td>
+<td>
+<p>a sleep interval, used when nonblock=TRUE. Smaller sleep is, more response receivers are, 
+more CPUs consume</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>mpi.bcast.cmd</code> is a collective call. This means all members in a communicator must 
+execute it at the same time. If slaves are spawned (created) by using slavedaemon.R (Rprofile script), 
+then they are running <code>mpi.bcast.cmd</code> in infinite loop (idle state). Hence master can execute 
+<code>mpi.bcast.cmd</code> alone to start computation. On the master, <code>cmd</code> and <code>...</code> are put together 
+as a list which is then broadcasted (after serialization) to all slaves (using for loop with mpi.send 
+and mpi.recv pair). All slaves will return an expression which will be evaluated by either slavedaemon.R, 
+or by whatever an R script based on slavedaemon.R.
+</p>
+<p>If nonblock=TRUE, then on receiving side, a nonblock procedure is used to check if 
+there is a message. If not, it will sleep for the specied amount and repeat itself.
+</p>
+<p>Please use <code><a href="mpi.remote.exec.html">mpi.remote.exec</a></code> if you want the executed results returned from R 
+slaves.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.bcast.cmd</code> returns no value for the sender and an expression of the transmitted command for others.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Be caution to use <code>mpi.bcast.cmd</code> alone by master in the middle of comptuation. Only all slaves in idle 
+states (waiting instructions from master) can it be used. Othewise it may result miscommunication
+with other MPI calls.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.remote.exec.html">mpi.remote.exec</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Sendrecv and MPI\_Sendrecv\_replace APIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.sendrecv {Rmpi}"><tr><td>mpi.sendrecv {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Sendrecv and MPI\_Sendrecv\_replace APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.sendrecv</code> and <code>mpi.sendrecv.replace</code> execute blocking send 
+and receive operations. Both of them combine the sending of one message to 
+a destination and the receiving of another message from a source in one 
+call. The source and destination are possibly the same. The send buffer and 
+receive buffer are disjoint for <code>mpi.sendrecv</code>, while the buffers are 
+not disjoint for <code>mpi.sendrecv.replace</code>.  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.sendrecv(senddata, sendtype, dest, sendtag, recvdata, recvtype, 
+source, recvtag, comm = 1, status = 0)
+
+mpi.sendrecv.replace(x, type, dest, sendtag, source, recvtag, 
+comm = 1, status = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data to be sent or recieved. Must be the same 
+type for source and destination.</p>
+</td></tr>
+<tr valign="top"><td><code>senddata</code></td>
+<td>
+<p>data to be sent. May have different datatypes and 
+lengths</p>
+</td></tr> 
+<tr valign="top"><td><code>recvdata</code></td>
+<td>
+<p>data to be recieved. May have different datatypes and 
+lengths</p>
+</td></tr> 
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>type of the data to be sent or recieved. 
+1 for integer, 2 for double, and 3 for character. Others are not supported.</p>
+</td></tr>
+<tr valign="top"><td><code>sendtype</code></td>
+<td>
+<p>type of the data to be sent. 
+1 for integer, 2 for double, and 3 for character. Others are not supported.</p>
+</td></tr>
+<tr valign="top"><td><code>recvtype</code></td>
+<td>
+<p>type of the data to be recieved. 
+1 for integer, 2 for double, and 3 for character. Others are not supported.</p>
+</td></tr>
+<tr valign="top"><td><code>dest</code></td>
+<td>
+<p>the destination rank. Use <code>mpi.proc.null</code> for a 
+fake destination.</p>
+</td></tr>
+<tr valign="top"><td><code>source</code></td>
+<td>
+<p>the source rank. Use <code>mpi.any.source</code> for any source. 
+Use <code>mpi.proc.null</code> for a fake source. </p>
+</td></tr>
+<tr valign="top"><td><code>sendtag</code></td>
+<td>
+<p>non-negative integer. Use <code>mpi.any.tag</code> 
+for any tag flag.</p>
+</td></tr>
+<tr valign="top"><td><code>recvtag</code></td>
+<td>
+<p>non-negative integer. Use <code>mpi.any.tag</code> 
+for any tag flag.</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>a status number.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The receive buffer must be large enough to contain an incoming message 
+otherwise programs will be crashed. There is compatibility between 
+send-receive and normal sends and receives. A message sent by a 
+send-receive can be received  by a regular receive and a send-receive 
+can receive a message sent by a regular send.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns the int, double or char vector sent from the send buffers. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Kris Chen
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>, 
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.send.Robj.html">mpi.send.Robj</a></code>,
+<code><a href="mpi.send.Robj.html">mpi.recv.Robj</a></code>,
+<code><a href="mpi.probe.html">mpi.probe</a></code>.  
+<code><a href="mpi.get.sourcetag.html">mpi.get.sourcetag</a></code>. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+mpi.sendrecv(as.integer(11:20),1,0,33,integer(10),1,0,33,comm=0)
+mpi.sendrecv.replace(seq(1,2,by=0.1),2,0,99,0,99,comm=0)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

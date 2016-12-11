@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Parallel Monte Carlo Simulation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.parSim {Rmpi}"><tr><td>mpi.parSim {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Parallel Monte Carlo Simulation</h2>
+
+<h3>Description</h3>
+
+<p>Carry out parallel Monte Carlo simulation on R slaves spawned by 
+using slavedaemon.R script and all executed results are returned back to 
+master. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.parSim(n=100, rand.gen=rnorm, rand.arg=NULL,statistic, 
+nsim=100, run=1, slaveinfo=FALSE, sim.seq=NULL, simplify=TRUE, comm=1, ...)  
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>sample size.</p>
+</td></tr>
+<tr valign="top"><td><code>rand.gen</code></td>
+<td>
+<p>the random data generating function. See the details 
+section</p>
+</td></tr>
+<tr valign="top"><td><code>rand.arg</code></td>
+<td>
+<p>additional argument list to <code>rand.gen</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>statistic</code></td>
+<td>
+<p>the statistic function to be simulated. See the 
+details section</p>
+</td></tr>
+<tr valign="top"><td><code>nsim</code></td>
+<td>
+<p>the number of simulation carried on a slave which is 
+counted as one slave job.</p>
+</td></tr>
+<tr valign="top"><td><code>run</code></td>
+<td>
+<p>the number of looping. See the details section.</p>
+</td></tr>
+<tr valign="top"><td><code>slaveinfo</code></td>
+<td>
+<p>if TRUE, the numbers of jobs finished by slaves 
+will be displayed.</p>
+</td></tr>
+<tr valign="top"><td><code>sim.seq</code></td>
+<td>
+<p>if reproducing the same simulation is desirable, set it 
+to the integer vector .mpi.parSim generated in previous simulation.</p>
+</td></tr>
+<tr valign="top"><td><code>simplify</code></td>
+<td>
+<p>logical; should the result be simplified to a vector or
+matrix if possible?</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments to <code>statistic</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is assumed that one simulation is carried out as 
+<code>statistic(rand.gen(n))</code>, where <code>rand.gen(n)</code> can return any 
+values as long as <code>statistic</code> can take them. Additional arguments can 
+be passed to <code>rand.gen</code> by <code>rand.arg</code> as a list. Optional 
+arguments can also be passed to <code>statistic</code> by the argument 
+<code>...</code>. 
+</p>
+<p>Each slave job consists of <code>replicate(nsim,statistic(rand.gen(n)))</code>, 
+i.e., each job runs <code>nsim</code> number of simulation. The returned values 
+are transported from slaves to master.
+</p>
+<p>The total number of simulation (TNS) is calculated as follows. Let 
+slave.num be the total number of slaves in a <code>comm</code> and it is 
+<code>mpi.comm.size(comm)-1</code>. Then TNS=slave.num*nsim*run and the total
+number of slave jobs is slave.num*run, where <code>run</code> is the number of 
+looping from master perspective. If run=1, each slave will run one slave 
+job. If run=2, each slave will run two slaves jobs on average, and so on. 
+</p>
+<p>The purpose of using <code>run</code> has two folds. It allows a tuneup 
+of slave job size and total number of slave jobs to deal with two 
+different cluster environments. On a cluster of slaves with equal CPU 
+power, <code>run=1</code> is often enough. But if <code>nsim</code> is too big, one
+can set <code>run=2</code> and the slave jog size to be <code>nsim/2</code> so that  
+TNS=slave.num*(nsim/2)*(2*run). This may improve R computation 
+efficiency slightly. On a cluster of slaves with different CPU power, one 
+can choose a big value of <code>run</code> and a small value of <code>nsim</code> 
+so that master can dispatch more jobs to slaves who run faster than 
+others. This will keep all slaves busy so that load balancing is 
+achieved. 
+</p>
+<p>The sequence of slaves who deliver results to master are saved into 
+<code>.mpi.parSim</code>. It keeps track which part of results done by which slaves. 
+<code>.mpi.parSim</code> can be used to reproduce the same simulation result if the same
+seed is used and the argument <code>sim.seq</code> is equal to <code>.mpi.parSim</code>.
+</p>
+<p>See the warning section before you use <code>mpi.parSim</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The returned values depend on values returned by <code><a href="../../base/html/lapply.html">replicate</a></code>
+of <code>statistic(rand.gen(n))</code> and the total number of simulation 
+(TNS). If <code>statistic</code> returns a single value, then the result is a 
+vector of length TNS. If <code>statistic</code> returns a vector (list) of 
+length <code>nrow</code>, then the result is a matrix of dimension 
+<code>c(nrow, TNS)</code>.   
+</p>
+
+
+<h3>Warning</h3>
+
+<p>It is assumed that a parallel RNG is used on all slaves. Run
+<code>mpi.setup.rngstream</code> on the master to set up a parallel RNG. Though <code>mpi.parSim</code> 
+works without a parallel RNG, the quality of simulation is not guarantied. 
+</p>
+<p><code>mpi.parSim</code> will automatically transfer <code>rand.gen</code> 
+and <code>statistic</code> to slaves. However, any functions that 
+<code>rand.gen</code> and <code>statistic</code> reply on but are not on slaves 
+must be transfered to slaves before using <code>mpi.parSim</code>. You 
+can use <code><a href="mpi.bcast.Robj.html">mpi.bcast.Robj2slave</a></code> for that purpose. The same is 
+applied to required packages or C/Fortran codes. You can use either 
+<code><a href="mpi.bcast.cmd.html">mpi.bcast.cmd</a></code> or put <code>required(package)</code> and/or 
+<code>dyn.load(so.lib)</code> into <code>rand.gen</code> and <code>statistic</code>.
+</p>
+<p>If <code>simplify</code> is TRUE, sapply style simplication is applied. Otherwise a list of length 
+slave.num*run is returned.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.setup.rng.html">mpi.setup.rngstream</a></code>
+<code><a href="mpi.bcast.cmd.html">mpi.bcast.cmd</a></code>
+<code><a href="mpi.bcast.Robj.html">mpi.bcast.Robj2slave</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Hosts Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for lamhosts {Rmpi}"><tr><td>lamhosts {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Hosts Information</h2>
+
+<h3>Description</h3>
+
+<p><code>lamhosts</code> finds the host name associated with its node number. Can be used 
+by <code><a href="mpi.spawn.Rslaves.html">mpi.spawn.Rslaves</a></code> to spawn R slaves on selected hosts. This is 
+a LAM-MPI specific function.
+</p>
+<p><code>mpi.is.master</code> checks if it is running on master or slaves.
+</p>
+<p><code>mpi.hostinfo</code> finds an individual host information including rank and 
+size in a comm.
+</p>
+<p><code>slave.hostinfo</code> is executed only by master and find all master and slaves 
+host information in a comm.
+</p>
+<p><code>mpichhosts</code> finds host names from master Windows registery database.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lamhosts()
+mpi.is.master()
+mpi.hostinfo(comm = 1)
+slave.hostinfo(comm = 1, short=TRUE) 
+mpichhosts()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>short</code></td>
+<td>
+<p>if true, a short form is printed</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>lamhosts</code> returns CPUs nodes numbers with their host names.
+</p>
+<p><code>mpi.is.master</code> returns TRUE if it is on master and FALSE otherwise.
+</p>
+<p><code>mpi.hostinfo</code> sends to stdio a host name, rank, size and comm.
+</p>
+<p><code>slave.hostname</code> sends to stdio a list of host, rank, size, and comm 
+information for all master and slaves. With short=TRUE and 8 slaves or more, 
+the first 3 and last 2 slaves are shown.
+</p>
+<p><code>mpichhosts</code> returns hostnames including multiple same hostname if a host 
+has multiple CPUs. The first host is labeled as &quot;master&quot;, the rest is labeled as 
+&quot;slave1&quot;, &quot;slave2&quot;, and so on. <code>mpi.universe.size</code> will return the length of 
+<code>mpichhosts</code>-1 on Windows platform. </p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.spawn.Rslaves.html">mpi.spawn.Rslaves</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

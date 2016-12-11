@@ -1,0 +1,64 @@
+<b><font color="#800000">Install Rtools</font></b>
+
+<ol>
+<li>
+Download "Rtools216.exe" from CRAN.
+<br>
+<img src="./figures/Rtools_1.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the downloaded file to start installation.
+<br>
+<img src="./figures/Rtools_2.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/Rtools_3.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/Rtools_4.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/Rtools_5.png" align="top">
+<br>
+<br>
+
+<li>
+<font color="red">
+This step may be different from the default, but basically I
+don't prefer to set path here.
+</font>
+Uncheck boxes, and click on the Next button.
+<br>
+<img src="./figures/Rtools_6.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Next button.
+<br>
+<img src="./figures/Rtools_7.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the Finish button.
+<br>
+<img src="./figures/Rtools_8.png" align="top">
+<br>
+<br>
+
+</ol>

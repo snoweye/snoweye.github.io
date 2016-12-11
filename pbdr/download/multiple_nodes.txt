@@ -1,0 +1,201 @@
+A Note for building OpenMPI cluster with multiple nodes
+
+This file contains personal experiments that install two VMs, OpenMPI, and
+pbdMPI for two nodes (vb1, vb2) sharing same account (pbdr) and local file
+(/home) via NFS. The linux system, software, network setup, and configuration
+are all in next. Two nodes form a cluster with minimum requirements. The
+cluster is tested with SPMD code (hello.r) with collective call via pbdMI
+across two nodes.
+
+Both nodes are firewall disabled, using ssh public key authenticity,
+communicating with second network adapter (eth1) in 192.168.1.* range. The
+account 'pbdr' can freely login/ssh without problems between two nodes. By
+cloning from the vb1, potentially I can build vb3, vb4, ... with identical
+user environment.
+
+In the example, I rebuild new OpenMPI and install R packages locally
+(/home/pbdr/work-my/local/R_libs) which is shared by all nodes.
+
+One may also use Ubuntu's default packages, "openmpi-bin" and "libopenmpi-dev",
+to run with pbdMPI. However, it could have network routing problem if eth0 is
+for NAT/host and eth1 is for internal MPI communication. It will be easy to
+bring eth0 down by `sudo ip link set eth0 down' on all machines.
+
+Wei-Chen Chen
+
+
+-----------------------------------------------------------------
+1. Install VM
+
+### Install vb1 with two network cards
+### i) Network Adapter 1 (eth0) and Attached to "NAT", and
+### ii) Network Adapter 2 (eth1) and Attached to "Host-only Adapter".
+
+### Install Xubuntu 10.04
+### Set user id/pw: pbdr/pbdr
+
+
+-----------------------------------------------------------------
+2. Change configurations
+
+### Boot vb1
+
+sudo apt-get install ssh r-base git nfs-kernel-server nfs-common
+# sudo apt-get --purge remove openmpi-bin libopenmpi-dev
+sudo ufw disable
+
+sudo vi /etc/network/interfaces
+### Append next to the file
+auto eth1
+iface eth1 inet static
+address 192.168.1.1
+netmask 255.255.255.0
+geteway 192.168.1.1
+broadcast 192.168.1.255
+### End and save the file
+
+sudo vi /etc/hosts
+### Append next to the file
+192.168.1.1	vb1
+192.168.1.2	vb2
+### End and save the file
+
+sudo vi /etc/exports
+### Append next to the file
+/home 192.168.1.0/24(rw,sync,no_root_squash,no_subtree_check)
+### End and save the file
+sudo exportfs -a
+sudo /etc/init.d/nfs-kernel-server restart
+
+ssh-keygen -t rsa -f /home/pbdr/.ssh/id_rsa
+cat /home/pbdr/.ssh/id_rsa.pub >> /home/pbdr/.ssh/authorized_keys
+
+
+-----------------------------------------------------------------
+3. Build OpenMPI and pbdMPI
+
+### Login to vb1
+
+cd /home/pbdr
+mkdir work-my
+mkdir work-my/source
+mkdir work-my/local
+mkdir work-my/local/R_libs
+cd /home/pbdr/work-my
+
+vi 00-set_path.sh
+### Append next to the file
+export R_LIBS_USER=/home/pbdr/work-my/local/R_libs
+export PATH=/home/pbdr/work-my/local/openmpi-1.8.4/bin:$PATH
+export LD_LIBRARY_PATH=/home/pbdr/work-my/local/openmpi-1.8.4/lib
+### End and save the file
+
+source 00-set_path.sh
+
+vi /home/pbdr/.bashrc
+### Append next to the file
+source /home/pbdr/work-my/00-set_path.sh
+### End and save the file
+
+cd /home/pbdr/work-my/source
+wget http://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.gz
+wget http://cran.r-project.org/src/contrib/rlecuyer_0.3-3.tar.gz
+git clone https://github.com/snoweye/pbdMPI
+
+tar zxvf openmpi-1.8.4.tar.gz
+cd /home/pbdr/work-my/source/openmpi-1.8.4
+./configure \
+  --prefix=/home/pbdr/work-my/local/openmpi-1.8.4 \
+  --enable-orterun-prefix-by-default
+make -j 4
+make install
+
+cd /home/pbdr/work-my/source
+R CMD INSTALL rlecuyer_0.3-3.tar.gz
+chmod u+x pbdMPI/configure
+R CMD INSTALL pbdMPI
+
+### Shutdown vb1
+
+
+------------------------------------------------------------------------
+4. Clone VM
+
+### Linked clone vb1 to vb2 with reinitialize the MAC address of all network
+### cards.
+
+
+-----------------------------------------------------------------
+5. Modify new clones
+
+### Boot vb2
+
+sudo vi /etc/hosts
+### Replace "127.0.0.1	vb1" by "127.0.0.1	vb2"
+### Save the file
+
+sudo vi /etc/hostname
+### Replace "vb1" by "vb2"
+### Save the file
+
+sudo vi /etc/network/interfaces
+### Replace "address 192.168.1.1" by "address 192.168.1.2"
+### Save the file
+
+sudo vi /etc/fstab
+### Append next to the file
+192.168.1.1:/home /home nfs rw,hard,intr 0 0
+### End and save the file
+
+### Shutdown vb2
+
+
+-----------------------------------------------------------------
+6. Test all VMs
+
+### Sequentially boot vb1 then boot vb2 
+
+### Login in to vb2
+
+df
+### This should show /home on vb2 is mounted from 192.168.1.1:/home
+ssh vb1
+ssh vb2
+### This should no need password in both directions
+
+
+-----------------------------------------------------------------
+7. Test OpenMPI and pbdMPI
+
+### Login in to vb1
+
+env | grep ^PATH
+env | grep LD_LIBRARY_PATH
+env | grep R_LIBS_USER
+### This should point to right path
+
+cd /home/pbdr/work-my 
+vi hostfile
+### Add next to the file
+192.168.1.1
+192.168.1.2
+### End and save the file
+
+vi hello.r
+### Add next to the file
+library(pbdMPI, quietly = TRUE)
+init()
+x.gbd <- 1:10
+x <- allreduce(x.gbd)
+comm.cat(Sys.info()["nodename"], "\n", all.rank = TRUE)
+comm.print(x, all.rank = TRUE)
+finalize()
+### End and save the file
+
+mpiexec -np 2 Rscript hello.r
+### Test locally
+
+mpiexec -x R_LIBS_USER --hostfile hostfile -np 2 Rscript hello.r
+### Since this mpiexec did neither pass R_LIBRS_USER nor get from environment
+### correctly, I have to pass it with -x manually. PATH and LD_LIBRARY_PATH
+### are fine.

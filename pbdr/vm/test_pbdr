@@ -1,0 +1,67 @@
+<b><font color="#800000">Start and Test pbdR inside VirtualBox</font></b>
+
+<ol>
+<li>
+Click Start button to start xubuntu-13.04 vb1.
+<br>
+<img src="./figures_vm/start_pbdr_01.png" align="top">
+<br>
+<br>
+
+<li>
+Click OK button to continue.
+<br>
+<img src="./figures_vm/start_pbdr_02.png" align="top">
+<br>
+<br>
+
+<li>
+Stop if you see this Error.<br>
+This means you need to reboot your system and
+enable VT-x/AMD-V (visualization techniques) options in BIOS.
+<br>
+<img src="./figures_vm/start_pbdr_03.png" align="top">
+<br>
+<br>
+
+<li>
+Choose Ubuntu to boot the Linux system.
+<br>
+<img src="./figures_vm/start_pbdr_04.png" align="top">
+<br>
+<br>
+
+<li>
+IF everything is fine, then you can see a pbdR icon on the desktop.<br>
+Click on the pbdR icon.
+<br>
+<img src="./figures_vm/start_pbdr_05.png" align="top">
+<br>
+<br>
+
+<li>
+A terminal will bring you to the pbdR working directory.<br>
+Use "<code>ls</code>" to see directory contents.<br>
+Use "<code>source ./00_set_R</code>" to setup environments.<br>
+<br>
+<img src="./figures_vm/start_pbdr_06.png" align="top">
+<br>
+<br>
+
+<li>
+Use
+"<code>mpiexec -np 2 Rscript -e "demo(allreduce,'pbdMPI',ask=F,echo=F)"</code>"
+to setup test pbdR.
+<br>
+<img src="./figures_vm/start_pbdr_07.png" align="top">
+<br>
+<br>
+
+<li>
+Done.
+<br>
+<img src="./figures_vm/start_pbdr_08.png" align="top">
+<br>
+<br>
+
+</ol>

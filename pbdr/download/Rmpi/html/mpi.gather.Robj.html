@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Extentions of MPI\_Gather and MPI\_Allgather APIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.gather.Robj {Rmpi}"><tr><td>mpi.gather.Robj {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Extentions of MPI\_Gather and MPI\_Allgather APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.gather.Robj</code> gathers each member's object to the member 
+specified by the argument <code>root</code>.
+The root member receives the objects as a list.
+<code>mpi.allgather.Robj</code> is the same as <code>mpi.gather.Robj</code>
+except that all members receive the result instead of just the root.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.gather.Robj(obj=NULL, root = 0, comm = 1, ...)
+
+mpi.allgather.Robj(obj=NULL, comm = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj</code></td>
+<td>
+<p>data to be gathered. Could be different type.</p>
+</td></tr>
+<tr valign="top"><td><code>root</code></td>
+<td>
+<p>rank of the gather</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arugments to <code>sapply</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Since sapply is used to gather all results, its default option 
+&quot;simplify=TRUE&quot; is to simplify outputs. In some situations, this option 
+is not desirable. Using &quot;simplify=FALSE&quot; as in the place of ... will tell
+sapply not to simplify and a list of outputs will be returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>mpi.gather.Robj</code>, it returns a list, the gathered message 
+for the root member. For
+<code>mpi.allgatherv.Robj</code>, it returns a list, the gathered message 
+for all members.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu and Wei Xia
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.gather.html">mpi.gather</a></code>, <code><a href="mpi.gather.html">mpi.allgatherv</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Assume that there are some slaves running
+mpi.bcast.cmd(id&lt;-mpi.comm.rank())
+mpi.bcast.cmd(x&lt;-rnorm(id))
+mpi.bcast.cmd(mpi.gather.Robj(x))
+x&lt;-"test mpi.gather.Robj"
+mpi.gather.Robj(x)
+
+mpi.bcast.cmd(obj&lt;-rnorm(id+10))
+mpi.bcast.cmd(nn&lt;-mpi.allgather.Robj(obj))
+obj&lt;-rnorm(5)
+mpi.allgather.Robj(obj)
+mpi.remote.exec(nn)
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

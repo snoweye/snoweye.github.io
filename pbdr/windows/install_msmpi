@@ -1,0 +1,57 @@
+<b><font color="#800000">Install MS-MPI</font></b>
+
+<ol>
+<li>
+Download
+Microsoft MPI, MS-MPI,
+(HPC Pack 2012 R2 MS-MPI Redistributable Package) from
+<a href="http://http://www.microsoft.com/en-us/download/" target="_blank">
+Microsoft Developer Network</a>
+or
+<a href="http://msdn.microsoft.com/en-us/library/bb524831%28v=vs.85%29.aspx" target="_blank">
+here</a>;
+<br>
+<img src="./figures/msmpi_1.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the saved files to start installation.
+<font color="red">The installation requires "Administrator" privilege.</font>
+Click 'Next' to continue.
+<br>
+<img src="./figures/msmpi_2.png" align="top">
+<br>
+<br>
+
+<li>
+Check ``I accept the terms in the License Agreement'' and then click 'Next'
+to continue.
+<br>
+<img src="./figures/msmpi_3.png" align="top">
+<br>
+<br>
+
+<li>
+Use default folder to install. Click on the 'Next' button.
+<br>
+<img src="./figures/msmpi_4.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the 'Install' button.
+<br>
+<img src="./figures/msmpi_5.png" align="top">
+<br>
+<br>
+
+<li>
+Click on the 'Finish' button.
+<font color="red">You may need to check Windows Update.</font>
+<br>
+<img src="./figures/msmpi_6.png" align="top">
+<br>
+<br>
+
+</ol>

@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Spawn and Close R Slaves</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.spawn.Rslaves {Rmpi}"><tr><td>mpi.spawn.Rslaves {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Spawn and Close R Slaves</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.spawn.Rslaves</code> spawns R slaves to those hosts automatically 
+chosen by MPI or specific hosts assigned by the argument <code>hosts</code>.
+Those R slaves are running in R BATCH mode with a specific Rscript file. 
+The default Rscript file &quot;slavedaemon.R&quot; provides interactive R slave 
+environments.
+</p>
+<p><code>mpi.close.Rslaves</code> shuts down R slaves spawned by 
+<code>mpi.spawn.Rslaves</code>.
+</p>
+<p><code>tailslave.log</code> view (from tail) R slave log files (assuming they are all 
+in one working directory).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.spawn.Rslaves(Rscript=system.file("slavedaemon.R", package="Rmpi"),
+        nslaves=mpi.universe.size(), root = 0, intercomm = 2,
+        comm = 1, hosts = NULL, needlog = TRUE, mapdrive=TRUE, quiet = FALSE, 
+		nonblock=TRUE, sleep=0.1)
+
+mpi.close.Rslaves(dellog = TRUE, comm = 1)
+tailslave.log(nlines = 3, comm = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Rscript</code></td>
+<td>
+<p>an R script file used to run R in BATCH mode.</p>
+</td></tr>
+<tr valign="top"><td><code>nslaves</code></td>
+<td>
+<p>number of slaves to be spawned.</p>
+</td></tr>
+<tr valign="top"><td><code>root</code></td>
+<td>
+<p>the rank number of the member who spawns R slaves.</p>
+</td></tr>
+<tr valign="top"><td><code>intercomm</code></td>
+<td>
+<p>an intercommunicator number</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number merged from an intercomm.</p>
+</td></tr>
+<tr valign="top"><td><code>hosts</code></td>
+<td>
+<p>NULL or LAM node numbers to specify where R slaves to be 
+spawned.</p>
+</td></tr>
+<tr valign="top"><td><code>needlog</code></td>
+<td>
+<p>a logical. If TRUE, R BATCH outputs will be saved in log files.  
+If FALSE, the outputs will send to /dev/null.</p>
+</td></tr>
+<tr valign="top"><td><code>mapdrive</code></td>
+<td>
+<p>a logical. If TRUE and master's working dir is on a network, mapping network drive 
+is attemped on remote nodes under windows platform.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>a logical. If TRUE, do not print anything unless an error occurs.</p>
+</td></tr>
+<tr valign="top"><td><code>nonblock</code></td>
+<td>
+<p>a logical. If TRUE, a nonblock procedure is used on all slaves so that
+they will consume none or little CPUs while waiting.</p>
+</td></tr>
+<tr valign="top"><td><code>sleep</code></td>
+<td>
+<p>a sleep interval, used when nonblock=TRUE. Smaller sleep is, more response slaves are, 
+more CPUs consume.</p>
+</td></tr>
+<tr valign="top"><td><code>dellog</code></td>
+<td>
+<p>a logical specifying if R slave's log files are deleted or 
+not.</p>
+</td></tr>
+<tr valign="top"><td><code>nlines</code></td>
+<td>
+<p>number of lines to view from tail in R slave's log files.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The R slaves that <code>mpi.spawn.Rslaves</code> spawns are really running a shell 
+program which can be found in <code>system.file("Rslaves.sh",package="Rmpi")</code> 
+which takes a Rscript file as one of its arguments. Other arguments are 
+used to see if a log file (R output) is needed and how to name it. The master 
+process id and the comm number, along with host names where R slaves are running  are 
+used to name these log files. 
+</p>
+<p>Once R slaves are successfully spawned, the 
+mergers from an intercomm (default &lsquo;intercomm = 2&rsquo;) to a comm (default 
+&lsquo;comm = 1&rsquo;) are automatically done on master and slaves (should be done 
+if the default Rscript is replaced). If additional sets of R slaves are 
+needed, please use &lsquo;comm = 3&rsquo;, &lsquo;comm = 4&rsquo;, etc to spawn them. At most a 
+comm number up to 10 can be used. Notice that the default comm number for 
+R slaves (using slavedaemon.R) is always 1 which is saved as .comm.  
+</p>
+<p>To spawn R slaves to specific hosts, please use the argument <code>hosts</code> 
+with a list of those node numbers (an integer vector). Total node numbers 
+along their host names can be found by using <code><a href="hosts.html">lamhosts</a></code>.
+Notice that this is LAM-MPI specific. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>Unless <code>quiet = TRUE</code>, <code>mpi.spawn.Rslaves</code> prints to stdio how many 
+slaves are successfully spawned and where they are running.
+</p>
+<p><code>mpi.close.Rslaves</code> return 1 if success and 0 otherwise.
+</p>
+<p><code>tailslave.log</code> returns last lines of R slave's log files.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.comm.spawn.html">mpi.comm.spawn</a></code>,
+<code><a href="hosts.html">lamhosts</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+mpi.spawn.Rslaves(nslaves=2)
+tailslave.log()
+mpi.remote.exec(rnorm(10))
+mpi.close.Rslaves()
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

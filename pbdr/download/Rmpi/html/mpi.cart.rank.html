@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Cart\_rank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.cart.rank {Rmpi}"><tr><td>mpi.cart.rank {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Cart\_rank</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.cart.rank</code> translates a Cartesian topology coordinate to its rank.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mpi.cart.rank(comm=3, coords)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>Communicator with Cartesian structure</p>
+</td></tr>
+<tr valign="top"><td><code>coords</code></td>
+<td>
+<p>Specifies the Cartesian coordinates of a process</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For a process group with a Cartesian topology, this function translates the logical
+process coordinates to process ranks as they are used by the point-to-point routines.
+It is the inverse map of <code>mpi.cart.coords</code>. </p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.cart.rank</code> returns the rank of the specified process.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alek Hunchak and Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.cart.coords.html">mpi.cart.coords</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Need at least 9 slaves
+mpi.bcast.cmd(mpi.cart.create(1,c(3,3),c(F,T)))
+mpi.cart.create(1,c(3,3),c(F,T))
+mpi.cart.rank(3,c(1,0))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>
