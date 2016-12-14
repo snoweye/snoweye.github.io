@@ -1,42 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="pbdR Tech -- Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
 
-<b><font color="#800000">
-Iris example in serial
-</font></b>
-<br>
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
 
-<p>
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">pbdR Home</a></li> /
+    <li><a href="../tutorial1.html">Tutorial 1</a></li> /
+    <li class="active">iris_ser</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Iris example in serial
+
+
 This is a serial code for the iris example which contains
 a series analysis based on iris dataset provided inside <code>R</code>.
 It can be run by a single processor as the usual interaction mode or
 by <code>Rscript</code> as
 
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="dddddd">
-<code>
+```
 SHELL> Rscript --vanilla iris_ser.r
-</code>
-</table>
-<br>
+```
 
 If the code is run in the interaction mode, a plot will be generated on screen.
 If the code is run via the <code>Rscript</code>, a file <code>Rplot.pdf</code>
 or a similar file will be created. The plot contains visualization of
 clustering results on the first two principal components.
-<br>
-<br>
 
 
-<b>Serial Code:</b>
-(<a href="./tutorial/iris_ser.r" target="_blank">iris_ser.r</a>)
+---
+#### Serial Code: (<a href="./iris_ser.r" target="_blank">iris_ser.r</a>)
 
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="dddddd">
-<code>
-<pre>
+```
 # File name: iris_ser.r
 # Run: Rscript iris_ser.r
 
@@ -94,7 +120,21 @@ plot(X.prj, col = X.kms.cid + 1, pch = X.kms.cid,
 plot(X.prj, col = X.mbc.cid + 1, pch = X.mbc.cid,
      main = paste("iris (model-based)", sprintf("%.4f", X.mbc.adjR)),
      xlab = "PC1", ylab = "PC2")
-</pre>
-</code>
-</table>
-<br>
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+
