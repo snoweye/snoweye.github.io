@@ -111,7 +111,17 @@ This is a summary to steup a cluster on AWS EC2. In short, the key points are
         </tr>
      </tbody>
    </table>
-   - Disable all other network devices. Keep routing path as simple as possible.
+   - Disable all other network interfaces. Keep routing path as simple as possible.
+     e.g. One may do below in Ubuntu/Xubuntu
+
+     ```
+     sudo ifoconfig enp0s3 down
+     ```
+     where `enp0s3` is the network interface name.
+   - Disable firewalls if possible. e.g. One may do below in Ubuntu/Xubuntu
+     ```
+     SHELL> sudo ufw disable
+     ```
 
 3. All instances should have files
    - ~/.ssh/authorized_keys
