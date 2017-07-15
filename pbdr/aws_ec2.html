@@ -116,8 +116,9 @@ This is a summary to steup a cluster on AWS EC2. In short, the key points are
 
      ```
      sudo ifconfig enp0s3 down
+     sudo ifconfig docker0 down
      ```
-     where `enp0s3` is the network interface name.
+     where `enp0s3` and `docker0` are the network interface names.
    - Disable firewalls if possible. e.g. One may do below in Ubuntu/Xubuntu
      ```
      SHELL> sudo ufw disable
@@ -214,7 +215,10 @@ This is a summary to steup a cluster on AWS EC2. In short, the key points are
    SHELL> mpiexec -hostfile ~/hostfile -np 4 \
           Rscript -e "library(pbdMPI,quietly=T);init();comm.rank();finalize()"
    ```
-   The outputs should be as next if all setups are correct.
+   Note: Full paths to the `mpiexec` and `Rscript` may be needed.
+
+   When everything is right, the outputs should be as next if all setups
+   are correct.
    <br>
    <img src="./figures_aws_ec2/04-result.png" align="top"></img>
    <br>
