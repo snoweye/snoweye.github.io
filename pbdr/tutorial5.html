@@ -89,6 +89,15 @@ remoter> dev.offc(3)
 remoter> q()
 ```
 
+For plotting in R, the ubuntu/xubuntu may need a virtual X11 client `xvfb` and
+X11 adobe fonts. One may install them by
+```
+sudo apt-get install xvfb
+sudo apt-get install t1-xfree86-nonfree ttf-xfree86-nonfree ttf-xfree86-nonfree-syriac xfonts-75dpi xfonts-100dpi
+```
+This will be considerably useful in most of windows users.
+For example, the remoter server is launched externally
+from a remoter client where X11 servers are unavailable or X forwarding is off.
 
 ---
 <div w3-include-html="./preamble_tail_date.html"></div>
