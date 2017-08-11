@@ -64,6 +64,7 @@ The following example bootstraps the toy data set once assuming
 $K = 2$ clusters.
 ```
 > set.seed(1234)
+> X <- seq.data.toy$org
 > ret.4 <- phyclust(X, 2)
 > (seq.data.toy.new <- bootstrap.seq.data(ret.4))
 code.type: NUCLEOTIDE, n.seq: 100, seq.len: 200.
@@ -92,6 +93,7 @@ we can perform a likelihood ratio test to assess the number of clusters.
 ```
 > ### This code may take a long time to run.
 > set.seed(1234)
+> X <- seq.data.toy$org
 > ret.K1 <- find.best(X, 1)
 > ret.K2 <- find.best(X, 2)
 > (logL.diff <- ret.K2$logL - ret.K1$logL)
