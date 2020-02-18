@@ -1,0 +1,146 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="R.css" tppabs="http://www.cran.r-project.org/R.css">
+<title>Using Fortran with R in Windows</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1>Using Fortran with R in Windows</h1>
+
+General instructions for working with Fortran are in the <a href="R-exts.pdf" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/R-exts.pdf">Writing R Extensions</a> manual in the <tt>docs</tt>
+subdirectory of the R installation.  Instructions that work with the g77 compiler are
+given in the <a href="readme.packages.txt" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/readme.packages.txt">readme.packages</a> file in the src/gnuwin32 subdirectory; some additional
+tips are given below.
+
+<h2>Contents</h2>
+<ul>
+  <li><h3><a href="#cvf61">Compaq Visual Fortran v. 6.1</a></h3>
+  <li><h3><a href="#cvf">Compaq Visual Fortran v. 6.6</a></h3>
+  <li><h3><a href="#g77">g77 (gcc 3.2) compiler from MinGW</a></h3>
+
+</ul>
+<a href="index.html" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/index.html">Back to main list</a>
+
+<hr>
+<h3><a name="cvf61">Compaq Visual Fortran v. 6.1</a></h3><br>
+These notes were written by Martyn Byng.<br>
+
+<p>To solve the problem I basically created the DLL as a fortran dynamic linked
+library project, and added the two `!DEC' commands to the subroutine I
+wished to add to the DLL. The first (DLLEXPORT), just informs the compiler
+to export that routine to the DLL, the second defines the calling convention
+(C => cdecl) and adds an underscore to the routine name after it has been
+exported (the ALIAS command).</p><br>
+<br>
+&nbsp;&nbsp;SUBROUTINE ZTEST(A,B,C,D,E,F,G)<br>
+&nbsp;&nbsp;!DEC$ ATTRIBUTES DLLEXPORT :: ZTEST<br>
+&nbsp;&nbsp;!DEC$ ATTRIBUTES C, ALIAS:'ZTEST_' :: ZTEST<br>
+<br>
+&nbsp;&nbsp;INTEGER A,B,C,D,E,F,G	<br>
+&nbsp;&nbsp;END<br>
+<br>
+[Later...]<br>
+Having now tried this with a more complex routine, it appears that you also
+need to add the option REFERENCE to the !DEC commands, i.e. use<br>
+&nbsp;!DEC$ ATTRIBUTES C, REFERENCE, ALIAS:'ZTEST_' :: ZTEST<br>
+instead of<br>
+&nbsp;!DEC$ ATTRIBUTES C, ALIAS:'ZTEST_' :: ZTEST<br>
+if you wish to pass vectors to the routine. <br>
+
+<hr>
+<h3><a name="cvf">Compaq Visual Fortran v. 6.6</a></h3><br>
+These notes were written by J.R.M. Hosking.<br>
+<br><font ><tt>Using Fortran routines from R with CVF</tt></font>
+<br>
+<br><font ><tt>1. &nbsp;Take a working Fortran subroutine, and put its name in an<br>
+ATTRIBUTES DLLEXPORT directive to ensure that the routine name<br>
+is exported from the DLL that will be built. &nbsp;Example:</tt></font>
+<br>
+<br><font ><tt>&nbsp; &nbsp; &nbsp; SUBROUTINE MYSUB(X,N,XMEAN)<br>
+CDEC$ ATTRIBUTES DLLEXPORT :: MYSUB<br>
+ &nbsp; &nbsp; &nbsp;IMPLICIT DOUBLE PRECISION (A-H,O-Z)<br>
+ &nbsp; &nbsp; &nbsp;DOUBLE PRECISION X(N)<br>
+ &nbsp; &nbsp; &nbsp;XMEAN=0D0<br>
+ &nbsp; &nbsp; &nbsp;DO 10 J=1,N<br>
+ &nbsp; &nbsp; &nbsp;XMEAN=XMEAN+X(J)<br>
+ &nbsp; 10 CONTINUE<br>
+ &nbsp; &nbsp; &nbsp;XMEAN=XMEAN/N<br>
+ &nbsp; &nbsp; &nbsp;RETURN<br>
+ &nbsp; &nbsp; &nbsp;END</tt></font>
+<br>
+<br><font ><tt>2. Compile and link the routine using the CVF options /assume:underscore<br>
+and &nbsp;/dll. &nbsp;E.g., supposing that the routine is in a file rtest.f,<br>
+at the command prompt type</tt></font>
+<br>
+<br><font ><tt>&nbsp; &nbsp;df rtest.f /assume:underscore /dll</tt></font>
+<br>
+<br><font ><tt>This will create a file rtest.dll file that should be kept, and<br>
+.obj, .lib and .exp files that are not needed for R and can be deleted.</tt></font>
+<br><font ><tt>(/assume:underscore is needed because R expects that a routine name</tt></font>
+<br><font ><tt>exported from a DLL will have an underscore appended to it, but CVF</tt></font>
+<br><font ><tt>does not do this by default.)</tt></font>
+<br>
+<br><font ><tt>3. &nbsp;Now from an R command prompt, use dyn.load to load the DLL and<br>
+.Fortan(&quot;MYSUB&quot;,...) to call the function. &nbsp;Example:</tt></font>
+<br>
+<br><font ><tt>&nbsp; &gt; dyn.load(&quot;E:\\rtest.dll&quot;)<br>
+ &nbsp;&gt; is.loaded(symbol.For(&quot;MYSUB&quot;))<br>
+ &nbsp;[1] TRUE<br>
+ &nbsp;&gt; x&lt;-1:6<br>
+ &nbsp;&gt; .Fortran(&quot;MYSUB&quot;,as.double(x),as.integer(length(x)),xmean=double(1))<br>
+ &nbsp;[[1]]<br>
+ &nbsp;[1] 1 2 3 4 5 6</tt></font>
+<br>
+<br><font ><tt>&nbsp; [[2]]<br>
+ &nbsp;[1] 6</tt></font>
+<br>
+<br><font ><tt>&nbsp; $xmean<br>
+ &nbsp;[1] 3.5</tt></font>
+<br>
+<br><font ><tt>&nbsp; &gt;</tt></font>
+<br>
+<br><font ><tt>Note: Fortran 90 constructions can be used within the routine, e.g.<br>
+the MYSUB routine could be written as</tt></font>
+<br>
+<br><font ><tt>&nbsp; Subroutine mysub(x,n,xmean)<br>
+ &nbsp;!DEC$ ATTRIBUTES DLLEXPORT :: MYSUB<br>
+ &nbsp;Implicit Double Precision (a-h,o-z)<br>
+ &nbsp;Double Precision x(n)<br>
+ &nbsp;xmean=Sum(x)/n<br>
+ &nbsp;Return<br>
+ &nbsp;End</tt></font>
+<br>
+<br><font ><tt>... but Fortran 90 constructions involving the arguments will not work.<br>
+E.g. this version will cause R (ver. 1.5.1) to crash:</tt></font>
+<br>
+<br><font ><tt>&nbsp; Subroutine mysub(x,xmean)<br>
+ &nbsp;!DEC$ ATTRIBUTES DLLEXPORT :: MYSUB<br>
+ &nbsp;Implicit Double Precision (a-h,o-z)<br>
+ &nbsp;Double Precision x(:)<br>
+ &nbsp;xmean=Sum(x)/Size(x)<br>
+ &nbsp;Return<br>
+ &nbsp;End </tt></font>
+ <hr>
+<h3><a name="g77">g77 (gcc 3.2) compiler from MinGW</a></h3><br>
+Some quick tips:
+<ul>
+<li>This compiler exports subroutine names in lowercase, with an underscore
+appended (i.e. "DC" would be exported as "dc_".)  <tt>.Fortran('dc', ...)</tt> will
+find the routine (it adds the underscore automatically), but an uppercase call will not.
+<li>The easiest way to build a DLL from only one source file is<br>
+<tt>
+&nbsp;g77 --shared -o source.dll source.f
+</tt>
+<br>
+For a more complicated DLL using multiple source files, it's probably worthwhile to
+set up your files as a package, and use "Rcmd SHLIB", "Rcmd INSTALL", or "Rcmd CHECK".
+See the <a href="R-exts.pdf" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/R-exts.pdf">Writing R Extensions</a> manual for details.
+</ul>
+<hr>
+
+<p>Last modified: April 24, 2003, by Duncan Murdoch</p>
+</body>
+</html>

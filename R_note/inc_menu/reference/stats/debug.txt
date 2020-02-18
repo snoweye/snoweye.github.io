@@ -1,0 +1,76 @@
+From Mark.Bravington@csiro.au Fri May 23 01:09:55 2003
+Subject: RE: [Rd] Samples of external code with various compilers?
+From: <Mark.Bravington@csiro.au>
+Date: Fri, 23 May 2003 15:09:55 +1000
+--------
+Hi Duncan
+
+Just a note about your R/Delphi page, in the 'Debugging' section. The
+strategy that's suggested there doesn't allow control over where R
+starts (RGUI anyway)-- it will start in the Projects/Options/Output
+directory. Since my entire way of working in R depends on starting in a
+fixed directory every time-- rarely the one in P/O/Output-- this caused
+me no end of problems until I figured out a workaround a year or so ago.
+The workaround is still OK in R1.6.2-- haven't checked it in 1.7.0 yet.
+<<start>> means "the directory you want R to effectively start in".
+
+(1) In Run/Parameters/Parameters, set
+
+R_USER=<<start>> R_PROFILE=<<start>>\.R_PROFILE
+
+Use single backslashes throughout.
+
+(2) Make sure there's a .R_PROFILE file in <<start>> containing the code
+below, which changes directory and sets up environment variables. Your
+.First in <<start>> will execute normally after this.
+
+setwd( '<<start>>')
+local(
+  if( file.exists( '.Renviron')) {
+    enviro <- scan( '.Renviron', what=list( names='', .Data=''), sep='=')
+    enviro <- do.call( 'structure', enviro)
+    do.call( 'Sys.putenv', as.list( enviro))
+  }
+)
+
+(3) When you launch R via Run/Run, you have to press F9 three times at
+breakpoints which mysteriously appear in the CPU window. Dunno why.
+Thereafter all is normal.
+
+It seems (or seemed) necessary to do all of this in order to ensure that
+all environment variables are set works and that .First is executed. I
+must admit I haven't recently tried to see whether it can be simplified,
+because it works OK for me. It does seem necessary to specify R_PROFILE
+and to give a full path for it.
+
+This might not work if you use a system-wide .Rprofile, but I *think* it
+should still work if you have a "local" .Rprofile in <<start>> (note
+that this one calls .R_PROFILE not .Rprofile). I don't use either,
+preferring to rely on .First. It's probably possible to modify the
+.R_PROFILE above to duplicate the normal procedure for executing a
+system-wide .Rprofile, provided that the latter isn't normally specified
+through the R_PROFILE environment variable itself.
+
+More generally, it might be handy if RGUI (and I guess RTERM) had a
+"startin" option that would allow them to run as if started in the
+specified different directory. Probably Delphi etc. should just offer
+that as a field, but it is simpler to change R than to change Delphi!
+Easy for me to say that, of course-- I wouldn't actually have to do
+it...
+
+atb
+Mark
+
+*******************************
+
+Mark Bravington
+CSIRO (CMIS)
+PO Box 1538
+Castray Esplanade
+Hobart
+TAS 7001
+
+phone (61) 3 6232 5118
+fax (61) 3 6232 5012
+Mark.Bravington@csiro.au 
+

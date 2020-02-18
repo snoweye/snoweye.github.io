@@ -1,0 +1,23 @@
+
+<ul>
+<font color="#800000"><b>Simple trial:</b></font>
+<li> Login with privilege "server" with account "molas" and password "molas".
+<li> Login with privilege "client" with account "guest" and blank password.
+<li> Singer version <a href="./molas-single/index.htm" target="_blank">trial on line</a> here.
+
+<br><br>
+<font color="#800000"><b>Simple example:</b></font>
+<li> Example 1. -- <a href="<? echo "$PHP_SELF?item=trial&subitem=ex_1"; ?>">PHP communicate with R</a>
+<li> Example 2. -- <a href="<? echo "$PHP_SELF?item=trial&subitem=ex_2"; ?>">PHP display the plot created by R</a>
+<li> Example 3. -- <a href="<? echo "$PHP_SELF?item=trial&subitem=ex_3"; ?>">More plots created by R</a>
+</ul>
+<?
+
+  if(isset($subitem) & in_array($subitem, array("ex_1", "ex_2", "ex_3"))){
+    echo "\n" .
+         "<hr>\n";
+
+    include "./$item/$subitem";
+  }
+
+?>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Install</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+I had only two platform for testing when I wrote this note,
+so most examples work on Linux and MS Windows and
+it should be similar on Mac.
+Some examples only work on Linux and
+some requirements are specific on MS Windows.
+
+---
+- <font color="#800000"><b>Binary:</b></font>
+
+  - <b>Windows</b>: Click <code>rw1071.exe</code> only, by default install to
+    "C:\Program Files\R\rw1071\"
+  - <b>Linux</b>: Require <code>Ghostview</code> and <code>LaTeX/TeX</code>,
+    for mandrake
+```
+  SHELL> rpm -i R-1.7.1-1mdk.i586.rpm
+```
+    By default, it will be installed at "/usr/lib/R/".
+
+
+- <font color="#800000"><b>Execution:</b></font>
+
+  - <b>Windows:</b> Click from windows "Start" menu.
+  - <b>Linux:</b>
+```
+  SHELL> R
+```
+
+
+- <font color="#800000"><b>Command & GUI mode</b></font>
+
+  - <b>Quit & Help:</b>
+    `q()`, `help()`
+
+
+- <font color="#800000"><b>Install Packages:</b></font>
+
+  - <b>Windows:</b> Click menu, <u>Packages -> Install package(s) from CRAN ...</u>
+  - <b>Linux:</b>
+```
+    SHELL> R CMD INSTALL package-name.tar.gz
+```
+
+
+- <font color="#800000"><b>Directory of Installed R and Packages:</b></font>
+
+  - <b>Windows:</b> "C:\Program Files\R\rw1071\"
+  - <b>Linux:</b> "/usr/lib/R/"
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

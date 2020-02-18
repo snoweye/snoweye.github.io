@@ -1,0 +1,184 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="R.css" tppabs="http://www.cran.r-project.org/R.css">
+<title>Using Pascal/Delphi with R</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1>Using Pascal/Delphi with R</h1>
+
+<h2>Contents</h2>
+<ul>
+  <li><h3>Borland Delphi v. 5</h3>
+  <ul>
+    <li><a href="#dll">Creating a DLL</a></li>
+    <li><a href="#building">Building a package</a></li>
+    <li><a href="#callR">Calling R</a></li>
+    <li><a href="#calling">Calling conventions</a></li>
+    <li><a href="#registers">Preserving registers</a></li>
+    <li><a href="#debugging">Debugging</a></li>
+  </ul>
+  <li><h3><a href="#arrays">Multi-dimensional arrays and memory management in Delphi</a></h3>
+</ul>
+<a href="index.html" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/index.html">Back to main list</a>
+
+<hr>
+<h2><a name="dll">Creating a DLL</a></h2>
+
+<p>Create a DLL in the Delphi IDE by using File|New...|DLL.  This will create and open a .dpr file
+containing a "library" module. </p>
+
+
+<p>Export procedures from your module using the <b>exports</b> clause, e.g.<br>
+<br>
+  <b>exports</b> test;<br>
+<br>
+where test is a procedures declared within the library module or within a unit that it uses.</p>
+
+<hr>
+<h2><a name="building">Building a package</a></li></h2>
+
+The R build system up to version 1.7.1 assumes that all source files for DLLs are written in C, C++, or Fortran.
+If your package doesn't include any files in the src directory with extensions *.c, *.f, *.cc, *.cpp
+or *.C, it will assume you don't have a DLL, and won't build it.
+
+To overcome this, you need to do two things.  First, you need your own makefile in your package src directory,
+called Makefile.win. This file should build the target DLL in the src directory.  For example, <br>
+<br>
+ DCC32=/cygdrive/f/progra~1/borland/delphi5/bin/dcc32<br>
+<br>
+ foo.dll: foo.dpr foo1.dfm foo1.pas<br>
+ 	$(DCC32) -m -E. foo<br>
+<br>
+The second thing you need to do is to get a patched <a href="MakePkg" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/MakePkg">MakePkg</a> file,
+and put it in your src/gnuwin32 directory.  (This step shouldn't be necessary after version 1.7.1.)
+
+With these additions, the usual "Rcmd install foo" style of package installation should
+work with your Delphi code.
+
+<hr>
+<h2><a name="callR">Calling R functions </a></h2>
+
+<p>Declare R functions using the <b>external</b> modifier, e.g.<br>
+<br>
+<b>function</b> ismdi:longbool; <b>cdecl</b>; <b>external</b> 'R.dll';<br>
+<b>function</b> R_alloc(n,size:integer):pchar; <b>cdecl</b>; <b>external</b> 'R.dll';<br>
+</p>
+
+<hr><h2><a name="calling">Calling conventions</a></h2>
+
+<p>Declare procedures using the "cdecl" modifier, e.g.<br>
+<br>
+
+  <b>procedure</b> test(<b>var</b> a:integer;<b>var</b> b:double;<b>var</b> c:double); <b>cdecl</b>;<br>
+</p>
+
+<p>To return string values, you must copy them into memory allocated by R.  For example, the function
+GetText below fills a vector with the string "hello":<br>
+<br>
+<b>function</b> Rpchar(s:<b>string</b>):pchar;<br>
+<b>begin</b><br>
+&nbsp;&nbsp;result := R_alloc(1,length(s)+1);<br>
+&nbsp;&nbsp;strpcopy(result,s);<br>
+<b>end</b>;<br>
+<br>
+<b>type</b><br>
+&nbsp;&nbsp;PCharArray = <b>array</b>[1..1000000] <b>of</b> pchar;<br>
+  <br>
+<b>procedure</b> GetText(<b>var</b> s:PCharArray;<b>var</b> num:integer); cdecl;<br>
+<b>var</b><br>
+&nbsp;&nbsp;i : integer;<br>
+<b>begin</b><br>
+&nbsp;&nbsp;<b>for</b> i:=1 <b>to</b> num <b>do</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;s[i] := RPchar('hello');<br>
+<b>end</b>;<br>
+</p>
+
+<hr>
+<h2><a name="registers">Preserving registers</a></h2>
+
+<p>Delphi uses the same register preserving conventions as R, so this is mostly done
+automatically.  The only problem that is likely to arise is with the floating point processor
+(FPU) registers.  Some versions of Delphi change the FPU control word upon entry to
+a DLL (but this is not true of Delphi 5); all Windows programs are at risk of changing
+the registers whenever they call a sloppily written DLL, such as the ones that are
+used in the common dialogs (File Open, etc.).</p>
+
+<p> To protect against messing up R by changing the FPU control word, the following strategy works:
+<ol>
+<li>On first entry to the DLL, set the control word to the standard R value, then
+save that as the Delphi default.  Put this code in the library module:<br>
+<br>
+<b>procedure</b> Rwin_fpset; <b>cdecl</b>; <b>external</b> 'R.dll';<br>
+<br>
+<b>function</b> Get8087CW:word;<br>
+<b>begin</b><br>
+&nbsp;&nbsp;<b>asm</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;fstcw result<br>
+&nbsp;&nbsp;<b>end</b>;<br>
+<b>end</b>;<br>
+<br>
+<b>begin</b><br>
+&nbsp;&nbsp;Rwin_fpset();<br>
+&nbsp;&nbsp;Set8087CW(Get8087CW);<br>
+<b>end</b>.<br>
+<br>
+<li>After any operation that may have changed the status word, put this call before returning
+to R:<br>
+<br>
+&nbsp;&nbsp;Set8087CW(Default8087CW);<br>
+<br>
+<li>The following function may be useful in debugging; it returns false when the
+control word has been unexpectedly changed:<br>
+<br>
+<b>function</b> Okay8087CW:boolean;<br>
+<b>begin</b><br>
+&nbsp;&nbsp;result := ((Default8087CW xor Get8087CW) and not $E060) = 0;<br>
+<b>end</b>;<br>
+</ol>
+
+
+<hr>
+<h2><a name="debugging">Debugging </a></h2>
+
+<p>To allow source level debugging of your code:<br>
+<ol><li>Under Project|Options...|Linker, change the image base to $15000000 (or some other value
+that is unlikely to conflict with another DLL).</li>
+    <li>Under Run|Parameters..., enter the path to the R GUI in the "Host Application" box,
+    along with any arguments you might use on the R command line.</li>
+        <li>Set any desired breakpoints in your code.</li>
+    <li>Hit F9 to compile your DLL and run R.</li>
+    <li>Within R, execute code that loads your DLL and calls one of your functions.
+    Delphi should stop at the first breakpoint that gets executed.</li>
+    </ol>
+
+<p>Mark Bravington points out the following:<ul><li>When you run R in the debugger, Delphi will likely trap several errors in the
+startup code.  As of 1.7.0 the cause of these errors is known (a minor incompatibility
+between R's memory manager and the MinGW startup code), but the only known fix is
+to rebuild R using the standard memory manager (by commenting out the line<br>
+<br>
+LEA_MALLOC=YES<br>
+<br>
+in the src/gnuwin32/MkRules file).  This is likely to result in a substantially slower
+executable.  Because the error appears to be harmless but difficult to fix,
+it is not likely to be fixed soon.
+<li>Delphi will start R with the working directory being the one where your DLL was
+built.  If you normally work in a different directory you'll need to do some fiddling
+on startup; details are given in <a href="debug.txt" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/bravington/debug.txt">this message.</a>
+</ul>
+
+</ul>
+<hr><h2><a name="arrays">Multidimensional arrays in Delphi </a></h2>
+
+Mark Bravington has written <a href="delphi-useful.pdf" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/bravington/delphi-useful.pdf">Linking Delphi to S: memory management
+and multi-dimensional arrays</a>, describing <a href="USEFUL.pas" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/bravington/USEFUL.pas">his unit USEFUL.pas</a>
+for handling dynamically allocated arrays.
+
+<hr>
+
+<p>Last modified: May 23, 2003, by Duncan Murdoch</p>
+</body>
+</html>

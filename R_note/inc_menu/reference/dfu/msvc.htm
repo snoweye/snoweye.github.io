@@ -1,0 +1,88 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="style.css" tppabs="http://www.dfu.min.dk/uht/Software/css/style.css">
+<title>DLL's in MSVC</title>
+</head>
+
+<body>
+
+<h1>Making DLL's in MicroSoft Visual C++ 6.0</h1>
+<h3>Working from the command line</h3>
+<p>First, check that your DOS environment variable PATH contains MSVC. I have a
+file setenv.bat which sets it:</p>
+
+<pre class="prompt">
+set INCLUDE=c:\program files\microsoft visual studio\vc98\Include
+set LIB=c:\program files\microsoft visual studio\vc98\lib
+set LIB = %LIB%;c:\program files\microsoft visual studio\vc98\mfc\lib;
+set PATH=%PATH%;c:\program files\microsoft visual studio\vc98\bin
+set PATH=%PATH%;c:\program files\microsoft visual studio\common\msdev98\bin;
+</pre>
+
+<p>Now we make a one-line DLL. Here's the source:</p>
+<pre class="csource">
+extern "C" __declspec(dllexport) void myfun(int * a){*a = - *a; }
+</pre>
+
+<p>Save this to file myfun.cpp and compile it from the DOS prompt with</p>
+
+<pre class="prompt">
+cl -LD myfun.cpp
+</pre>
+
+<p>The -LD switch says to generate a DLL. Next we make an executable which calls
+the DLL. Here's the source:</p>
+
+<pre class="csource">
+#include iostream.h
+
+extern C __declspec(dllimport) void myfun ( int * a);
+
+void main(void)
+{
+ int a = 6;
+ int b = a;
+ myfun(&b);
+
+ cout << '-' << a << " is " << b << "! \n";
+}
+</pre>
+
+<p>Save this to file main.cpp. Then compile and link from the command prompt
+with</p>
+
+<pre class="prompt">
+cl main.cpp /link myfun.lib
+</pre>
+
+<p>Execute it from the command line (just type 'main') and watch with awe!</p>
+
+<h3>Calling the DLL from R</h3>
+
+<p>By chance, this DLL is ready to use from R. (OK, that's not by chance: The R
+interface simply says that everything is shipped as pointers to integer, double,
+or *char). Here's an R session which uses it
+(of course you have to replace the setwd() argument with your path to
+the DLL)</p>
+
+<pre class="rsource">
+> setwd("c:/uht/Cpp/MSVC-DLLtest")
+NULL
+> dyn.load("myfun.dll")
+> .C("myfun", as.integer(6))
+[[1]]
+[1] -6
+>
+</pre>
+
+<h3>Creating the DLL from the IDE</h3>
+
+<p>In preparation - sort of. I haven't found any convincing reason to use the MS
+VC++ IDE yet. If you need an IDE, Borland's better. The advantage of MS VC++ I
+can think of is that the command line tools are easier to work with.</p>
+
+</body>
+
+</html>

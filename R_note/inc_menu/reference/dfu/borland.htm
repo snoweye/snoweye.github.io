@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="style.css" tppabs="http://www.dfu.min.dk/uht/Software/css/style.css">
+<title>DLL's in Borland C++ Builder</title>
+</head>
+
+<body>
+
+<h1>Making DLL's from the Borland C++ Builder IDE</h1>
+
+<p>First we construct our good old DLL. Choose File-&gt;New, then select DLL
+Wizard.
+There are some options to set: Let the source be C++, don't use VCL, don't use
+Multi Threading, use VC++ Style DLL. Enter the source</p>
+
+<pre class="csource">
+extern &quot;C&quot; __declspec(dllexport) void myfun(int * a){*a = - *a; }
+</pre>
+
+<p>Save the project as &quot;DLLproj&quot;; save the source file as &quot;MyMax&quot;.
+Then build the project, e.g. using CTRL-F9. You can't run the project because
+there is no main, so pressing F9 will result in an error.</p>
+<p>Now we need a main project to call the DLL. Start a new Console application
+(File-&gt;New, choose Console Wizard). No need to include support for VCL or
+Mutli Threading. Then enter the source: </p>
+
+<pre class="csource">
+#include &lt;iostream.h&gt;
+
+extern &quot;C&quot; __declspec(dllimport) void myfun ( int * a);
+
+void main(int argc, char* argv[])
+{
+  int a = 6;
+  int b = a;
+  myfun(&amp;b);
+
+  cout &lt;&lt; '-' &lt;&lt; a &lt;&lt; &quot; er &quot; &lt;&lt; b &lt;&lt; &quot; ! \n&quot;;
+}
+</pre>
+
+<p>Next, include the DLL in the project (Project-&gt;Add to Project). It is the
+.lib file (DLLproj.lib) that you need to include. Save the project. Then build
+the project and watch the fun begin. (To see the results, you probably need to
+run it from a DOS prompt).</p>
+
+<h3>Calling the DLL from R</h3>
+
+<p>This DLL happens to be ready to use from R. Start up an R session and execute</p>
+
+<pre class="rsource">
+&gt; setwd(&quot;c:/uht/cpp/dll-test/bcb2/&quot;) # ... or whereever you've placed the DLL
+NULL
+&gt; dyn.load(&quot;DLLproj.dll&quot;)
+&gt; .C(&quot;myfun&quot;,as.integer(2))
+Error in .C(&quot;myfun&quot;, as.integer(2)) : C/Fortran function name not in load table
+&gt; .C(&quot;_myfun&quot;,as.integer(2))
+[[1]]
+[1] -2
+&gt;
+</PRE>
+
+<p>Right, the R session contains an error: I always forget that Borland for some
+strange reason changes the name from &quot;myfun&quot; to &quot;_myfun&quot; by
+default. To avoid the underscore from the IDE, choose Project-&gt;Options, then
+Advanced&nbsp; Compiler, then uncheck &quot;Generate underscores&quot;.</p>
+
+<h3>How to compile the DLL from the command line</h3>
+
+<p>Sometimes it's quicker to write the source in your favourite text editor and
+compile it using DOS commands, rather than starting up the IDE. This is
+especially so for the typical R DLL, which is just a little number cruncher.
+It&nbsp; can be done with&nbsp;</p>
+
+<PRE CLASS="prompt">
+bcc32 -tWD -e&quot;myfun.dll&quot; myfun.cpp
+</pre>
+
+<p>asssuming that bcc32, the Borland C++ compiler, is in your search path. Yes,
+of course you can do this from Emacs with starting up a DOS shell, but that's
+another story. The -tWD option says to generate a DLL. The -e option gives the
+name of the executable image. To avoid the underscore in the generated symbol,
+add the -u- switch. No, I am not an expert in command line options and
+yes, I do think they're hard to figure out. They are documented in the help file
+&quot;C++ Builder Tools&quot;.</p>
+
+</body>
+
+</html>

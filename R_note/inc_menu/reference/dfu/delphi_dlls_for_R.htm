@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="style.css" tppabs="http://www.dfu.min.dk/uht/Software/css/style.css">
+<title>Delphi DLL's for R</title>
+</head>
+
+<body>
+
+<h1>Writing DLL's for R in Delphi</h1>
+
+<p>Delphi is not the most natural choice to make DLL's for R in, because R is
+based on C. When your DLL's will contain a lot of pointer gymnastics it is a
+little clumbsy because Object Pascal does not allow much pointer arithmitic.</p>
+<p>Anyway, it can be done. Here is the source code for the Max function. Notice </p>
+
+<ol>
+  <li>The function is &quot;void&quot; - the result is returned in the third
+    argument</li>
+  <li>Arguments are pointers.</li>
+</ol>
+
+<pre class="csource">
+library MyMaxLib; // File MyMax.pas
+
+// This is a DLL with an R-style interface ...
+// it exports the MyMax function.
+
+uses
+  SysUtils,
+  Classes;
+
+type
+  pD = ^Double;
+
+procedure MyMax(X,Y,Z: pD); stdcall;
+begin
+   if (X^ &lt; Y^) then Z^:=Y^ else Z^:= X^;
+end;
+
+exports 
+  MyMax index 1;
+begin
+end.
+</pre>
+
+<p>To compile this into a DLL, execute &quot;dcc32 MyMax.pas&quot; from the
+command prompt (assuming that the source code is residing in MyMax.pas)</p>
+<p>To call this from R, you need a wrapper. Here's one, called test.r</p>
+
+<pre class="rsource">
+# Set-up test of the MyMax DLL
+setwd(&quot;c:/uht/Delphi/R-DLL&quot;)  # ... replace with the proper path
+
+dyn.load(&quot;MyMax.dll&quot;)
+MyMax &lt;- function(a,b) 
+{
+  c &lt;- as.integer(0); 
+  ans &lt;- .C(&quot;MyMax&quot;,
+	as.double(a),
+	as.double(b),
+	as.double(c)
+    )
+  ans[[3]]
+}
+
+MyMax(12,23.1)
+</pre>
+
+<p>Notice the explicit type-casting (&quot;as.double ...&quot;). This is to make
+sure that the DLL gets what it expects, a pointer to a double.</p>
+
+<p>Notice: This DLL is not &quot;vectorised&quot; as most R functions are and
+should be. What I mean is, if you call this with</p>
+
+<pre class="rsource">
+> MyMax(c(12,34.1),17.1)
+</pre>
+
+<p>then you get just 17.1 - the largest of the first elements. But hey.</p>
+
+<h3>How to write DLL's for R in C (or C++)</h3>
+
+<p>See the pages for the C++ environments, <a href="javascript:if(confirm('http://www.dfu.min.dk/uht/Software/dll/msvc.htm  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.dfu.min.dk/uht/Software/dll/msvc.htm'" tppabs="http://www.dfu.min.dk/uht/Software/dll/msvc.htm">MicroSoft
+Visual C++</a> or <a href="javascript:if(confirm('http://www.dfu.min.dk/uht/Software/dll/borland.htm  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.dfu.min.dk/uht/Software/dll/borland.htm'" tppabs="http://www.dfu.min.dk/uht/Software/dll/borland.htm">Borland C++ Builder</a>.</p>
+
+</body>
+
+</html>

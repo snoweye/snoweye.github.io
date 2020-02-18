@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Make Packages</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<ul>
+<li> <font color="#800000"><b>Reference</b></font>
+<ol>
+<li>
+For the detail, read the web page <a href="http://cran.r-project.org/manuals.html" target="_blank">The R Manuals</a> and
+the PDF document Writing R Extensions (Chapter 1, 2, 3) in The R Manuals
+(my mirror <a href="./reference/package/R-exts.pdf" target="_blank">here</a>).
+
+<li>
+<a href="http://faculty.chicagogsb.edu/peter.rossi/research/bayes%20book/bayesm/Making%20R%20Packages%20Under%20Windows.pdf" target="_blank">
+Making R Packages Under Windows: A Tutorial.</a>
+By P. Rossi.
+(my mirror <a href="./reference/package/packages.pdf" target="_blank">here</a>).
+
+<li>
+<a href="http://www.stat.tamu.edu/~jnewton/createdll.pdf" target="_blank">
+Creating FORTRAN 77 DLLs for R on a Windows PC.</a>
+By Jane L. Harvill and H. Joseph Newton.
+(my mirror
+<a href="./reference/package/createdll.pdf" target="_blank">here</a>).
+
+</ol>
+<br>
+
+
+<li> <font color="#800000"><b>Create</b></font>
+<br>
+This is the simplest example and mininize requirement to create a package. <br>
+Create a directory "mypkg" as the following or obtain from
+<a href="./example/package/mypkg_0.1-1.tar.gz">mypkg_0.1-1.tar.gz</a>.
+
+<br><br>
+<table cellpadding="5">
+<tr>
+  <td> &nbsp;&nbsp;&nbsp;&nbsp;
+  <td bgcolor="#dddddd">
+<code>
+<pre>
+./mypkg
+|-- <a href="./example/package/mypkg/COPYING" target="_blank">COPYING</a>
+|-- <a href="./example/package/mypkg/DESCRIPTION" target="_blank">DESCRIPTION</a>
+|-- <a href="./example/package/mypkg/INDEX" target="_blank">INDEX</a>
+|-- R/
+|   |-- <a href="./example/package/mypkg/R/call_c.r" target="_blank">call_c.r</a>
+|   |-- <a href="./example/package/mypkg/R/call_f.r" target="_blank">call_f.r</a>
+|   `-- <a href="./example/package/mypkg/R/zzz.r" target="_blank">zzz.r</a>
+|-- <a href="./example/package/mypkg/README" target="_blank">README</a>
+|-- demo/
+|   |-- <a href="./example/package/mypkg/demo/00Index" target="_blank">00Index</a>
+|   |-- <a href="./example/package/mypkg/demo/RcallC.R" target="_blank">RcallC.R</a>
+|   `-- <a href="./example/package/mypkg/demo/RcallF.R" target="_blank">RcallF.R</a>
+|-- man/
+|   |-- <a href="./example/package/mypkg/man/test.c.Rd" target="_blank">test.c.Rd</a>
+|   `-- <a href="./example/package/mypkg/man/test.f.Rd" target="_blank">test.f.Rd</a>
+`-- src/
+    |-- <a href="./example/package/mypkg/src/call_c.c" target="_blank">call_c.c</a>
+    `-- <a href="./example/package/mypkg/src/call_f.f" target="_blank">call_f.f</a>
+
+4 directories, 14 files
+</pre>
+</code>
+</table>
+<br>
+
+
+<li> <font color="#800000"><b>Download</b></font>
+<br>
+<b>Linux:</b> The complete package is <a href="./example/package/mypkg_0.1-1.tar.gz">mypkg_0.1-1.tar.gz</a>. <br>
+<b>Windows:</b> The complete package is <a href="./example/package/mypkg_0.1-1.zip">mypkg_0.1-1.zip</a>.
+
+<br><hr><br>
+
+
+<li> <font color="#800000"><b>The 'COPYING' file</b></font>
+<br>
+<font color="green">Optional</font>.
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'DESCRIPTION' file</b></font>
+<br>
+Contains basic information about the package,
+the fields <font color="red">'Package', 'Version', 'License' 'Description', 'Title', 'Author', and 'Maintainer'</font>
+are mandatory. And the fileds 'Depends' and 'Suggests' are <br>
+<ol>
+<li> The necessary to successfully load must be listed in 'Depends'.
+<li> To successfully run <b>R CMD check</b> must be listed either in 'Depends' or 'Suggests'.
+</ol>
+<br>
+
+
+<li> <font color="#800000"><b>The 'INDEX' file</b></font>
+<br>
+<font color="green">Optional</font>. <br>
+Automatically generated from <b>Rdindex()</b> from package tools.
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'R' subdirectory</b></font>
+<br>
+Contains R code files. <br>
+The extension '.R' or '.r'. <br>
+The 'call_c.r' and 'call_f.r' have created in
+<a href="<? echo "$PHP_SELF?item=R_Call"; ?>">R_Call</a> page and modify to suit the package. <br>
+The 'zzz.r' for load the package. <br>
+<font color="red">Put your R code in this subdirectory.</font>
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'README' file</b></font>
+<br>
+<font color="green">Optional</font>. <br>
+Summary this package. Here, it record the process to build a package.
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'demo' subdirectory</b></font>
+<br>
+<font color="green">Optional</font>. <br>
+It will running via <b>demo()</b>. <br>
+The '00Index' contains the summarize for all demo function. <br>
+The 'RcallC.R' and 'RcallF.R' are the part of 'cal_c.r' and 'call_f.r' have created in
+<a href="<? echo "$PHP_SELF?item=R_Call"; ?>">R_Call</a> page and modify to suit the package.
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'man' subdirectory</b></font>
+<br>
+Contains documentation files for the objects in the package in <i>R document</i> (Rd) format. <br>
+The extension '.Rd'. <br>
+The 'test.c.Rd' and 'test.f.Rd' are the document for function 'test.c' and 'test.f' which described in the
+'call_c.r' and 'call_f.r' belong the 'R' subdirectory.
+<br><br>
+
+
+<li> <font color="#800000"><b>The 'src' subdirectory</b></font>
+<br>
+<font color="green">Optional</font>. <br>
+Contains C, C++, FORTRAN source files and optionally file 'Makevars' or 'Makefile'.<br>
+The 'call_c.c' and 'call_f.f' have created in
+<a href="<? echo "$PHP_SELF?item=R_Call"; ?>">R_Call</a> page and modify to suit the package. <br>
+<font color="red">Put your source code (.c, .f, .cc) in this subdirectory.</font> <br>
+<br><hr><br>
+
+
+<li> <font color="#800000"><b>Compile & Build & Check</b></font>
+<br>
+<b>Linux:</b> <br>
+<table cellpadding="5">
+<tr>
+  <td> &nbsp;&nbsp;&nbsp;&nbsp;
+  <td bgcolor="#dddddd">
+    <code>
+    SHELL> R CMD build --force ./mypkg <br>
+    SHELL> R CMD check ./mypkg <br>
+    SHELL> R CMD build ./mypkg <br>
+    </code>
+</table>
+<br>
+<ol>
+<li> 'build' will automatically create the 'INDEX' file if not exist.
+<li> 'check' will create a subdirectory "mypkg.Rcheck" and simulate the install process and test all function could work.
+<li> 'build' will create a tar.gz file, the package 'mypkg'.
+</ol>
+And the process message may be like this "<a href="./example/package/message.linux.txt" target="_blank">message.linux.txt</a>". <br>
+<br>
+
+<b>Windows:</b> <br>
+<b>
+<font color="red">
+Require some additional tools for build pacakge or install from source code. <br>
+<ol>
+<li> See the page <a href="http://www.stats.ox.ac.uk/pub/Rtools/" target="_blank">Building R for Windows</a>.
+<li> See also the <a href="<? echo "$PHP_SELF?item=windows"; ?>">Windows</a> page to construction the environment for Windows.
+</ol>
+</font></b>
+<br>
+After the environment ready, the build process as follow, <br>
+<ol>
+<li> Download <a href="./example/package/mypkg_0.1-1.tar.gz">mypkg_0.1-1.tar.gz</a>.
+<li> Unzip mypkg_0.1-1.tar.gz to C:\WINDOWS\DESKTOP
+<li> Open MS-DOS command mode.
+<br>
+<table cellpadding="5">
+<tr>
+  <td bgcolor="#dddddd">
+    <code>
+    C:\> COPY C:\WINDOWS\DESKTOP\MYPKG C:\PROGRA~1\R\RW1071\SRC\LIBRARY <br>
+    C:\> C:\PROGRA~1\R\SET_BUILD <br>
+    > CD C:\PROGRA~1\R\SRC\GNUWIN32 <br>
+    > make pkg-mypkg <br>
+    </code>
+</table>
+<li> "SET_BUILD.BAT" will set the building environment.
+<li> "make pkg-mypkg" will build all package and install to R library path.
+</ol>
+<br>
+The process message may be like this "<a href="./example/package/message.windows.txt" target="_blank">message.windows.txt</a>". <br>
+The complete package will be at "C:\PROGRA~1\R\RW1071\LIBRARY\MYPKG", you can zip the whole directory to
+<a href="./example/package/mypkg_0.1-1.zip">mypkg_0.1-1.zip</a>.
+<br><br>
+
+
+<li> <font color="#800000"><b>Install</b></font>
+<br>
+See <a href="<? echo "$PHP_SELF?item=install"; ?>">Install</a> page.
+<br><br>
+
+
+</ul>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

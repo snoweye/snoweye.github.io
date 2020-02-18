@@ -1,0 +1,11 @@
+Package: mypkg
+Version: 0.1-1
+License: GPL version 2 or newer
+Description: This is a simple package demo.
+Title: My package
+Author: MyLastName, MyFirstName <my@email.address>
+Maintainer: MyLastName, MyFirstName <my@email.address>
+Date: 2004-06-27
+Depends: R (>= 1.6.0)
+Suggests:
+URL: http://www.r-project.org, http://my.web.page.address
