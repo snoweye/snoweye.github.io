@@ -41,91 +41,56 @@
 <xmp theme="readable" style="display:none;">
 
 
-<ul>
-<li> <font color="#800000"><b>Read & Write</b></font>
-<br>
-Function <code>read.table()</code> and <code>write.table()</code>.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Read & Write</b></font>
+
+  Function <code>read.table()</code> and <code>write.table()</code>.
+
+```
 read.table(file, header = FALSE, sep = "", quote = "\"'", dec = ".",
            row.names, col.names, as.is = FALSE, na.strings = "NA",
            colClasses = NA, nrows = -1,
            skip = 0, check.names = TRUE, fill = !blank.lines.skip,
            strip.white = FALSE, blank.lines.skip = TRUE,
            comment.char = "#")
-</pre>
-</code>
 
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
 write.table(x, file = "", append = FALSE, quote = TRUE, sep = " ",
             eol = "\n", na = "NA", dec = ".", row.names = TRUE,
             col.names = TRUE, qmethod = c("escape", "double"))
-</pre>
-</code>
-</table>
-<br>
+```
 
 
-<li> <font color="#800000"><b>Load & Save</b></font>
-<br>
-Function <code>read.table()</code> and <code>write.table()</code>.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Load & Save</b></font>
+
+  Function <code>read.table()</code> and <code>write.table()</code>.
+
+```
 load(file, envir = parent.frame())
-</pre>
-</code>
 
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
 save(..., list = character(0), file = stop("`file' must be specified"),
      ascii = FALSE, version = NULL, envir = parent.frame(), 
      compress = FALSE)
-</pre>
-</code>
-</table>
-<br>
+```
 
-<li> <font color="#800000"><b>Download for MySQL</b></font>
-<br>
-For MS Windows:<br>
-&nbsp;&nbsp;&nbsp; R 1.6 and Mysql 3.x, DBI.zip or my mirror <a href="./source/data/DBI.zip">here</a>,
-RMySQL.zip (my mirror <a href="./source/data/RMySQL.zip">here</a>).<br>
-&nbsp;&nbsp;&nbsp; R 1.7 and Mysql 3.x or 4.x, DBI_0.1-5.zip or my mirror <a href="./source/data/DBI_0.1-5.zip">here</a>,
-RMySQL_0.5-1.zip (my mirror <a href="./source/data/RMySQL_0.5-1.zip">here</a>).<br>
-&nbsp;&nbsp;&nbsp; R 1.8 and Mysql 3.x or 4.x, DBI_0.1-8.zip or my mirror <a href="./source/data/DBI_0.1-8.zip">here</a>,
-RMySQL_0.5-5.zip (my mirror <a href="./source/data/RMySQL_0.5-5.zip">here</a>).<br>
-For Linux:<br>
-&nbsp;&nbsp;&nbsp; For R 1.7 and Mysql 3.x or 4.x, DBI_0.1-7.tar.gz or my mirror <a href="./source/data/DBI_0.1-7.tar.gz">here</a>,
-RMySQL_0.5-2.tar.gz (my mirror <a href="./source/data/RMySQL_0.5-2.tar.gz">here</a>).<br>
-<br>
+- <font color="#800000"><b>Download for MySQL</b></font>
 
-<li> <font color="#800000"><b>MySQL</b></font>
-<br>
-Require packages <code>methods</code>, <code>DBI</code>, <code>RMySQL</code>.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+  - For MS Windows:
+    - R 1.6 and Mysql 3.x, DBI.zip or my mirror <a href="./source/data/DBI.zip">here</a>,
+      RMySQL.zip (my mirror <a href="./source/data/RMySQL.zip">here</a>).
+    - R 1.7 and Mysql 3.x or 4.x, DBI_0.1-5.zip or my mirror <a href="./source/data/DBI_0.1-5.zip">here</a>,
+      RMySQL_0.5-1.zip (my mirror <a href="./source/data/RMySQL_0.5-1.zip">here</a>).
+    - R 1.8 and Mysql 3.x or 4.x, DBI_0.1-8.zip or my mirror <a href="./source/data/DBI_0.1-8.zip">here</a>,
+      RMySQL_0.5-5.zip (my mirror <a href="./source/data/RMySQL_0.5-5.zip">here</a>).
+
+  - For Linux:
+    - For R 1.7 and Mysql 3.x or 4.x, DBI_0.1-7.tar.gz or my mirror <a href="./source/data/DBI_0.1-7.tar.gz">here</a>,
+      RMySQL_0.5-2.tar.gz (my mirror <a href="./source/data/RMySQL_0.5-2.tar.gz">here</a>).
+
+
+- <font color="#800000"><b>MySQL</b></font>
+
+  Require packages <code>methods</code>, <code>DBI</code>, <code>RMySQL</code>.
+
+```
 # In Windows, require add the RMySQL.dll to PATH, like this
 # Sys.putenv(PATH = paste(Sys.getenv("PATH"),
 #   "C:/PROGRA~1/R/rw1071/library/RMySQL/libs/", sep = ";"))
@@ -152,17 +117,11 @@ tb$get <- dbGetQuery(db$con,
 
 dbDisconnect(db$con)
 dbUnloadDriver(db$drv)
-</pre>
-</code>
-</table>
-<br><br>
+```
 
-<li> <font color="#800000"><b>More</b></font>
-<br>
-Another database, ODBC, PostgreSQL, Oracle, .... <br>
-See <a href="http://developer.r-project.org/db/" target="_blank">R & DBMSs Page</a><br>
-
-</ul>
+- <font color="#800000"><b>More</b></font>
+  - Another database, ODBC, PostgreSQL, Oracle, ....
+  - See <a href="http://developer.r-project.org/db/" target="_blank">R & DBMSs Page</a>
 
 
 ---

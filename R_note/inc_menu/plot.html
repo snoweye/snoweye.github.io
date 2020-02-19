@@ -41,51 +41,26 @@
 <xmp theme="readable" style="display:none;">
 
 
-<ul>
-<li> <font color="#800000"><b>Plot</b></font>
-<br>
-The <code>plot()</code> function is defined as, 
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Plot</b></font>
+
+  The <code>plot()</code> function is defined as, 
+```
 plot(x, y, xlim=range(x), ylim=range(y), type="p",
      main, xlab, ylab, ...)
-</pre>
-</code>
-</table>
-<br>
+```
+  In file "<a href="./example/plot/plot_1.r" target="_blank">plot_1.r</a>" will be a simple X-Y plot, 
 
-In file "<a href="./example/plot/plot_1.r" target="_blank">plot_1.r</a>" will be a simple X-Y plot, 
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
 # File name: plot_1.r
 
 data(cars)
 
 plot(cars)
 plot(cars, type="l")
-</pre>
-</code>
-</table>
-<br>
+```
+  In file "<a href="./example/plot/plot_2.r" target="_blank">plot_2.r</a>" will be a user defined X-Y plot, 
 
-In file "<a href="./example/plot/plot_2.r" target="_blank">plot_2.r</a>" will be a user defined X-Y plot, 
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
 # File name: plot_2.r
 
 data(cars)
@@ -105,23 +80,15 @@ legend(5, 100, "cars", lty = 1)
 dev.list()
 dev.cur()
 dev.off()
-</pre>
-</code>
-</table>
-<br>
+```
 
 
-<li> <font color="#800000"><b>Layout</b></font>
-<br>
-Here, in file "<a href="./example/plot/plot_3.r" target="_blank">plot_3.r</a>"
-put the 4 plots in the same graph for simple layout,
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Layout</b></font>
+
+  Here, in file "<a href="./example/plot/plot_3.r" target="_blank">plot_3.r</a>"
+  put the 4 plots in the same graph for simple layout,
+
+```
 # File name: plot_3.r
 
 data(cars)
@@ -132,20 +99,10 @@ plot(cars, main = "Cars")
 hist(cars[, 1], xlab = "speed", main = "Histogram of speed")
 hist(cars[, 2], xlab = "dist", nclass = 10, main = "Histogram of dist")
 plot(density(cars[, 2]), main = "Density of dist")
-</pre>
-</code>
-</table>
-<br>
-
-And, the file "<a href="./example/plot/plot_4.r" target="_blank">plot_4.r</a>"
-put the 4 plots in the same graph for user defined layout,
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
+  And, the file "<a href="./example/plot/plot_4.r" target="_blank">plot_4.r</a>"
+  put the 4 plots in the same graph for user defined layout,
+```
 # File name: plot_4.r
 
 data(cars)
@@ -163,68 +120,37 @@ hist(cars[, 2], nclass = 10, main = "", xlab = "", ylab = "")
 
 par(mar = c(3, 3, 1, 1))
 plot(density(cars[, 2]), main = "", xlab = "", ylab = "")
-</pre>
-</code>
-</table>
-<br>
+```
 
 
-<li> <font color="#800000"><b>Save</b></font>
-<br>
-The bitmap function require a command <code>gs</code>, a software
-<a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GhostScript</a>,
-to transform .ps image file to another type. <br>
-About plot graph save function has follows,
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Save</b></font>
+
+  The bitmap function require a command <code>gs</code>, a software
+  <a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GhostScript</a>,
+  to transform `.ps` image file to another type. <br>
+  About plot graph save function has follows,
+
+```
 postscript(file = ifelse(onefile, "Rplots.ps", "Rplot%03d.ps"),
            onefile = TRUE,
            paper, family, encoding, bg, fg,
            width, height, horizontal, pointsize,
            pagecentre, print.it, command, title = "R Graphics Output")
-</pre>
-</code>
 
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
 bitmap(file, type = "png256", height = 6, width = 6, res = 72,
        pointsize, ...)
-</pre>
-</code>
 
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
 bmp(filename = "Rplot%03d.bmp", width = 480, height = 480, pointsize = 12,
     bg = "white")
 jpeg(filename = "Rplot%03d.jpg", width = 480, height = 480, pointsize = 12,
      quality = 75, bg = "white")
 png(filename = "Rplot%03d.png", width = 480, height = 480, pointsize = 12,
     bg = "white")
-</pre>
-</code>
-</table>
-<br>
+```
 
-The file "<a href="./example/plot/plot_5.r" target="_blank">plot_5.r</a>" will save the graph in "plot_4.r" as a jpeg file
-"<a href="./example/plot/plot_5.png" target="_blank">plot_5.png</a>",
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+  The file "<a href="./example/plot/plot_5.r" target="_blank">plot_5.r</a>" will save the graph in "plot_4.r" as a jpeg file
+  "<a href="./example/plot/plot_5.png" target="_blank">plot_5.png</a>",
+```
 # File name: plot_5.r
 
 data(cars)
@@ -247,17 +173,12 @@ par(mar = c(3, 3, 1, 1))
 plot(density(cars[, 2]), main = "", xlab = "", ylab = "")
 
 dev.off()
-</pre>
-</code>
-</table>
-<br>
+```
 
 
-<li> <font color="#800000"><b>More</b></font>
-<br>
-see Package <code>grid</code>.
+- <font color="#800000"><b>More</b></font>
 
-</ul>
+  See Package <code>grid</code>.
 
 
 ---

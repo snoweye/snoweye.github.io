@@ -41,26 +41,19 @@
 <xmp theme="readable" style="display:none;">
 
 
-<ul>
-<li> <font color="#800000"><b>Conclusion</b></font>
-<br>
-There are two conclusions for this page. <br>
-R uses "Pass by value". <br>
-R uses "Default initialize".
-<br>
-<br>
+- <font color="#800000"><b>Conclusion</b></font>
 
-<li> <font color="#800000"><b>Function 1</b></font>
-<br>
-First, create an R code file "<a href="./example/function/func_1.r" target="_blank">func_1.r</a>" contains this, 
-run it and trace the result to see the difference.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+  There are two conclusions for this page.
+  - R uses "Pass by value".
+  - R uses "Default initialize".
+
+
+- <font color="#800000"><b>Function 1</b></font>
+
+  First, create an R code file "<a href="./example/function/func_1.r" target="_blank">func_1.r</a>" contains this, 
+  run it and trace the result to see the difference.
+
+```
 # File name: func_1.r
 
 hello <- function(input){
@@ -79,22 +72,14 @@ molas
 input
 hello()
 hello(NULL)
-</pre>
-</code>
-</table>
-<br>
+```
 
-<li> <font color="#800000"><b>Function 2</b></font>
-<br>
-First, create an R code file "<a href="./example/function/func_2.r" target="_blank">func_2.r</a>" contains this,
-run it and trace the result to see the difference.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Function 2</b></font>
+
+  First, create an R code file "<a href="./example/function/func_2.r" target="_blank">func_2.r</a>" contains this,
+  run it and trace the result to see the difference.
+
+```
 # File name: func_2.r
 
 hello <- function(a, ...){
@@ -118,12 +103,7 @@ molas
 input
 test()
 test(NULL)
-</pre>
-</code>
-</table>
-<br>
-
-</ul>
+```
 
 
 ---

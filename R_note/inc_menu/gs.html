@@ -42,71 +42,45 @@
 
 
 <font color="red"><b>This page is for Linux only!! But not necessary</b></font>
-<br>
-<hr>
 
-<ul>
-<li> <font color="#800000"><b>Ghostscript</b></font>
-<br>
-When using the function <code>bitmap()</code> in Linux, the R
-system requires Ghostscript software
-to translate figure from ps file to other type image file, include jpeg, png and bmp etc.
-To download, install and get more information, see
-<a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GNU Ghostscript</a> or
-<a href="http://www.cups.org/ghostscript.php" target="_blank">ESP Ghostscript</a>.
-<br><br>
+---
+- <font color="#800000"><b>Ghostscript</b></font>
+
+  When using the function <code>bitmap()</code> in Linux, the R
+  system requires Ghostscript software
+  to translate figure from ps file to other type image file, include jpeg, png and bmp etc.
+  To download, install and get more information, see
+  <a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GNU Ghostscript</a> or
+  <a href="http://www.cups.org/ghostscript.php" target="_blank">ESP Ghostscript</a>.
 
 
-<li> <font color="#800000"><b>In Renviron file</b></font>
-<br>
-Under <code>${R_HOME}/etc/Renviron</code>,
-add an R system environment variable for ghostscript.
-If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
-that Renviron will be
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>In Renviron file</b></font>
+
+  Under <code>${R_HOME}/etc/Renviron</code>,
+  add an R system environment variable for ghostscript.
+  If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
+  that Renviron will be
+```
 R_GSCMD=${R_GSCMD-'/usr/bin/gs'}
-</pre>
-</code>
-</table>
-<br><br>
+```
 
 
-<li> <font color="#800000"><b>In Script</b></font>
-<br>
-If no permission to modify Renviron file, you can use the
-R command <code>Sys.putenv()</code>
-to setup the environment variable.
-If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
-that environment variable can be setted by
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>In Script</b></font>
+
+  If no permission to modify Renviron file, you can use the
+  R command <code>Sys.putenv()</code>
+  to setup the environment variable.
+  If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
+  that environment variable can be setted by
+```
 Sys.putenv("R_GSCMD"="/usr/bin/gs")
-</pre>
-</code>
-</table>
-<br>
-See also <code>Sys.getenv()</code>.
-<br><br>
+```
+  See also <code>Sys.getenv()</code>.
 
 
-<li> <font color="#800000"><b>In MS-Windows</b></font>
-<br>
-Use <code>gswin32c.exe</code> to instead of <code>gs</code> in Unix.
-<br><br>
+- <font color="#800000"><b>In MS-Windows</b></font>
 
-
-</ul>
+  Use <code>gswin32c.exe</code> to instead of <code>gs</code> in Unix.
 
 
 ---

@@ -47,85 +47,51 @@ The first one will demonstrate different batching method, and
 the second will demonstrate a batching method with extra arguments.
 Some of Linux knowledges are required for understanding these commands,
 and they are also useful when you have to process bunch of jobs.
-More ways to batch jobs can be found at
-the page
-"<a href="<? echo "$PHP_SELF?item=batch_more"; ?>">Batch more</a>"
+More ways to batch jobs can be found at the page
+"<a href="./batch_more.html">Batch More</a>"
 in this web site
 and the page
-"<a href="http://thirteen-01.stat.iastate.edu/snoweye/hpsc/?item=rscript">
-Rscript</a>"
+"<a href="../../hpsc/rscript.html">Rscript</a>"
 in the
-<a href="http://thirteen-01.stat.iastate.edu/snoweye/hpsc/">HPSC</a>
+<a href="../../hpsc/index.html">HPSC</a>
 web site.
 <br>
-<hr>
 
-<b>Example 1:</b><br>
+---
+### <b>Example 1:</b>
 
-<ol>
+1. <font color="#800000"><b>For MS Windows user</b></font>
 
-<li> <font color="#800000"><b>For MS Windows user</b></font>
-<br>
-Use <code>Rterm.exe</code> or <code>Rcmd.exe</code> to substitute
-<code>R</code> in the following command mode.
-<br>
-<br>
+   Use <code>Rterm.exe</code> or <code>Rcmd.exe</code> to substitute
+   <code>R</code> in the following command mode.
 
-<li> <font color="#800000"><b>Hello world !</b></font>
-<br>
-First, create an R code file "<a href="./example/batch/hello_1.r" target="_blank">hello_1.r</a>" contains the following.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+2. <font color="#800000"><b>Hello world !</b></font>
+
+   First, create an R code file "<a href="./example/batch/hello_1.r" target="_blank">hello_1.r</a>" contains the following.
+```
 # File name: hello_1.r
 a <- c("Hello", "world", "!")
 print(a)
 b <- paste(a, collapse = " ")
 print(b)
-</pre>
-</code>
-</table>
-<br>
-Here, it sets an array variable "a" contains 3 elements, "Hello", "world", and "!", and
-prints them. It also uses the function "paste" to join all elements in array "a" by " " (space)
-and then it sets the array to a variable "b" and prints it.
-<br><br>
+```
+  Here, it sets an array variable "a" contains 3 elements, "Hello", "world", and "!", and
+  prints them. It also uses the function "paste" to join all elements in array "a" by " " (space)
+  and then it sets the array to a variable "b" and prints it.
 
-<li> <font color="#800000"><b>Batch From Script</b></font>
-<br>
-Use the command mode to send "hello_1.r" as a batch job.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+3. <font color="#800000"><b>Batch From Script</b></font>
+
+   Use the command mode to send "hello_1.r" as a batch job.
+```
     SHELL> R CMD BATCH --vanilla --slave hello_1.r output_file
-    </code>
-<tr>
-<td> 
-<td> or
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+```
+   or
+```
     SHELL> nohup R CMD BATCH --vanilla --slave hello_1.r output_file &
-    </code>
-</table>
-<br>
-By default, the output will be saved in "hello_1.r.Rout" if an "output_file" isn't
-assigned. The output file (hello_1.r.Rout) will as the following.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
+   By default, the output will be saved in "hello_1.r.Rout" if an "output_file" isn't
+   assigned. The output file (hello_1.r.Rout) will as the following.
+```
 > a <- c("Hello", "world", "!")
 > print(a)
 [1] "Hello" "world" "!"
@@ -133,130 +99,66 @@ assigned. The output file (hello_1.r.Rout) will as the following.
 > print(b)
 [1] "Hello world !"
 >
-</pre>
-</code>
-</table>
-<br><br>
+```
 
-<li> <font color="#800000"><b>Batch From Command</b></font>
-<br>
-Use the command mode to send "hello_1.r" as a batch job from [STDIN] and show the
-output on [SDTOUT]. The followings have similar commands, and can provide
-same results, but they can be used in different purposes.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+4. <font color="#800000"><b>Batch From Command</b></font>
+
+   Use the command mode to send "hello_1.r" as a batch job from [STDIN] and show the
+   output on [SDTOUT]. The followings have similar commands, and can provide
+   same results, but they can be used in different purposes.
+```
     SHELL> R --vanilla --slave < hello_1.r > output_file
-    </code>
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td> or
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+```
+   or
+```
     SHELL> cat hello_1.r | R --vanilla --slave  > output_file
-    </code>
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td> or
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+```
+   or
+```
     SHELL> echo 'source("hello_1.r")' | R --vanilla --slave  > output_file
-    </code>
-</table>
-
-<br>
-By default, the output will be show on the screen, you can use ">" to redirect the
-output into "output_file". The output will like this.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
+   By default, the output will be show on the screen, you can use ">" to redirect the
+   output into "output_file". The output will like this.
+```
 [1] "Hello" "world" "!"
 [1] "Hello world !"
-</pre>
-</code>
-</table>
-<br><br>
+```
 
-</ol>
+---
+### <b>Example 2:</b>
 
-<hr width="95%" align="center">
-<b>Example 2:</b><br>
+1. <font color="#800000"><b>Hello world, MOLAS !</b></font>
 
-<ol>
-<li> <font color="#800000"><b>Hello world, MOLAS !</b></font>
-<br>
-First, create an R code file "<a href="./example/batch/hello_2.r" target="_blank">hello_2.r</a>" contains the following.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+   First, create an R code file "<a href="./example/batch/hello_2.r" target="_blank">hello_2.r</a>" contains the following.
+```
 # File name: hello_2.r
 a <- c("Hello", "world,", argv, "!")
 print(a)
 b <- paste(a, collapse = " ")
 print(b)
-</pre>
-</code>
-</table>
-<br>
-Here, it sets an array variable "a" contains 4 elements, "Hello", "world,", argv,
-and "!", and prints them. The variable "argv" will be passed from STDIN command.
-It also uses the function "paste" to join all elements in array "a" by " " (space)
-and sets to a variable "b" and prints it.
-<br><br>
+```
+   Here, it sets an array variable "a" contains 4 elements, "Hello", "world,", argv,
+   and "!", and prints them. The variable "argv" will be passed from STDIN command.
+   It also uses the function "paste" to join all elements in array "a" by " " (space)
+   and sets to a variable "b" and prints it.
 
-<li> <font color="#800000"><b>Pass Variable From STDIN</b></font>
-<br>
-Use command mode to send "hello_2.r" for batch job from STDIN and show the
-output on SDTOUT. The variable "argv" as "MOLAS" is assigned before the "hello_2.r" is passed to R.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-    <code>
+2. <font color="#800000"><b>Pass Variable From STDIN</b></font>
+
+   Use command mode to send "hello_2.r" for batch job from STDIN and show the
+   output on SDTOUT. The variable "argv" as "MOLAS" is assigned before the "hello_2.r" is passed to R.
+```
     SHELL> echo 'argv <- "MOLAS"; source("hello_2.r")' | R --vanilla --slave  > output_file
-    </code>
-</table>
-<br>
-By default, the output will be shown on the screen, you can use ">" to redirect the
-output into an "output_file". The output will like this.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+```
+   By default, the output will be shown on the screen, you can use ">" to redirect the
+   output into an "output_file". The output will like this.
+```
 [1] "Hello" "world," "MOLAS" "!"
 [1] "Hello world, MOLAS !"
-</pre>
-</code>
-</table>
+```
 
-</ol>
+3. <font color="#800000"><b>Background process in Linux</b></font>
 
-<hr width="95%" align="center">
-
-<ul>
-<li> <font color="#800000"><b>Background process in Linux</b></font> <br>
-echo, nohup, &, |, <, > <br>
-
-</ul>
+   The commends may include `echo`, `nohup`, `&`, `|`, `<`, and `>`.
 
 
 ---
