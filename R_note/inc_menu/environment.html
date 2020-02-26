@@ -49,22 +49,21 @@ etc.
 Basically, your current working environment is in <code>.GlobalEnv</code>,
 and each function has it's own environment.
 
-<br>
 <hr>
 
-<b>Examples:</b><br>
+#### <b>Examples:</b><br>
 
 - <font color="#800000"><b>Environment</b></font>
 
-```
-rm(list = ls())
-.GlobalEnv
-parent.env(a.new.env <- new.env())
-parent.env(an.env <- environment())
-parent.env(a.base <- baseenv())
-parent.env(a.new.env <- new.env(parent = a.base))
-ls()
-```
+  ```
+  rm(list = ls())
+  .GlobalEnv
+  parent.env(a.new.env <- new.env())
+  parent.env(an.env <- environment())
+  parent.env(a.base <- baseenv())
+  parent.env(a.new.env <- new.env(parent = a.base))
+  ls()
+  ```
 
   At the end, there are 3 environments in the current environment
   <code>.GlobalEnv</code>.
@@ -73,36 +72,35 @@ ls()
   "a.base"!!
   </font>
   The following example fixes this.
-  <br><br>
 
 
 - <font color="#800000"><b>assign(), eval(), and get()</b></font>
 
-```
-rm(list = ls())
-.GlobalEnv
-parent.env(a.parent.env <- new.env())
-
-### Two of the followings are the same.
-assign("a.children.env", new.env(), envir = a.parent.env)
-eval(parse(text = "a.children.env <- new.env()"), envir = a.parent.env)
-
-### Two of the followings are the same.
-ls()
-eval(ls(), envir = a.parent.env)
-
-### There is a object inside "a.parent.env".
-ls(envir = a.parent.env)
-
-assign("a.value", 10, envir = a.parent.env)
-eval(parse(text = "a.value <- a.value + 1"), envir = a.parent.env)
-
-### There are two objects now.
-ls(envir = a.parent.env)
-
-### This should return 11.
-get("a.value", envir = a.parent.env)
-```
+  ```
+  rm(list = ls())
+  .GlobalEnv
+  parent.env(a.parent.env <- new.env())
+  
+  ### Two of the followings are the same.
+  assign("a.children.env", new.env(), envir = a.parent.env)
+  eval(parse(text = "a.children.env <- new.env()"), envir = a.parent.env)
+  
+  ### Two of the followings are the same.
+  ls()
+  eval(ls(), envir = a.parent.env)
+  
+  ### There is a object inside "a.parent.env".
+  ls(envir = a.parent.env)
+  
+  assign("a.value", 10, envir = a.parent.env)
+  eval(parse(text = "a.value <- a.value + 1"), envir = a.parent.env)
+  
+  ### There are two objects now.
+  ls(envir = a.parent.env)
+  
+  ### This should return 11.
+  get("a.value", envir = a.parent.env)
+  ```
 
   There is a parent environment attached in <code>.GlobalEnv</code>,
   and a childrend
@@ -110,26 +108,25 @@ get("a.value", envir = a.parent.env)
   In different environment,
   the <code>assign()</code> and <code>eval()</code> can alter the objects, and
   <code>get()</code> can access the object values.
-  <br><br>
 
 
 - <font color="#800000"><b>Function is a TEMPORARY environment</b></font>
 
-```
-rm(list = ls())
-parent.env(.GlobalEnv)      ### This is an interesting result.
-
-a.function <- function(){
-  a <- 1
-  print(environment())      ### print current environment
-  environment()
-}
-an.env <- a.function()      ### This is an interesting environment.
-an.env                      ### This should be the same as the above.
-
-ls(envir = an.env)
-get("a", envir = an.env)
-```
+  ```
+  rm(list = ls())
+  parent.env(.GlobalEnv)      ### This is an interesting result.
+  
+  a.function <- function(){
+    a <- 1
+    print(environment())      ### print current environment
+    environment()
+  }
+  an.env <- a.function()      ### This is an interesting environment.
+  an.env                      ### This should be the same as the above.
+  
+  ls(envir = an.env)
+  get("a", envir = an.env)
+  ```
 
   I create an environment where is created by <code>a.function()</code>
   and executing itself,

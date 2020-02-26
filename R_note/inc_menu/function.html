@@ -53,57 +53,58 @@
   First, create an R code file "<a href="./example/function/func_1.r" target="_blank">func_1.r</a>" contains this, 
   run it and trace the result to see the difference.
 
-```
-# File name: func_1.r
+  ```
+  # File name: func_1.r
+  
+  hello <- function(input){
+    a <- c("Hello", "world", input, "!")
+    input <- NULL
+    molas <- "molas"
+    ret <- paste(a, collapse = " ")
+    ret
+  }
+  
+  molas <- "MOLAS"
+  input <- c("again,", molas)
+  input
+  hello(input)
+  molas
+  input
+  hello()
+  hello(NULL)
+  ```
 
-hello <- function(input){
-  a <- c("Hello", "world", input, "!")
-  input <- NULL
-  molas <- "molas"
-  ret <- paste(a, collapse = " ")
-  ret
-}
-
-molas <- "MOLAS"
-input <- c("again,", molas)
-input
-hello(input)
-molas
-input
-hello()
-hello(NULL)
-```
 
 - <font color="#800000"><b>Function 2</b></font>
 
   First, create an R code file "<a href="./example/function/func_2.r" target="_blank">func_2.r</a>" contains this,
   run it and trace the result to see the difference.
 
-```
-# File name: func_2.r
-
-hello <- function(a, ...){
-  ret <- paste(a, ...)
-  ret
-}
-
-test <- function(input = "molas") {
-  a <- c("Hello", "world", input, "!")
-  input <- NULL
-  molas <- "molas"
-  ret <- hello(a, collapse = " ")
-  ret
-}
-
-molas <- "MOLAS"
-input <- c("again,", molas)
-input
-test(input)
-molas
-input
-test()
-test(NULL)
-```
+  ```
+  # File name: func_2.r
+  
+  hello <- function(a, ...){
+    ret <- paste(a, ...)
+    ret
+  }
+  
+  test <- function(input = "molas") {
+    a <- c("Hello", "world", input, "!")
+    input <- NULL
+    molas <- "molas"
+    ret <- hello(a, collapse = " ")
+    ret
+  }
+  
+  molas <- "MOLAS"
+  input <- c("again,", molas)
+  input
+  test(input)
+  molas
+  input
+  test()
+  test(NULL)
+  ```
 
 
 ---

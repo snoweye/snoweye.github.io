@@ -49,7 +49,7 @@ For S4 methods, see the section
 for details.
 <hr>
 
-<b>Examples:</b><br>
+#### <b>Examples:</b><br>
 
 - <font color="#800000"><b>Class and UseMethod</b></font>
 
@@ -60,67 +60,69 @@ for details.
   <code>print()</code>.
   Directly input object <code>a.1</code> is the same as <code>print(a.1)</code>.
 
-```
-a.1 <- 3.1415926
-class(a.1) <- "my.1"
-a.2 <- 6.1415926
-class(a.2) <- "my.2"
 
-my.fcn <- function(x){
-  UseMethod("my.usefcn", x)
-}
-my.usefcn.my.1 <- function(x){
-  x + 1
-}
-my.usefcn.my.2 <- function(x){
-  x + 2
-}
-
-### First call
-my.fcn(a.1)
-my.fcn(a.2)
-a.1
-a.2
-
-
-print.my.1 <- function(x, digits = 3){
-  print(unclass(x), digits = digits)
-}
-print.my.2 <- function(x, digits = 6){
-  print(unclass(x), digits = digits)
-}
-
-### Second call
-my.fcn(a.1)
-my.fcn(a.2)
-print(a.1)
-print(a.2)
-a.1
-a.2
-```
+  ```
+  a.1 <- 3.1415926
+  class(a.1) <- "my.1"
+  a.2 <- 6.1415926
+  class(a.2) <- "my.2"
+  
+  my.fcn <- function(x){
+    UseMethod("my.usefcn", x)
+  }
+  my.usefcn.my.1 <- function(x){
+    x + 1
+  }
+  my.usefcn.my.2 <- function(x){
+    x + 2
+  }
+  
+  ### First call
+  my.fcn(a.1)
+  my.fcn(a.2)
+  a.1
+  a.2
+  
+  
+  print.my.1 <- function(x, digits = 3){
+    print(unclass(x), digits = digits)
+  }
+  print.my.2 <- function(x, digits = 6){
+    print(unclass(x), digits = digits)
+  }
+  
+  ### Second call
+  my.fcn(a.1)
+  my.fcn(a.2)
+  print(a.1)
+  print(a.2)
+  a.1
+  a.2
+  ```
 
   At first call, <code>my.fcn()</code> will return the object's attributes since
   there is no default <code>print()</code> function for these classes
   <code>my.1</code> and <code>my.2</code>.
 
-```
-> my.fcn(a.1)
-[1] 4.141593
-attr(,"class")
-[1] "my.1"
-> my.fcn(a.2)
-[1] 8.141593
-attr(,"class")
-[1] "my.2"
-> a.1
-[1] 3.141593
-attr(,"class")
-[1] "my.1"
-> a.2
-[1] 6.141593
-attr(,"class")
-[1] "my.2"
-```
+
+  ```
+  > my.fcn(a.1)
+  [1] 4.141593
+  attr(,"class")
+  [1] "my.1"
+  > my.fcn(a.2)
+  [1] 8.141593
+  attr(,"class")
+  [1] "my.2"
+  > a.1
+  [1] 3.141593
+  attr(,"class")
+  [1] "my.1"
+  > a.2
+  [1] 6.141593
+  attr(,"class")
+  [1] "my.2"
+  ```
 
   At second call, <code>print.my.1()</code>, <code>print.my.2()</code>
   are defined by the
@@ -128,65 +130,66 @@ attr(,"class")
   attributes are discarded in <code>print()</code> by using
   <code>unclass()</code>.
 
-```
-> my.fcn(a.1)
-[1] 4.14
-> my.fcn(a.2)
-[1] 8.1416
-> print(a.1)
-[1] 3.14
-> print(a.2)
-[1] 6.14159
-> a.1
-[1] 3.14
-> a.2
-[1] 6.14159
-```
-  <br>
+
+  ```
+  > my.fcn(a.1)
+  [1] 4.14
+  > my.fcn(a.2)
+  [1] 8.1416
+  > print(a.1)
+  [1] 3.14
+  > print(a.2)
+  [1] 6.14159
+  > a.1
+  [1] 3.14
+  > a.2
+  [1] 6.14159
+  ```
 
 
 - <font color="#800000"><b>Summary and Print</b></font>
 
-  Here, I define some gerenic functions for <code>summary()</code>, and
+  Here, I define some generic functions for <code>summary()</code>, and
   <code>print()</code>,
   so they can summary the results by the input's attribute and
   print it by the summary's attribute, not the input's attribute.
 
-```
-summary.my.3 <- function(x){
-  x <- x + 10
-  class(x) <-"summary.3" 
-  x
-}
-summary.my.4 <- function(x){
-  x <- x + 20
-  class(x) <-"summary.4" 
-  x
-}
-print.summary.3 <- function(x, digits = 3){
-  cat("Result: ", format(x, digits = digits), "\n")
-}
-print.summary.4 <- function(x, digits = 6){
-  cat("Result: ", format(x, digits = digits), "\n")
-}
 
-a.1 <- 3.1415926
-class(a.1) <- "my.3"
-a.2 <- 6.1415926
-class(a.2) <- "my.4"
-summary(a.1)
-summary(a.2)
-```
+  ```
+  summary.my.3 <- function(x){
+    x <- x + 10
+    class(x) <-"summary.3" 
+    x
+  }
+  summary.my.4 <- function(x){
+    x <- x + 20
+    class(x) <-"summary.4" 
+    x
+  }
+  print.summary.3 <- function(x, digits = 3){
+    cat("Result: ", format(x, digits = digits), "\n")
+  }
+  print.summary.4 <- function(x, digits = 6){
+    cat("Result: ", format(x, digits = digits), "\n")
+  }
+  
+  a.1 <- 3.1415926
+  class(a.1) <- "my.3"
+  a.2 <- 6.1415926
+  class(a.2) <- "my.4"
+  summary(a.1)
+  summary(a.2)
+  ```
 
   The results for the <code>summary()</code>.
 
-```
-> summary(a.1)
-Result:  13.1 
-> summary(a.2)
-Result:  26.1416
-```
-  <br>
+
+  ```
+  > summary(a.1)
+  Result:  13.1 
+  > summary(a.2)
+  Result:  26.1416
+  ```
 
 
 - <font color="#800000"><b>Overwrite Operators</b></font>
@@ -197,19 +200,20 @@ Result:  26.1416
   <code>%any%</code> to make a new one.
   I define a similar operator of two sets in the following.
 
-```
-a.1 <- c("a", "b")
-a.2 <- 4:7
-class(a.1) <- "my.5"
 
-### Overwrite "+" for a new class.
-"+.my.5" <- function(a, b) c(a, b) 
-a.1 + a.2
-
-### Define a new one.
-"%union%" <- function(a, b) c(a, b)
-a.1 %union% a.2
-```
+  ```
+  a.1 <- c("a", "b")
+  a.2 <- 4:7
+  class(a.1) <- "my.5"
+  
+  ### Overwrite "+" for a new class.
+  "+.my.5" <- function(a, b) c(a, b) 
+  a.1 + a.2
+  
+  ### Define a new one.
+  "%union%" <- function(a, b) c(a, b)
+  a.1 %union% a.2
+  ```
 
 
 ---

@@ -58,7 +58,7 @@ web site.
 <br>
 
 ---
-### <b>Example 1:</b>
+#### <b>Example 1:</b>
 
 1. <font color="#800000"><b>For MS Windows user</b></font>
 
@@ -68,75 +68,75 @@ web site.
 2. <font color="#800000"><b>Hello world !</b></font>
 
    First, create an R code file "<a href="./example/batch/hello_1.r" target="_blank">hello_1.r</a>" contains the following.
-```
-# File name: hello_1.r
-a <- c("Hello", "world", "!")
-print(a)
-b <- paste(a, collapse = " ")
-print(b)
-```
-  Here, it sets an array variable "a" contains 3 elements, "Hello", "world", and "!", and
-  prints them. It also uses the function "paste" to join all elements in array "a" by " " (space)
-  and then it sets the array to a variable "b" and prints it.
+   ```
+   # File name: hello_1.r
+   a <- c("Hello", "world", "!")
+   print(a)
+   b <- paste(a, collapse = " ")
+   print(b)
+   ```
+   Here, it sets an array variable "a" contains 3 elements, "Hello", "world", and "!", and
+   prints them. It also uses the function "paste" to join all elements in array "a" by " " (space)
+   and then it sets the array to a variable "b" and prints it.
 
 3. <font color="#800000"><b>Batch From Script</b></font>
 
    Use the command mode to send "hello_1.r" as a batch job.
-```
-    SHELL> R CMD BATCH --vanilla --slave hello_1.r output_file
-```
+   ```
+     SHELL> R CMD BATCH --vanilla --slave hello_1.r output_file
+   ```
    or
-```
-    SHELL> nohup R CMD BATCH --vanilla --slave hello_1.r output_file &
-```
+   ```
+     SHELL> nohup R CMD BATCH --vanilla --slave hello_1.r output_file &
+   ```
    By default, the output will be saved in "hello_1.r.Rout" if an "output_file" isn't
    assigned. The output file (hello_1.r.Rout) will as the following.
-```
-> a <- c("Hello", "world", "!")
-> print(a)
-[1] "Hello" "world" "!"
-> b <- paste(a, collapse = " ")
-> print(b)
-[1] "Hello world !"
->
-```
+   ```
+   > a <- c("Hello", "world", "!")
+   > print(a)
+   [1] "Hello" "world" "!"
+   > b <- paste(a, collapse = " ")
+   > print(b)
+   [1] "Hello world !"
+   >
+   ```
 
 4. <font color="#800000"><b>Batch From Command</b></font>
 
    Use the command mode to send "hello_1.r" as a batch job from [STDIN] and show the
    output on [SDTOUT]. The followings have similar commands, and can provide
    same results, but they can be used in different purposes.
-```
-    SHELL> R --vanilla --slave < hello_1.r > output_file
-```
+   ```
+     SHELL> R --vanilla --slave < hello_1.r > output_file
+   ```
    or
-```
-    SHELL> cat hello_1.r | R --vanilla --slave  > output_file
-```
+   ```
+     SHELL> cat hello_1.r | R --vanilla --slave  > output_file
+   ```
    or
-```
-    SHELL> echo 'source("hello_1.r")' | R --vanilla --slave  > output_file
-```
+   ```
+     SHELL> echo 'source("hello_1.r")' | R --vanilla --slave  > output_file
+   ```
    By default, the output will be show on the screen, you can use ">" to redirect the
    output into "output_file". The output will like this.
-```
-[1] "Hello" "world" "!"
-[1] "Hello world !"
-```
+   ```
+   [1] "Hello" "world" "!"
+   [1] "Hello world !"
+   ```
 
 ---
-### <b>Example 2:</b>
+#### <b>Example 2:</b>
 
 1. <font color="#800000"><b>Hello world, MOLAS !</b></font>
 
    First, create an R code file "<a href="./example/batch/hello_2.r" target="_blank">hello_2.r</a>" contains the following.
-```
-# File name: hello_2.r
-a <- c("Hello", "world,", argv, "!")
-print(a)
-b <- paste(a, collapse = " ")
-print(b)
-```
+  ```
+  # File name: hello_2.r
+  a <- c("Hello", "world,", argv, "!")
+  print(a)
+  b <- paste(a, collapse = " ")
+  print(b)
+  ```
    Here, it sets an array variable "a" contains 4 elements, "Hello", "world,", argv,
    and "!", and prints them. The variable "argv" will be passed from STDIN command.
    It also uses the function "paste" to join all elements in array "a" by " " (space)
@@ -146,15 +146,15 @@ print(b)
 
    Use command mode to send "hello_2.r" for batch job from STDIN and show the
    output on SDTOUT. The variable "argv" as "MOLAS" is assigned before the "hello_2.r" is passed to R.
-```
-    SHELL> echo 'argv <- "MOLAS"; source("hello_2.r")' | R --vanilla --slave  > output_file
-```
+   ```
+     SHELL> echo 'argv <- "MOLAS"; source("hello_2.r")' | R --vanilla --slave  > output_file
+   ```
    By default, the output will be shown on the screen, you can use ">" to redirect the
    output into an "output_file". The output will like this.
-```
-[1] "Hello" "world," "MOLAS" "!"
-[1] "Hello world, MOLAS !"
-```
+   ```
+   [1] "Hello" "world," "MOLAS" "!"
+   [1] "Hello world, MOLAS !"
+   ```
 
 3. <font color="#800000"><b>Background process in Linux</b></font>
 

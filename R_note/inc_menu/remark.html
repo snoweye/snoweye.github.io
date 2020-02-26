@@ -48,48 +48,48 @@ This is not only for remarking code, but also for notations.
 <br>
 <hr>
 
-<b>Examples:</b><br>
+#### <b>Examples:</b><br>
 
 - The example below is probably very self contained.
 
-```
-remark <- function(){       ### This is as "/*" in C.
-
-#  1. Put everything here whatever you want to remark.
-#  2. Name the function "remark" you never ever want to use anywhere
-#     out of this bracket scope.
-#  3. Common mistake: Don't leave this function at the end of other
-#                     functions as returns!! This is a fatal consequence.
-#                     A better habit is to use return().
-
-}                           ### This is as "*/" in C.
-```
+  ```
+  remark <- function(){       ### This is as "/*" in C.
+  
+  #  1. Put everything here whatever you want to remark.
+  #  2. Name the function "remark" you never ever want to use anywhere
+  #     out of this bracket scope.
+  #  3. Common mistake: Don't leave this function at the end of other
+  #                     functions as returns!! This is a fatal consequence.
+  #                     A better habit is to use return().
+  
+  }                           ### This is as "*/" in C.
+  ```
 
 - Sometime it may fail if the remark is at the end.
 
-```
-a <- function(){
-  bb <- 1:5
-  bb
-}
-
-### This is not correct, function "remark()" is returned.
-a <- function(){
-  bb <- 1:5
-  remark <- function(){
+  ```
+  a <- function(){
+    bb <- 1:5
     bb
   }
-}
-
-### This is correct, "bb" is returned.
-a <- function(){
-  bb <- 1:5
-  remark <- function(){
+  
+  ### This is not correct, function "remark()" is returned.
+  a <- function(){
+    bb <- 1:5
+    remark <- function(){
+      bb
+    }
+  }
+  
+  ### This is correct, "bb" is returned.
+  a <- function(){
+    bb <- 1:5
+    remark <- function(){
+      bb
+    }
     bb
   }
-  bb
-}
-```
+  ```
 
 
 ---

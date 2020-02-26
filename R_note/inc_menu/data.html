@@ -45,31 +45,32 @@
 
   Function <code>read.table()</code> and <code>write.table()</code>.
 
-```
-read.table(file, header = FALSE, sep = "", quote = "\"'", dec = ".",
-           row.names, col.names, as.is = FALSE, na.strings = "NA",
-           colClasses = NA, nrows = -1,
-           skip = 0, check.names = TRUE, fill = !blank.lines.skip,
-           strip.white = FALSE, blank.lines.skip = TRUE,
-           comment.char = "#")
-
-write.table(x, file = "", append = FALSE, quote = TRUE, sep = " ",
-            eol = "\n", na = "NA", dec = ".", row.names = TRUE,
-            col.names = TRUE, qmethod = c("escape", "double"))
-```
+  ```
+  read.table(file, header = FALSE, sep = "", quote = "\"'", dec = ".",
+             row.names, col.names, as.is = FALSE, na.strings = "NA",
+             colClasses = NA, nrows = -1,
+             skip = 0, check.names = TRUE, fill = !blank.lines.skip,
+             strip.white = FALSE, blank.lines.skip = TRUE,
+             comment.char = "#")
+  
+  write.table(x, file = "", append = FALSE, quote = TRUE, sep = " ",
+              eol = "\n", na = "NA", dec = ".", row.names = TRUE,
+              col.names = TRUE, qmethod = c("escape", "double"))
+  ```
 
 
 - <font color="#800000"><b>Load & Save</b></font>
 
   Function <code>read.table()</code> and <code>write.table()</code>.
 
-```
-load(file, envir = parent.frame())
+  ```
+  load(file, envir = parent.frame())
+  
+  save(..., list = character(0), file = stop("`file' must be specified"),
+       ascii = FALSE, version = NULL, envir = parent.frame(), 
+       compress = FALSE)
+  ```
 
-save(..., list = character(0), file = stop("`file' must be specified"),
-     ascii = FALSE, version = NULL, envir = parent.frame(), 
-     compress = FALSE)
-```
 
 - <font color="#800000"><b>Download for MySQL</b></font>
 
@@ -90,34 +91,35 @@ save(..., list = character(0), file = stop("`file' must be specified"),
 
   Require packages <code>methods</code>, <code>DBI</code>, <code>RMySQL</code>.
 
-```
-# In Windows, require add the RMySQL.dll to PATH, like this
-# Sys.putenv(PATH = paste(Sys.getenv("PATH"),
-#   "C:/PROGRA~1/R/rw1071/library/RMySQL/libs/", sep = ";"))
+  ```
+  # In Windows, require add the RMySQL.dll to PATH, like this
+  # Sys.putenv(PATH = paste(Sys.getenv("PATH"),
+  #   "C:/PROGRA~1/R/rw1071/library/RMySQL/libs/", sep = ";"))
+  
+  library(methods)
+  library(DBI)
+  library(RMySQL)
+  
+  db <- NULL
+  db$info <- list(driver = "MySQL", user = "yourname",
+                  password = "yourpassword", host = "yourdbhost",
+                  port = "yourdbport")
+  
+  db$drv <- dbDriver(db$info$driver)
+  db$con <- dbConnect(db$drv, user = db$info$user,
+                      password = db$info$password,
+                      host = db$info$host, port = db$info$port,
+                      dbname = "whatyouwant")
+  
+  tb <- NULL
+  tb$get <- dbGetQuery(db$con,
+                       paste("select * from table where field = \"",
+                             value, sep = ""))
+  
+  dbDisconnect(db$con)
+  dbUnloadDriver(db$drv)
+  ```
 
-library(methods)
-library(DBI)
-library(RMySQL)
-
-db <- NULL
-db$info <- list(driver = "MySQL", user = "yourname",
-                password = "yourpassword", host = "yourdbhost",
-                port = "yourdbport")
-
-db$drv <- dbDriver(db$info$driver)
-db$con <- dbConnect(db$drv, user = db$info$user,
-                    password = db$info$password,
-                    host = db$info$host, port = db$info$port,
-                    dbname = "whatyouwant")
-
-tb <- NULL
-tb$get <- dbGetQuery(db$con,
-                     paste("select * from table where field = \"",
-                           value, sep = ""))
-
-dbDisconnect(db$con)
-dbUnloadDriver(db$drv)
-```
 
 - <font color="#800000"><b>More</b></font>
   - Another database, ODBC, PostgreSQL, Oracle, ....

@@ -60,9 +60,10 @@
   add an R system environment variable for ghostscript.
   If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
   that Renviron will be
-```
-R_GSCMD=${R_GSCMD-'/usr/bin/gs'}
-```
+
+  ```
+  R_GSCMD=${R_GSCMD-'/usr/bin/gs'}
+  ```
 
 
 - <font color="#800000"><b>In Script</b></font>
@@ -72,9 +73,11 @@ R_GSCMD=${R_GSCMD-'/usr/bin/gs'}
   to setup the environment variable.
   If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
   that environment variable can be setted by
-```
-Sys.putenv("R_GSCMD"="/usr/bin/gs")
-```
+
+  ```
+  Sys.putenv("R_GSCMD"="/usr/bin/gs")
+  ```
+
   See also <code>Sys.getenv()</code>.
 
 

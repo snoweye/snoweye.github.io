@@ -58,12 +58,12 @@ match("Substr9.txt", a)
 
   Function <code>grep()</code>, <code>gsub()</code>, ...
 
-```
-a <- paste("string", 9:1, ".txt", sep = "")
-grep("([1,3,5-7])", a)
-b <- paste("string", 9:1, ".txt", sep = "", collapse = " ")
-gsub("([1,3,5-7]).(txt)", "_\\1-\\2", b)
-```
+  ```
+  a <- paste("string", 9:1, ".txt", sep = "")
+  grep("([1,3,5-7])", a)
+  b <- paste("string", 9:1, ".txt", sep = "", collapse = " ")
+  gsub("([1,3,5-7]).(txt)", "_\\1-\\2", b)
+  ```
 
 - <font color="#800000"><b>Expression and Parse</b></font>
 
@@ -73,13 +73,13 @@ gsub("([1,3,5-7]).(txt)", "_\\1-\\2", b)
   useful for processing automatically jobs as shown in
   "<a href="./batch_more.html">Batch More</a>".
 
-```
-a <- 0.05
-expression(alpha == 0.05)
-(ret <- parse(text = paste("alpha == ", a, sep = "")))
-plot(1, 1, main = ret)
-text(1, 1.2, ret)
-```
+  ```
+  a <- 0.05
+  expression(alpha == 0.05)
+  (ret <- parse(text = paste("alpha == ", a, sep = "")))
+  plot(1, 1, main = ret)
+  text(1, 1.2, ret)
+  ```
 
 
 ---

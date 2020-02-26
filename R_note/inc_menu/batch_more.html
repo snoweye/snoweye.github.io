@@ -45,62 +45,61 @@
 This section will talk about how we can batch jobs inside R
 scripts.
 
-<br>
 <hr>
 
-<b>Examples:</b><br>
+#### <b>Examples:</b><br>
 
 - <font color="#800000"><b>assign, parse and eval</b></font>
 
-```
-assign("a", 3:4)
-sum(a)
-sum(b <- 3:4)
-a
-b
-(cmd <- paste("sum(", "d", "<-", "3:4)", sep = " "))
-eval(parse(text = cmd))
-d
-```
+  ```
+  assign("a", 3:4)
+  sum(a)
+  sum(b <- 3:4)
+  a
+  b
+  (cmd <- paste("sum(", "d", "<-", "3:4)", sep = " "))
+  eval(parse(text = cmd))
+  d
+  ```
 
   This is a silly example, but it gives a hint to process a command
   from a given string. The command <code>assign()</code> is similar to "<-",
   <code>parse()</code> can parse a string/text into an expression object which
   can be executed by <code>eval()</code>. At the above, "a", "b", and "d" are
   all the same as a vector contains 2 elements "3, 4".
-  <br><br>
+
 
 - <font color="#800000"><b>call and eval</b></font>
 
-```
-a <- function(x, y = 4, detail = FALSE){
-  ifelse(detail, x+y, 0)
-}
+  ```
+  a <- function(x, y = 4, detail = FALSE){
+    ifelse(detail, x+y, 0)
+  }
+  
+  b <- list(quote(a), quote(2), quote(3), quote(detail = TRUE))
+  mode(b) <- "call"
+  b
+  (d <- eval(b))
+  b[[4]] <- FALSE
+  b
+  (e <- eval(b))
+  ```
 
-b <- list(quote(a), quote(2), quote(3), quote(detail = TRUE))
-mode(b) <- "call"
-b
-(d <- eval(b))
-b[[4]] <- FALSE
-b
-(e <- eval(b))
-```
+  The object "b" is a "call" structure that can be used in eval().
+  The result for the object "d" should be 5, not 6,
+  and the object "e" should be 0, as the following.
 
-The object "b" is a "call" structure that can be used in eval().
-The result for the object "d" should be 5, not 6,
-and the object "e" should be 0, as the following.
-
-```
-> b
-a(2, 3, TRUE)
-> (d <- eval(b))
-[1] 5
-> b[[4]] <- FALSE
-> b
-a(2, 3, FALSE)
-> (e <- eval(b))
-[1] 0
-```
+  ```
+  > b
+  a(2, 3, TRUE)
+  > (d <- eval(b))
+  [1] 5
+  > b[[4]] <- FALSE
+  > b
+  a(2, 3, FALSE)
+  > (e <- eval(b))
+  [1] 0
+  ```
 
 
 ---

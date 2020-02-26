@@ -41,114 +41,77 @@
 <xmp theme="readable" style="display:none;">
 
 
-<ul>
-<li> <font color="#800000"><b>Reference</b></font>
-<br>
-See "Modern Applied Statistics with S-PLUS", 2ed, by W.N. Venables and B.D. Ripley. <br>
-ISBN 0-387-98214-0 Springer-Verlag. <br>
-Chapter 4.7, page 149-150.
-<br><br>
+- <font color="#800000"><b>Reference</b></font>
+
+  See "Modern Applied Statistics with S-PLUS", 2ed, by W.N. Venables and B.D. Ripley. <br>
+  ISBN 0-387-98214-0 Springer-Verlag. <br>
+  Chapter 4.7, page 149-150.
 
 
-<li> <font color="#800000"><b>Author's suggestion</b></font>
-<br>
-It should be used cautiously as it can lead to slow and memory-intensive code.
-In a few cases it can provide a neat and effective solution to an intrinsically recursive problem.
-<br><br>
+- <font color="#800000"><b>Author's suggestion</b></font>
+
+  It should be used cautiously as it can lead to slow and memory-intensive code.
+  In a few cases it can provide a neat and effective solution to an intrinsically recursive problem.
 
 
-<li> <font color="#800000"><b>Example</b></font>
-<br>
-<b>Generating all possible subsets of size <i>r</i> from a set of elements of size <i>n</i>.</b>
-<br><br>
+- <font color="#800000"><b>Example</b></font>
 
+  <b>Generating all possible subsets of size <i>r</i> from a set of elements of size <i>n</i>.</b>
 
-<ol>
-<li> <font color="#800000"><b>subsets 1</b></font>
-<br>
-If the size of the result is not too large an efficient way to do this is to store
-the subsets as the rows of an array.
-Here, create a file "<a href="./example/recursive/subsets_1.r" target="_blank">subsets_1.r</a>" as follows, <br>
-<br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
-# File name: subsets_1.r
+  - <font color="#800000"><b>subsets 1</b></font>
 
-subsets <- function(r, n, v = 1 : n){
-  if(r <= 0) NULL else
-  if(r >= n) v[1 : n] else
-  rbind(cbind(v[1], subsets(r - 1, n - 1, v[-1])),
-                    subsets(r,     n - 1, v[-1]))
-}
-</pre>
-</code>
-</table>
-<br>
+    If the size of the result is not too large an efficient way to do this is to store
+    the subsets as the rows of an array.
+    Here, create a file "<a href="./example/recursive/subsets_1.r" target="_blank">subsets_1.r</a>" as follows, <br>
 
+    ```
+    # File name: subsets_1.r
 
-<li> <font color="#800000"><b>subsets 2</b></font>
-<br>
-If we re-assign the function body to another name and use the name "subsets" for something else,
-or discard it, our function body will cease to work. It would be useful to have a function body that
-continued to work regardless of the name given it.
-Here, create a file "<a href="./example/recursive/subsets_2.r" target="_blank">subsets_2.r</a>" as follows, <br>
-<br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
-# File name: subsets_2.r
+    subsets <- function(r, n, v = 1 : n){
+      if(r <= 0) NULL else
+      if(r >= n) v[1 : n] else
+      rbind(cbind(v[1], subsets(r - 1, n - 1, v[-1])),
+                        subsets(r,     n - 1, v[-1]))
+    }
+    ```
+  - <font color="#800000"><b>subsets 2</b></font>
 
-subsets <- function(r, n, v = 1 : n){
-  if(r <= 0) NULL else
-  if(r >= n) v[1 : n] else
-  rbind(cbind(v[1], Recall(r - 1, n - 1, v[-1])),
-                    Recall(r,     n - 1, v[-1]))
-}
-</pre>
-</code>
-</table>
-<br><br>
-</ol>
+    If we re-assign the function body to another name and use the name "subsets" for something else,
+    or discard it, our function body will cease to work. It would be useful to have a function body that
+    continued to work regardless of the name given it.
+    Here, create a file "<a href="./example/recursive/subsets_2.r" target="_blank">subsets_2.r</a>" as follows, <br>
 
+    ```
+    # File name: subsets_2.r
 
-<li> <font color="#800000"><b>R commands to list all combinations and permutations</b></font>
-<br>
-For <font color="red">R version 2.4 or newer</font>, there are some commands that you can use to list
-all combinations by given total elements and how many you want to choose, and
-all permutations by given total elements. <br>
-<br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
-choose(10,5)         # compute choose(10,5)
-factoral(5)          # compute numbers of permutations of 5 elements
+    subsets <- function(r, n, v = 1 : n){
+      if(r <= 0) NULL else
+      if(r >= n) v[1 : n] else
+      rbind(cbind(v[1], Recall(r - 1, n - 1, v[-1])),
+                        Recall(r,     n - 1, v[-1]))
+    }
+    ```
 
-library(combinat)
-combn(10,5)          # list all combinations of choose(10,5)
-permn(5)             # list all permutations of 5 elements
+- <font color="#800000"><b>R commands to list all combinations and permutations</b></font>
 
-library(gtools)
-combinations(10,5)   # list all combinations of choose(10,5)
-permutations(5,5)    # list all permutations of 5 elements
-permutations(5,3)    # list all permutations of the elements from choose(5,3)
-                     # i.e. total C(5,3) * 3! possible outcomes
-</pre>
-</code>
-</table>
-<br><br>
+  For <font color="red">R version 2.4 or newer</font>, there are some commands that you can use to list
+  all combinations by given total elements and how many you want to choose, and
+  all permutations by given total elements. <br>
 
+  ```
+  choose(10,5)         # compute choose(10,5)
+  factoral(5)          # compute numbers of permutations of 5 elements
 
-</ul>
+  library(combinat)
+  combn(10,5)          # list all combinations of choose(10,5)
+  permn(5)             # list all permutations of 5 elements
+
+  library(gtools)
+  combinations(10,5)   # list all combinations of choose(10,5)
+  permutations(5,5)    # list all permutations of 5 elements
+  permutations(5,3)    # list all permutations of the elements from choose(5,3)
+                       # i.e. total C(5,3) * 3! possible outcomes
+  ```
 
 
 ---
