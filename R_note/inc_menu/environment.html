@@ -54,15 +54,9 @@ and each function has it's own environment.
 
 <b>Examples:</b><br>
 
-<ol>
-<li> <font color="#800000"><b>Environment</b></font>
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Environment</b></font>
+
+```
 rm(list = ls())
 .GlobalEnv
 parent.env(a.new.env <- new.env())
@@ -70,28 +64,21 @@ parent.env(an.env <- environment())
 parent.env(a.base <- baseenv())
 parent.env(a.new.env <- new.env(parent = a.base))
 ls()
-</pre>
-</code>
-</table>
-<br>
-At the end, there are 3 environments in the current environment
-<code>.GlobalEnv</code>.
-<font color="red">
-Note that the parent of "a.new.env" is "&lt;environment: base&gt;" rather than
-"a.base"!!
-</font>
-The following example fixes this.
-<br><br>
+```
+
+  At the end, there are 3 environments in the current environment
+  <code>.GlobalEnv</code>.
+  <font color="red">
+  Note that the parent of "a.new.env" is "&lt;environment: base&gt;" rather than
+  "a.base"!!
+  </font>
+  The following example fixes this.
+  <br><br>
 
 
-<li> <font color="#800000"><b>assign(), eval(), and get()</b></font>
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>assign(), eval(), and get()</b></font>
+
+```
 rm(list = ls())
 .GlobalEnv
 parent.env(a.parent.env <- new.env())
@@ -115,27 +102,20 @@ ls(envir = a.parent.env)
 
 ### This should return 11.
 get("a.value", envir = a.parent.env)
-</pre>
-</code>
-</table>
-<br>
-There is a parent environment attached in <code>.GlobalEnv</code>,
-and a childrend
-environment attached inside the parent environment.
-In different environment,
-the <code>assign()</code> and <code>eval()</code> can alter the objects, and
-<code>get()</code> can access the object values.
-<br><br>
+```
+
+  There is a parent environment attached in <code>.GlobalEnv</code>,
+  and a childrend
+  environment attached inside the parent environment.
+  In different environment,
+  the <code>assign()</code> and <code>eval()</code> can alter the objects, and
+  <code>get()</code> can access the object values.
+  <br><br>
 
 
-<li> <font color="#800000"><b>Function is a TEMPORARY environment</b></font>
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>Function is a TEMPORARY environment</b></font>
+
+```
 rm(list = ls())
 parent.env(.GlobalEnv)      ### This is an interesting result.
 
@@ -149,17 +129,11 @@ an.env                      ### This should be the same as the above.
 
 ls(envir = an.env)
 get("a", envir = an.env)
-</pre>
-</code>
-</table>
-<br>
-I create an environment where is created by <code>a.function()</code>
-and executing itself,
-then I store the environment in </code>.GlobalEnv</code>.
-<br><br>
+```
 
-
-</ol>
+  I create an environment where is created by <code>a.function()</code>
+  and executing itself,
+  then I store the environment in </code>.GlobalEnv</code>.
 
 
 ---

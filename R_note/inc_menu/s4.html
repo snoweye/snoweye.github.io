@@ -58,19 +58,14 @@ systems.
 
 <b>Examples:</b><br>
 
-<ol>
-<li> <font color="#800000"><b>S4 Class and Method</b></font>
-<br>
-This is a quick example to use S4 class and method to extend functions
-where all <code>foo.*</code> need to have the same number of arguments.
-S4 signature will determine the input type and call the corresponding
-function.
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>S4 Class and Method</b></font>
+
+  This is a quick example to use S4 class and method to extend functions
+  where all <code>foo.*</code> need to have the same number of arguments.
+  S4 signature will determine the input type and call the corresponding
+  function.
+
+```
 rm(list = ls(all.names = TRUE))
 
 foo.default <- function(x, y, z) cat("call foo.default\n")
@@ -89,22 +84,16 @@ a <- new("myobj")
 foo(a)
 foo(1)
 foo(1, 2, 3)
-</pre>
-</code>
-</table>
-<br><br>
+```
+  <br>
 
 
-<li> <font color="#800000"><b>More S4 Methods</b></font>
-<br>
-This is a silly example, but somehow useful in some cases with
-different number and different type of input arguments.
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>More S4 Methods</b></font>
+
+  This is a silly example, but somehow useful in some cases with
+  different number and different type of input arguments.
+
+```
 rm(list = ls(all.names = TRUE))
 
 foo.default <- function(x, dim, bldim, ctxt){
@@ -142,11 +131,7 @@ ownany(a)
 ownany(dim = 1, bldim = 2, ctxt = 3)
 ownany(1)
 ownany(1, 2, 3)
-</pre>
-</code>
-</table>
-
-</ol>
+```
 
 
 ---

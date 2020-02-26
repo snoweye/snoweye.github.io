@@ -50,15 +50,9 @@ scripts.
 
 <b>Examples:</b><br>
 
-<ol>
-<li> <font color="#800000"><b>assign, parse and eval</b></font>
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>assign, parse and eval</b></font>
+
+```
 assign("a", 3:4)
 sum(a)
 sum(b <- 3:4)
@@ -67,26 +61,18 @@ b
 (cmd <- paste("sum(", "d", "<-", "3:4)", sep = " "))
 eval(parse(text = cmd))
 d
-</pre>
-</code>
-</table>
-<br>
-This is a silly example, but it gives a hint to process a command
-from a given string. The command <code>assign()</code> is similar to "<-",
-<code>parse()</code> can parse a string/text into an expression object which
-can be executed by <code>eval()</code>. At the above, "a", "b", and "d" are
-all the same as a vector contains 2 elements "3, 4".
-<br><br>
+```
 
+  This is a silly example, but it gives a hint to process a command
+  from a given string. The command <code>assign()</code> is similar to "<-",
+  <code>parse()</code> can parse a string/text into an expression object which
+  can be executed by <code>eval()</code>. At the above, "a", "b", and "d" are
+  all the same as a vector contains 2 elements "3, 4".
+  <br><br>
 
-<li> <font color="#800000"><b>call and eval</b></font>
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- <font color="#800000"><b>call and eval</b></font>
+
+```
 a <- function(x, y = 4, detail = FALSE){
   ifelse(detail, x+y, 0)
 }
@@ -98,20 +84,13 @@ b
 b[[4]] <- FALSE
 b
 (e <- eval(b))
-</pre>
-</code>
-</table>
-<br>
+```
+
 The object "b" is a "call" structure that can be used in eval().
 The result for the object "d" should be 5, not 6,
 and the object "e" should be 0, as the following.
-<br><br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+
+```
 > b
 a(2, 3, TRUE)
 > (d <- eval(b))
@@ -121,12 +100,7 @@ a(2, 3, TRUE)
 a(2, 3, FALSE)
 > (e <- eval(b))
 [1] 0
-</pre>
-</code>
-</table>
-
-
-</ol>
+```
 
 
 ---

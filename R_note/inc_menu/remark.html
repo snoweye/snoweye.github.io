@@ -50,15 +50,9 @@ This is not only for remarking code, but also for notations.
 
 <b>Examples:</b><br>
 
-<ol>
-<li>
-<br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- The example below is probably very self contained.
+
+```
 remark <- function(){       ### This is as "/*" in C.
 
 #  1. Put everything here whatever you want to remark.
@@ -69,19 +63,11 @@ remark <- function(){       ### This is as "/*" in C.
 #                     A better habit is to use return().
 
 }                           ### This is as "*/" in C.
-</pre>
-</code>
-</table>
-<br>
+```
 
-<li>
-<br>
-<table cellpadding="5">
-<tr>
-<td> &nbsp;&nbsp;&nbsp;&nbsp;
-<td bgcolor="#dddddd">
-<code>
-<pre>
+- Sometime it may fail if the remark is at the end.
+
+```
 a <- function(){
   bb <- 1:5
   bb
@@ -103,10 +89,7 @@ a <- function(){
   }
   bb
 }
-</pre>
-</code>
-</table>
-<br>
+```
 
 
 ---
