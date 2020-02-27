@@ -52,26 +52,10 @@ to simplify the interface between R and PHP.
 
 <ul>
 <font color="#800000"><b>Simple example:</b></font>
-<li> Example 1. -- <a href="<? echo "$PHP_SELF?item=php&subitem=ex_1"; ?>">PHP communicate with R</a>
-<li> Example 2. -- <a href="<? echo "$PHP_SELF?item=php&subitem=ex_2"; ?>">PHP display the plot created by R</a>
-<li> Example 3. -- <a href="<? echo "$PHP_SELF?item=php&subitem=ex_3"; ?>">More plots created by R</a>
+<li> Example 1. -- <a href="./trial/ex_1.html">PHP communicate with R</a>
+<li> Example 2. -- <a href="./trial/ex_2.html">PHP display the plot created by R</a>
+<li> Example 3. -- <a href="./trial/ex_3.html">More plots created by R</a>
 </ul>
-<?
- 
-  $submenu = array("ex_1", "ex_2", "ex_3");
-
-  if(! isset($subitem)){
-    $subitem = array_shift(array_values($submenu));
-  }
-
-  if(isset($subitem) & in_array($subitem, $submenu)){
-    echo "\n" .
-         "<hr>\n";
-
-    include "./trial/$subitem";
-  }
-
-?>
 
 
 ---
