@@ -49,90 +49,71 @@ I have time.
 <br>
 
 
-<font color="#800000"><b>Debug in R</b></font>
+#### <font color="#800000"><b>Debug in R</b></font>
 
-<ul>
-<li> <a href="./reference/debug/Rdebug.pdf">Rdebug.pdf</a>
---
-I lost the original of this file. Please tell me where this good
-slide came from if you knew.
-<li> <a href="./reference/debug/R-debug-tools.pdf">R-debug-tools.pdf</a>
---
-Roger D. Peng, UCLA, Department of Statistics.
-</ul>
+- <a href="./reference/debug/Rdebug.pdf">Rdebug.pdf</a>
 
+  - I lost the original of this file. Please tell me where this good
+    slide came from if you knew.
 
-<font color="#800000"><b>Debug in C</b></font>
-<ul>
-<li> <a href="http://www.gnu.org/software/ddd/" target="_blank">ddd</a>
-<li> Linux command: <code>nm</code>, <code>ld</code>, <code>gprof</code>.
-<li> <a href="http://valgrind.org/" target="_blank">valgrind</a> 
-<br>
-Quick Example:
-<table cellpadding="5">
-  <tr>
-  <td bgcolor="#dddddd">
-<code>
-<pre>
-SHELL> gcc -g -o a.out *.c
-SHELL> valgrind --show-reachable=yes --leak-check=full a.out
-SHELL> valgrind --track-origins=yes ./a.out
-SHELL> gcc -pg -o a.out *.c
-SHELL> ./a.out
-SHELL> gprof > a.prof
-</pre>
-</code>
-</table>
-</ul>
+- <a href="./reference/debug/R-debug-tools.pdf">R-debug-tools.pdf</a>
+
+  - Roger D. Peng, UCLA, Department of Statistics.
 
 
+#### <font color="#800000"><b>Debug in C</b></font>
 
-<font color="#800000"><b>Debug in R call C</b></font>
-<ul>
-<li> <a href="http://valgrind.org/" target="_blank">valgrind</a> 
-<br>
-Quick Example:
-<table cellpadding="5">
-  <tr>
-  <td bgcolor="#dddddd">
-<code>
-<pre>
-SHELL> gcc -shared -g -o a.so *.c
-SHELL> R -d "valgrind --show-reachable=yes --tool=memcheck --leak-check=full" \
-         --vanilla < a.r
-SHELL> R -d "valgrind --track-origins=yes" --vanilla < a.r
-</pre>
-</code>
-</table>
-Here, "a.r" should load "a.so" at the first.
+- <a href="http://www.gnu.org/software/ddd/" target="_blank">ddd</a>
+- Linux command: <code>nm</code>, <code>ld</code>, <code>gprof</code>.
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
 
-<li> <a href="http://bioconductor.fhcrc.org/workshops/2010/AdvancedR/using-gdb-with-R.mov" target="_blank">Debugging with GDB</a> 
-</ul>
+  Quick Example:
+
+  ```
+  SHELL> gcc -g -o a.out *.c
+  SHELL> valgrind --show-reachable=yes --leak-check=full a.out
+  SHELL> valgrind --track-origins=yes ./a.out
+  SHELL> gcc -pg -o a.out *.c
+  SHELL> ./a.out
+  SHELL> gprof > a.prof
+  ```
+
+
+#### <font color="#800000"><b>Debug in R call C</b></font>
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
+
+  Quick Example:
+
+  ```
+  SHELL> gcc -shared -g -o a.so *.c
+  SHELL> R -d "valgrind --show-reachable=yes --tool=memcheck --leak-check=full" \
+           --vanilla < a.r
+  SHELL> R -d "valgrind --track-origins=yes" --vanilla < a.r
+  ```
+
+  Here, "a.r" should load "a.so" at the first.
+
+- <a href="http://bioconductor.fhcrc.org/workshops/2010/AdvancedR/using-gdb-with-R.mov" target="_blank">Debugging with GDB</a> 
 
 
 
-<font color="#800000"><b>Debug in MPI for R call C</b></font>
-<ul>
-<li> <a href="http://valgrind.org/" target="_blank">valgrind</a> 
-<br>
-Quick Example:
-<table cellpadding="5">
-  <tr>
-  <td bgcolor="#dddddd">
-<code>
-<pre>
-SHELL> gcc -shared -g -o a.so *.c
-SHELL> mpiexec -np 2 R -d \
-       "valgrind --show-reachable=yes --tool=memcheck --leak-check=full --log-file=a.log" \
-       --vanilla -f a.r
-SHELL> mpiexec -np 2 R -d \
-       "valgrind --track-origins=yes --log-file=a.log" \
-       --vanilla -f a.r
-</pre>
-</code>
-</table>
-Here, "a.so" is a MPI application, "a.r" should load "a.so" at the first, and
-the output file "a.log" has the tracing results.
+#### <font color="#800000"><b>Debug in MPI for R call C</b></font>
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
+
+  Quick Example:
+
+  ```
+  SHELL> gcc -shared -g -o a.so *.c
+  SHELL> mpiexec -np 2 R -d \
+         "valgrind --show-reachable=yes --tool=memcheck --leak-check=full --log-file=a.log" \
+         --vanilla -f a.r
+  SHELL> mpiexec -np 2 R -d \
+         "valgrind --track-origins=yes --log-file=a.log" \
+         --vanilla -f a.r
+  ```
+
+  Here, "a.so" is a MPI application, "a.r" should load "a.so" at the first, and
+  the output file "a.log" has the tracing results.
 
 
 ---
