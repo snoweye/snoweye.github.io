@@ -8,4 +8,5 @@ contains:
 3. [HPSC](https://snoweye.github.io/hpsc/) website for **High Performance Statistical Computing for Data Intensive Research**,
 4. [Phyloclustering](https://snoweye.github.io/phyclust/) website for `phyclust`,
 5. [R_note](https://snoweye.github.io/R_note/) website (external) for **R note**.
+6. [Errata](https://snoweye.github.io/errta/) website for **Errta of Published Papers**.
 
