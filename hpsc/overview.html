@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class="active"><a href="#">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<i>High Performance Statistical Computing (HPSC)</i>
+is an advanced technique utilizing High Performance
+Computing for statistical research and methodology development
+such as efficient computing for
+ultra-large/unlimited datasets and visualization.
+Currently, this website is focusing on
+<code>MPI</code> and
+<a href="http://r-pbd.org/" target="_blank">pbdMPI</a>
+for ultra-large/unlimited data analysis in
+a distributed manner.
+The techniques and methods introduced here can be quickly extended to other
+statistical applications as ultra-large/unlimited data involved.
+
+This website will demonstrate key steps using simplified examples and provide
+explanations for statistical method. As well as, this website will illustrate
+the fundamental parallelization for algorithms and codes, especially for
+distributed data.
+All examples in the
+<a href="./cookbook.html">Cookbook</a>
+are available for download and can be executed easily.
+In the
+<a href="./cookbook.html">Cookbook</a>
+computational statistical methodologies will be demonstrated with
+a few introduction to the background.
+Each technique will come with example codes where both
+serial and parallel versions will be provided.
+The key steps will be annotated inside the codes.
+The parallel version would show the idea how to transfer
+appropriately from serial version without too much burden
+if the serial version were designed appropriately.
+
+The optimized serial code may not be easily parallelized, even so the
+parallel version may not be optimized.
+One important issue in parallel programming is the interprocessor
+communication which may reduce performance dramatically.
+The other issue is that the programming time may be high as well if
+existed serial codes were not reusable.
+For the distributed data and in the view of statistical analysis,
+parallel programming in R requires fundamental knowledges about
+mathematics and statistics that linear algebra is involved intensively.
+Also, the programming concepts about C, Fortran, and MPI are essential.
+To see and practice abounding examples intensively is an
+efficient way to learn high performance statistical computing.
+
+In short,
+the easy approach to analysis untra-large data or dataset in R
+is that "<font color="green"><b>process data in many processors</b></font>".
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

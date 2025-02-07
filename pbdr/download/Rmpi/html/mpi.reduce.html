@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Reduce and MPI\_Allreduce APIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.reduce {Rmpi}"><tr><td>mpi.reduce {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Reduce and MPI\_Allreduce APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.reduce</code> and <code>mpi.allreduce</code> are global reduction operations. 
+<code>mpi.reduce</code> combines each member's result, using the operation 
+<code>op</code>, and returns the combined value(s) to the member specified by 
+the argument <code>dest</code>. <code>mpi.allreduce</code> is the same as 
+<code>mpi.reduce</code> except that all members receive the combined value(s).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.reduce(x, type=2, op=c("sum","prod","max","min","maxloc","minloc"), 
+	dest = 0, comm = 1) 
+
+mpi.allreduce(x, type=2, op=c("sum","prod","max","min","maxloc","minloc"), 
+	comm = 1) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data to be reduced. Must be the same dim and the same type for all 
+members.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>1 for integer and 2 for double. Others are not supported.</p>
+</td></tr>
+<tr valign="top"><td><code>op</code></td>
+<td>
+<p>one of &quot;sum&quot;, &quot;prod&quot;, &quot;max&quot;, &quot;min&quot;, &quot;maxloc&quot;, or &quot;minloc&quot;.</p>
+</td></tr> 
+<tr valign="top"><td><code>dest</code></td>
+<td>
+<p>rank of destination</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is important that all members in a comm call either all <code>mpi.reduce</code> 
+or all <code>mpi.allreduce</code> even though the master may not be in 
+computation. They must provide exactly the same type and dim 
+vectors to be reduced. If the operation &quot;maxloc&quot; or &quot;minloc&quot; is used, 
+the combined vector is twice as long as the original one since the 
+maximum or minimum ranks are included. 
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.reduce</code> returns the combined value(s) to the member specified  
+by <code>dest</code>. <code>mpi.allreduce</code> returns the combined values(s) to 
+every member in a comm. The combined value(s) may be the summation, 
+production, maximum, or minimum specified by the argument <code>op</code>. If 
+the <code>op</code> is either &quot;maxloc&quot; or &quot;minloc&quot;, then the maximum (minimum) 
+value(s) along the maximum (minimum) rank(s) will be returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,  
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.gather.html">mpi.gather</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

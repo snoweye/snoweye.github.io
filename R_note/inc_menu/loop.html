@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Fast Loop</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This section shows you how to write a fast loop,
+and how efficient it is.
+Five examples will be demonstrated different ways
+o write the loop for the same purpose which is
+"sum a large matrix several times",
+as the following,
+<ol>
+<li> "Sum by for 1" --
+use <code>for()</code> loop to sum up the matrix by column.
+<li> "Sum by for 2" --
+use <code>for()</code> loop to sum up the matrix by row.
+<li> "Sum by apply" --
+use <code>apply()</code> function to sum up the matrix.
+<li> "Sum by rowSums" --
+use <code>rowSums()</code> internal function to sum up the matrix.
+<li> "Sum by dyn" --
+use "dynamical loading" to load external function
+to sum up the matrix.
+</ol>
+Finally, the computing time of the above methods
+will be listed.
+The parallel version of these methods
+will be demonstrated and compared at
+the section of
+"<a href="./Rmpi.html">LAM/MPI/Rmpi</a>".
+<hr>
+
+
+
+- <font color="#800000"><b>Sum by for 1</b></font>
+
+  First, create an R code file "<a href="./example/loop/loop_for_1.r" target="_blank">loop_for_1.r</a>" contains this 
+
+  ```
+  # File name: loop_for_1.r
+  
+  my.loop <- 20
+  m.dim <- list(nrow = 200000, ncol = 10)
+  m <- matrix(1, nrow = m.dim$nrow, ncol = m.dim$ncol)
+  ret <- 0
+  
+  start <- Sys.time()
+  for(k in 1 : my.loop){
+    for (i in 1 : m.dim$nrow){
+      for (j in 1 : m.dim$ncol){
+        ret <- ret + m[i, j]
+      }
+    }
+  }
+  Sys.time() - start
+  ```
+
+
+- <font color="#800000"><b>Sum by for 2</b></font>
+
+  First, create an R code file "<a href="./example/loop/loop_for_2.r" target="_blank">loop_for_2.r</a>" contains this 
+
+  ```
+  # File name: loop_for_2.r
+  
+  my.loop <- 20
+  m.dim <- list(nrow = 200000, ncol = 10)
+  m <- matrix(1, nrow = m.dim$nrow, ncol = m.dim$ncol)
+  ret <- 0
+  
+  start <- Sys.time()
+  for(k in 1 : my.loop){
+    for (j in 1 : m.dim$ncol){
+      for (i in 1 : m.dim$nrow){
+        ret <- ret + m[i, j]
+      }
+    }
+  }
+  Sys.time() - start
+  ```
+
+
+- <font color="#800000"><b>Sum by apply</b></font>
+
+  And then, create an R code file "<a href="./example/loop/loop_apply.r" target="_blank">loop_apply.r</a>" contains this 
+
+  ```
+  # File name: loop_apply.r
+  
+  my.loop <- 20
+  m.dim <- list(nrow = 200000, ncol = 10)
+  m <- matrix(1, nrow = m.dim$nrow, ncol = m.dim$ncol)
+  ret <- 0
+  
+  start <- Sys.time()
+  for(k in 1 : my.loop){
+    ret <- ret + sum(apply(m, 1, sum))
+  }
+  Sys.time() - start
+  ```
+
+
+- <font color="#800000"><b>Sum by rowSums</b></font>
+
+  And then, create an R code file "<a href="./example/loop/loop_rowSums.r" target="_blank">loop_rowSums.r</a>" contains this 
+
+  ```
+  # File name: loop_rowSums.r
+  
+  my.loop <- 20
+  m.dim <- list(nrow = 200000, ncol = 10)
+  m <- matrix(1, nrow = m.dim$nrow, ncol = m.dim$ncol)
+  ret <- 0
+  
+  start <- Sys.time()
+  for(k in 1 : my.loop){
+    ret <- ret + sum(rowSums(m))
+  }
+  Sys.time() - start
+  ```
+
+
+- <font color="#800000"><b>Sum by dyn</b></font>
+
+  Create a Fortran code file "<a href="./example/loop/loop_dyn.f" target="_blank">loop_dyn.f</a>" contains this
+
+  ```
+  c File name: lood_dyn.f
+  c For dynamical load compile by g77.
+  c SHELL> g77 -c loop_dyn.f ; g77 -shared -o loop_dyn.so loop_dyn.o
+  
+        subroutine dynsum(nrow, ncol, m, ret)
+          integer i, j, nrow, ncol
+          real*8 m(nrow, ncol), ret
+  
+          ret = 0
+          do j = 1, ncol
+            do i = 1, nrow
+              ret = ret + m(i, j) 
+            end do
+          end do
+  
+          return
+        end
+  
+  c Output is a shared library "loop_dyn.so" can called by R.
+  ```
+
+  And, create an R code file "<a href="./example/loop/loop_dyn.r" target="_blank">loop_dyn.r</a>" contains this 
+
+  ```
+  # File name: loop_dyn.r
+  
+  dyn.load("loop_dyn.so")
+  # For Windows will like this
+  # dyn.load("C:/Windows/Desktop/loop_dyn.dll")
+  
+  my.loop <- 20
+  m.dim <- list(nrow = 200000, ncol = 10)
+  m <- matrix(1, nrow = m.dim$nrow, ncol = m.dim$ncol)
+  ret <- 0
+  
+  dynsum.f <- function(m) {
+    ret <- .Fortran("dynsum", nrow = nrow(m), ncol = ncol(m),
+             m = as.double(m), ret = as.double(m))
+    ret$ret
+  }
+  
+  start <- Sys.time()
+  for(k in 1 : my.loop){
+    ret <- ret + dynsum.f(m)
+  }
+  Sys.time() - start
+  
+  dyn.unload("loop_dyn.so")
+  # For Windows will like this
+  # dyn.unload("C:/Windows/Desktop/loop_dyn.dll")
+  ```
+  For test, download the example "<a href="./example/loop/loop_dyn.dll" target="_blank">loop_dyn.dll</a>" to "C:\Windows\Desktop\".
+
+
+- <font color="#800000"><b>Computing time</b></font>
+
+  For PIII-1.4G PC, the test computing time as follows,
+  <table cellpadding="5">
+  <tr>
+  <th bgcolor="#d3dce3"> Sum by <br> <font color="red">Loop</font>
+  <th bgcolor="#d3dce3"> for 1
+  <th bgcolor="#d3dce3"> for 2
+  <th bgcolor="#d3dce3"> apply 
+  <th bgcolor="#d3dce3"> rowSums 
+  <th bgcolor="#d3dce3"> dyn 
+  <tr>
+  <th bgcolor="#d3dce3"> Time <br> (secs)
+  <td bgcolor="#dddddd"> 331
+  <td bgcolor="#dddddd"> 307
+  <td bgcolor="#dddddd"> 117
+  <td bgcolor="#dddddd"> 2
+  <td bgcolor="#dddddd"> 19
+  </table>
+
+
+- <font color="#800000"><b>Conclusion</b></font>
+
+  Use default internal function. <br>
+  Use external compiled function. <br>
+  Use "apply" to substitute "for loop". <br>
+  See "apply", "lapply", "tapply", "sapply". <br>
+  Use a column-wise data structure in R and Fortran. <br>
+  Use a row-wise data structure in C. <br>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

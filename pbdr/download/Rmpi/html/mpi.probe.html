@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Probe and MPI\_Iprobe APIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.probe {Rmpi}"><tr><td>mpi.probe {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Probe and MPI\_Iprobe APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.probe</code> uses the source and tag of incoming message to set a 
+status. <code>mpi.iprobe</code> does the same except it is a nonblocking call, 
+i.e., returns immediately.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.probe(source, tag, comm = 1, status = 0)
+mpi.iprobe(source, tag, comm = 1, status = 0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>source</code></td>
+<td>
+<p>the source of incoming message or mpi.any.source() for any 
+source.</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p>a tag number or mpi.any.tag() for any tag.</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>a status number</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code><a href="mpi.send.html">mpi.send</a></code> or other nonblocking sends are used to send 
+a message, the receiver may not know the exact length before receiving 
+it. <code>mpi.probe</code> is used to probe the incoming message and put some 
+information into a status. Then the exact length can be found by using 
+<code><a href="mpi.get.count.html">mpi.get.count</a></code> to such a status. If the wild card 
+<code>mpi.any.source</code> or <code>mpi.any.tag</code> are used, then one 
+can use <code><a href="mpi.get.sourcetag.html">mpi.get.sourcetag</a></code> to find the exact source or tag of 
+a sender. </p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.probe</code> returns 1 only after a matching message has been found.
+</p>
+<p><code>mpi.iproble</code> returns TRUE if there is a message that can be 
+received; FALSE otherwise.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>, 
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.send.html">mpi.send</a></code>, <code><a href="mpi.send.html">mpi.recv</a></code>,
+<code><a href="mpi.get.count.html">mpi.get.count</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

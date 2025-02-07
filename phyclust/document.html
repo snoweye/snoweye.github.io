@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About phyclust</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./method.html">Method</a></li>
+    <li class=""><a href="./download.html">Download</a></li>
+    <li class="active"><a href="#">Document</a></li>
+    <li class=""><a href="./jargon.html">Jargon</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./application.html">Application</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### Useful Documents
+
+The documents for the most stable version of <code>phyclust</code> is on
+<a href="http://cran.r-project.org/web/packages/phyclust/index.html"
+target="_blank">CRAN</a> or
+<a href="http://cran.r-project.org/mirrors.html"
+target="_blank">mirror sites</a>
+from <a href="http://www.r-project.org"
+target="_blnak">R-project</a>.
+
+- The quick guide of <code>phyclust</code> (vignette):
+  [
+  <a href="./document/phyclust-guide.pdf"
+  target="_blank">pdf</a>
+  ]
+
+- The help pages of <code>phyclust</code> (manual):
+  [
+  <a href="./document/phyclust-help.pdf">pdf</a>
+  ]
+
+- The manual of <code>ms</code>
+  (<a href="http://home.uchicago.edu/~rhudson1/source/mksamples.html"
+   target="_blank">original source</a>):
+  [
+  <a href="./document/html/00Index.html"
+  target="_blank">html</a> |
+  <a href="./document/msdoc.pdf">pdf</a>
+  ]
+
+- The manual of <code>seq-gen</code>
+  (<a href="http://tree.bio.ed.ac.uk/software/seqgen/"
+   target="_blank">original source</a>):
+  [
+  <a href="./document/Seq-Gen.v.1.3.2/Seq-Gen.Manual.html"
+  target="_blank">html</a>
+  ]
+
+- The manual of <code>PAML baseml</code>
+  (<a href="http://abacus.gene.ucl.ac.uk/software/paml.html"
+   target="_blank">original source</a>):
+  [
+  <a href="./document/pamlDOC.pdf"
+  target="_blank">pdf</a>
+  ]
+
+
+---
+#### Related References
+Here are some references that are useful to understand
+<code>phyclust</code> and <i>phyloclustering</i>.
+
+- R and C:
+  * <i>R_note -- The Exploration of Statistical Software R</i>.
+    [
+    <a href="http://www.math.ncu.edu.tw/~chenwc/R_note/"
+    target="_blank">html</a>
+    ]
+  * Chambers, J.M. (2008),
+    <i>Software for Data Analysis: Programming with R</i>, Springer.
+  * Davis, S.R. (1998), <i>C++ for Dummies</i>, 3rd, IDG Books Worldwide.
+  * Paradis, E. (2006),
+    <i>Analysis of Phylogenetics and Evolution with R</i>, Springer.
+  * Rudd, A. (1994), <i>Mastering C</i>, John Wiley and Sons.
+  * Venables and Ripley (2000), <i>S Programming</i>, Springer.
+
+
+- Phylogenetics:
+  * Felsenstein, J. (2004), <i>Inferring Phylogenies</i>, Sinauer Associates.
+  * Graur, D. and Li, W.-H. (2000),
+    <i>Fundamentals of Molecular Evolution</i>, Sinauer Associates.
+  * Nielsen, R. (2005),
+    <i>Statistical Methods in Molecular Evolution</i>, Springer.
+
+
+- Model-Based Clustering:
+  * Fraley, C. and Raftery, A.E. (2002),
+    "Model-Based Clustering, Discriminant Analysis, and Density Estimation",
+    <i>Journal of the American Statistical Association</i>,
+    <b>97</b>, 611-531.
+  * McLachlan, G.J. and Krishnan, T. (1996),
+    <i>The EM Algorithm and Extensions</i>, John Wiley and Sons.
+  * McLachlan, G.J. and Peel, D. (2000),
+    <i>Finite Mixture Models</i>, John Wiley and Sons.
+
+
+- Virology:
+  * Goff, S., Coffin, J.M., Hugbes, S.H. and Varmus, H.E. (1997),
+    <i>Retroviruses</i>, Cold Spring Harbor Laboratory.
+  * Levy, J.A. (1992),
+    <i>The Retroviridae Volume 2</i>, Plenum.
+
+
+- Haplotype Grouping:
+  * Thomas, D.C. (2004),
+    <i>Statistical Methods in Genetic Epidemiology</i>, Oxford.
+  * Tzeng, J.-Y. (2005),
+    "Evolutionary-Based Grouping of Haplotypes in Association Analysis",
+    <i>Genetics Epidemiology</i>, <b>28</b>, 220-231.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

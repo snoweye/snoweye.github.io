@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class="active"><a href="#">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+Note that parallelized codes provided in this page are designed for
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a> and
+<a href="http://r-pbd.org/">pbdMPI</a>
+as default.
+The parallel codes may not be optimized and may only perform efficiently in
+some circumstances, so the reports of performance are all skipped.
+<font color="green"><b>
+The essential purpose is to show how to utilize existed
+serial codes and rewrite/rethink them in parallel.</b></font>
+Although the examples given here are all extremely simplified
+for illustration, these ideas are able to
+extend to more complex cases for real data and in real situation.
+We aim to explain parallel ideas from the view of statistics, and
+the better sense of statistics can help to think in applications
+and redesign algorithms.
+Some recipes for analyzing ultra-large/unlimited datasets are
+available in the following. Click titles to show pages in the bottom.
+For running codes see
+<a href="./rscript.html">Rscript</a> in details.
+
+
+1. <a href="./cookbook/ex_binning.html">Binning</a>
+    -- Table Cutting and Binning, simple nonparametric method.
+
+2. <a href="./cookbook/ex_basic.html">Basic</a>
+   -- Sample Mean and Sample Variance.
+
+3. <a href="./cookbook/ex_quantile.html">Quantile</a>
+   -- Quantile or Percentile.
+
+4. <a href="./cookbook/ex_ols.html">OLS</a>
+   -- Ordinary Least Squares for Linear Models.
+
+5. <a href="./cookbook/ex_mvn.html">MVN</a>
+   -- Log Likelihood of Multivariate Normal Distribution.
+
+6. <a href="./cookbook/ex_pca.html">PCA</a>
+   -- Principal Component Analysis.
+
+7. <a href="./cookbook/ex_pmclust.html">Model-Based Clustering</a>
+   -- Finite Mixture Model and EGM Algorithm,
+   and its older brother <a href="./cookbook/ex_pmclust.html">K-Means</a>
+   (Distance-Based Clustering).
+
+8. More examples are in
+   <a href="../pbdr/tutorial1.html" target="_blank">Tutorial 1</a>,
+   <a href="../pbdr/tutorial2.html" target="_blank">Tutorial 2</a>, and
+   <a href="../pbdr/tutorial3.html" target="_blank">Tutorial 3</a>
+   of
+   <a href="../pbdr/index.html" target="_blank">pbdR Tech</a> web page
+   including Bootstrap, MCMC, Bayesian Statistics, Logistic Regression, and
+   Generalized Linear Mixed-effect Model.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

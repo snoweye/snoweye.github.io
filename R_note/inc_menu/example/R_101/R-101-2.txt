@@ -1,0 +1,179 @@
+# http://www.r-project.org/
+# http://cran.r-project.org/
+# http://www.google.com/
+
+
+### Basic.
+q()
+help()
+ls()
+rm()
+getwd()
+setwd()
+# <-
+
+
+### Important function!
+# source("a script file")
+
+
+### Data Types.
+vector()
+array()
+matrix()
+list()
+data.frame()
+names()
+summary()
+str()
+attr()
+
+
+### Data Manipulation.
+seq()
+:
+rep()
+c()
+cbind()
+rbind()
+length()
+dim()
+
+
+### Math Functions.
+sum()
+sqrt()
+# 2^(-0.5)
+abs()
+exp()
+log()
+solve()
+t()
+
+
+### Operations.
+# +, -, *, /, %%, %*%, %in%, >, <, >=, <=, ==, !=, |, &, ||, &&
+y <- 1:5
+y / 5
+y / rep(5, 5)
+y / seq(1, 5)
+y + 5
+X <- matrix(1:25, nrow = 5)
+X[y,]
+X[2:4,]
+cbind(X[, 1], X[, 3])
+X[, c(1, 3)]
+X[, -2]
+sqrt(X)
+X %*% y
+
+
+### Controls.
+help("for")
+
+for(i in a.vector){
+  # do some things here.
+}
+
+break
+next
+
+if(# true){
+  # do some things here.
+} else{
+  # do other things here.
+}
+
+if(# true){
+  # do some things here.
+} else if(# other){
+  # do other things here.
+}
+
+
+### Display Functions.
+cat("whatever strings you want to show.")
+print("whatever objects/variables you want to show.")
+
+
+### User Defined Functions.
+# arguments.
+# default values.
+# call by values.
+# return objects/values.
+
+help("function")
+
+a.fcn.1 <- function(){
+    cat("Hello World!\n")
+}
+a.fcn.1()
+
+a.fcn.2 <- function(x){
+    x <- x + 1
+    cat(x, "\n")
+}
+x <- 3
+a.fcn.2(x)
+a.fcn.2(3)
+x
+
+a.fcn.3 <- function(x){
+    x <- x + 1
+    return(x)
+}
+(x <- a.fcn.3(x))
+
+a.fcn.4 <- function(x, y = 4){
+    return(x + y)
+}
+a.fcn.4(3)
+a.fcn.4(1, y = -1)
+
+a.fcn.5 <- function(x){
+  y <- x + y
+  cat(y, "\n")
+}
+y <- 1:5
+a.fcn.5(5)
+y
+
+
+### Exercises.
+# Ex 1.
+my.fcn.1 <- function(a = 5){
+    for(i in 1:a){
+        cat(i, factorial(i), "\n")
+
+        if(i > 5){
+            break
+        }
+    }
+}
+my.fcn.1()
+my.fcn.1(7)
+my.fcn.1(a = 10)
+
+# Ex 2.
+my.fcn.2 <- function(a = 5){
+    if(a > 5){
+        print(cbind(1:5, factorial(1:5)))
+    } else if(a <= 5){
+        print(cbind(1:a, factorial(1:a)))
+    }
+}
+my.fcn.2()
+my.fcn.2(7)
+my.fcn.2(a = 10)
+
+
+### 3 minutes paper: answering the following questions.
+# 1. (Control)
+#   What does this "return()" do?
+#
+# 2. (Loop)
+#   What does the "while(...){...}" do?
+#
+# 3. (Matrix)
+#   What do these functions "colSums()" and "rowSums()" do?
+#

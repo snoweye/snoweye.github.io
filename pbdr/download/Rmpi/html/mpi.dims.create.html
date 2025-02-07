@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Dims\_create</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.dims.create {Rmpi}"><tr><td>mpi.dims.create {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Dims\_create</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.dims.create</code> Create a Cartesian dimension used by <code>mpi.cart.create</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mpi.dims.create(nnodes, ndims, dims=integer(ndims))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nnodes</code></td>
+<td>
+<p>Number of nodes in a cluster</p>
+</td></tr>
+<tr valign="top"><td><code>ndims</code></td>
+<td>
+<p>Number of dimension in a Cartesian topology</p>
+</td></tr>
+<tr valign="top"><td><code>dims</code></td>
+<td>
+<p>Initial dimension numbers</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The entries in the return value are set to describe a Cartesian grid with 
+<code>ndims</code> dimensions and a total of <code>nnodes</code> nodes. The dimensions are set 
+to be as close to each other as possible, using an appropriate divisibility 
+algorithm. The return value can be constrained by specifying positive number(s) in 
+<code>dims</code>. Only those 0 values in <code>dims</code> are modified by 
+<code>mpi.dims.create</code>.</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.dims.create</code> returns the dimension vector used by 
+that in <code>mpi.cart.create</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.cart.create.html">mpi.cart.create</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#What is the dim numbers of 2 dim Cartersian topology under a grid of 36 nodes
+mpi.dims.create(36,2)	#return c(6,6)
+#Constrained dim numbers
+mpi.dims.create(12,2,c(0,4)) #return c(9,4)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

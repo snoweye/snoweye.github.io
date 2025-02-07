@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Struct Plots of Observations Based on Posterior Probabilities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotstruct {phyclust}"><tr><td>plotstruct {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Struct Plots of Observations Based on Posterior Probabilities</h2>
+
+<h3>Description</h3>
+
+<p>This function provides structure plots of data set given based on posterior
+probabilities, the <code>Z.normalized</code> matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotstruct(Z, X.class = NULL, sort.inside.class = TRUE,
+    direction = "h", main = "Structure Plot", xlab = "Observations",
+    ylab = "Posterior Probabilities", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Z</code></td>
+<td>
+<p>a Z matrix as Z.normalized in <code>Class phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>X.class</code></td>
+<td>
+<p>class ids indicated for all observations</p>
+</td></tr>
+<tr valign="top"><td><code>sort.inside.class</code></td>
+<td>
+<p>sort observations inside class by max posteriors.</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p>either &quot;h&quot; for horizontal or &quot;v&quot; for vertical.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main label, default = &quot;Structure Plot&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis label, default = &quot;Observations&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-axis label, default = &quot;Posterior Probabilities&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other options passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The posterior probabilities in <code>ret.phyclust$Z.normalized</code> will
+be drawn in colors.
+</p>
+<p>If <code>X.class</code> is submitted, the plot will draw in the order of
+class ids and the <code>sort.inside.class</code> will be skipped.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A structure plot will be drawn.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="find.best.html">find.best</a></code>,
+<code><a href="plotdots.html">plotdots</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+ret.1 &lt;- phyclust(seq.data.toy$org, 3)
+plotstruct(ret.1$Z.normalized)
+windows()
+plotstruct(ret.1$Z.normalized, sort.inside.class = FALSE)
+
+# With class ids
+X.class &lt;- as.numeric(gsub(".*-(.*)", "\\1", seq.data.toy$seqname))
+windows()
+plotstruct(ret.1$Z.normalized, X.class = X.class)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

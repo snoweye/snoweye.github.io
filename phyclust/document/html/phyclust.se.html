@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Main Function of phyclust for Sequencing Error Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phyclust.se {phyclust}"><tr><td>phyclust.se {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Main Function of phyclust for Sequencing Error Models</h2>
+
+<h3>Description</h3>
+
+<p>The <code>phyclust.se</code> is an advanced function of <code>phyclust</code>.
+The <code>phyclust.se</code> implements finite mixture models for sequence data
+with sequencing errors. The same as <code>phyclust</code>,
+the mutation processes are modeled by evolution processes based on
+Continuous Time Markov Chain theory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phyclust.se(X, K, EMC = .EMC, manual.id = NULL, byrow = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>EMC</code></td>
+<td>
+<p>EM control.</p>
+</td></tr>
+<tr valign="top"><td><code>manual.id</code></td>
+<td>
+<p>manually input class ids.</p>
+</td></tr>
+<tr valign="top"><td><code>byrow</code></td>
+<td>
+<p>advanced option for <code>X</code>, default = TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>phyclust.se</code> considers mutations with sequencing error, but only
+for NUCLEOTIDE data and only the EM algorithm is
+implemented. Currently, <code>phyclust.se</code> implements the following steps:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+  1 </td><td style="text-align: left;"> assume non-sequencing errors as the <code>phyclust</code> does. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  2 </td><td style="text-align: left;"> use the initialization as the <code>phyclust</code> does. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  3 </td><td style="text-align: left;"> run the <code>phyclust</code> to find the non-sequencing error MLE's. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  4 </td><td style="text-align: left;"> initial by the results of <code>phyclust</code>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  5 </td><td style="text-align: left;"> update all parameters including probabilities of sequencing errors. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+<p>See the help page of <code><a href="phyclust.html">phyclust</a></code> for the explanations of
+input arguments since both functions share the same arguments. Note that
+the underling model assumptions are very different of both functions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with class <code>phyclust</code> will be returned containing
+several elements as described in <code><a href="phyclust.html">phyclust</a></code>. But, the
+<code>phyclust.se</code> returns extra parameters for sequencing errors, and
+they are shown in the following:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>'SE'</code></td>
+<td>
+<p>a list returning parameters of sequencing error models, including:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+              'type'     </td><td style="text-align: left;"> 'TRUE' for modeling sequencing errors.          </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+              'model'    </td><td style="text-align: left;"> 'CONVOLUTION', the only model implemented.      </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+              'constant' </td><td style="text-align: left;"> the constrained constant for sequencing errors. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+              'f.err'    </td><td style="text-align: left;"> probability matrix, each row sums to 1.         </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+              </td>
+</tr>
+
+</table>
+
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.EMC.html">.EMC</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.se.html">phyclust.se</a></code>,
+<code><a href="phyclust.se.update.html">phyclust.se.update</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+X &lt;- seq.data.toy$org
+
+set.seed(1234)
+(ret.1 &lt;- phyclust.se(X, 3))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

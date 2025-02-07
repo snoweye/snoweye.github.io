@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Remark Lines</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+How do I remark multiple lines of code?
+The following is a dirty trick.
+This is not only for remarking code, but also for notations.
+<br>
+<hr>
+
+#### <b>Examples:</b><br>
+
+- The example below is probably very self contained.
+
+  ```
+  remark <- function(){       ### This is as "/*" in C.
+  
+  #  1. Put everything here whatever you want to remark.
+  #  2. Name the function "remark" you never ever want to use anywhere
+  #     out of this bracket scope.
+  #  3. Common mistake: Don't leave this function at the end of other
+  #                     functions as returns!! This is a fatal consequence.
+  #                     A better habit is to use return().
+  
+  }                           ### This is as "*/" in C.
+  ```
+
+- Sometime it may fail if the remark is at the end.
+
+  ```
+  a <- function(){
+    bb <- 1:5
+    bb
+  }
+  
+  ### This is not correct, function "remark()" is returned.
+  a <- function(){
+    bb <- 1:5
+    remark <- function(){
+      bb
+    }
+  }
+  
+  ### This is correct, "bb" is returned.
+  a <- function(){
+    bb <- 1:5
+    remark <- function(){
+      bb
+    }
+    bb
+  }
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

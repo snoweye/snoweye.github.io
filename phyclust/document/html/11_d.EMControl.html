@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: EM Control Generator</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .EMControl {phyclust}"><tr><td>.EMControl {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>EM Control Generator</h2>
+
+<h3>Description</h3>
+
+<p>Generate an EM control (<code>.EMC</code>) controlling the options,
+methods, conditions and models of EM algorithms.
+As <code>.EMC</code>, this function generate a default template.
+One can either modify <code>.EMC</code> or employ this function to
+control EM algorithms.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.EMControl(exhaust.iter = 1, fixed.iter = 5,
+    short.iter = 100, EM.iter = 1000,
+    short.eps = 1e-2, EM.eps = 1e-6,
+    cm.reltol = 1e-8, cm.maxit = 5000,
+    nm.abstol.Mu.given.QA = 1e-8, nm.reltol.Mu.given.QA = 1e-8,
+    nm.maxit.Mu.given.QA = 500,
+    nm.abstol.QA.given.Mu = 1e-8, nm.reltol.QA.given.Mu = 1e-8,
+    nm.maxit.QA.given.Mu = 5000,
+    est.non.seg.site = FALSE, max.init.iter = 50,
+    init.procedure = .init.procedure[1],
+    init.method = .init.method[1],
+    substitution.model = .substitution.model$model[1],
+    edist.model = .edist.model[1], identifier = .identifier[1],
+    code.type = .code.type[1], em.method = .em.method[1],
+    boundary.method = .boundary.method[1], min.n.class = 1,
+    se.type = FALSE, se.model = .se.model[1], se.constant = 1e-2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>exhaust.iter</code></td>
+<td>
+<p>number of iterations for &quot;exhaustEM&quot;, default = 1.</p>
+</td></tr>
+<tr valign="top"><td><code>fixed.iter</code></td>
+<td>
+<p>number of iterations for &quot;RndpEM&quot;, default = 5.</p>
+</td></tr>
+<tr valign="top"><td><code>short.iter</code></td>
+<td>
+<p>number of short-EM steps, default = 100.</p>
+</td></tr>
+<tr valign="top"><td><code>EM.iter</code></td>
+<td>
+<p>number of long-EM steps, default = 1000.</p>
+</td></tr>
+<tr valign="top"><td><code>short.eps</code></td>
+<td>
+<p>tolerance of short-EM steps, default = 1e-2.</p>
+</td></tr>
+<tr valign="top"><td><code>EM.eps</code></td>
+<td>
+<p>tolerance of long-EM steps, default = 1e-6.</p>
+</td></tr>
+<tr valign="top"><td><code>cm.reltol</code></td>
+<td>
+<p>relative tolerance for a CM step, default = 1e-8</p>
+</td></tr>
+<tr valign="top"><td><code>cm.maxit</code></td>
+<td>
+<p>maximum number iteration for a CM step, default = 5000.</p>
+</td></tr>
+<tr valign="top"><td><code>nm.abstol.Mu.given.QA</code></td>
+<td>
+<p>see &lsquo;Details&rsquo;, default = 1e-8</p>
+</td></tr>
+<tr valign="top"><td><code>nm.reltol.Mu.given.QA</code></td>
+<td>
+<p>see &lsquo;Details&rsquo;, default = 1e-8</p>
+</td></tr>
+<tr valign="top"><td><code>nm.maxit.Mu.given.QA</code></td>
+<td>
+<p>see &lsquo;Details&rsquo;, default = 500.</p>
+</td></tr>
+<tr valign="top"><td><code>nm.abstol.QA.given.Mu</code></td>
+<td>
+<p>see &lsquo;Details&rsquo;, default = 1e-8</p>
+</td></tr>
+<tr valign="top"><td><code>nm.reltol.QA.given.Mu</code></td>
+<td>
+<p>see &lsquo;Details&rsquo;, default = 1e-8</p>
+</td></tr>
+<tr valign="top"><td><code>nm.maxit.QA.given.Mu</code></td>
+<td>
+<p> see &lsquo;Details&rsquo;, default = 5000.</p>
+</td></tr>
+<tr valign="top"><td><code>est.non.seg.site</code></td>
+<td>
+<p>estimate non-segregation sites, default = FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>max.init.iter</code></td>
+<td>
+<p>maximum number of initialization iteration, default = 50.</p>
+</td></tr>
+<tr valign="top"><td><code>init.procedure</code></td>
+<td>
+<p>initialization procedure, default = &quot;exhaustEM&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>init.method</code></td>
+<td>
+<p>initialization method, default = &quot;randomMu&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>substitution.model</code></td>
+<td>
+<p>substitution model, default = &quot;JC69&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>edist.model</code></td>
+<td>
+<p>evolution distance, default = &quot;D\_J69&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>identifier</code></td>
+<td>
+<p>identifier, default = &quot;EE&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>code type, default = &quot;NUCLEOTIDE&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>em.method</code></td>
+<td>
+<p>EM method, default = &quot;EM&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>boundary.method</code></td>
+<td>
+<p>boundary method, default = <code>ADJUST</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>min.n.class</code></td>
+<td>
+<p>minimum number of sequences in a cluster, default = 1.</p>
+</td></tr>
+<tr valign="top"><td><code>se.type</code></td>
+<td>
+<p>sequencing error type, default = FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>se.model</code></td>
+<td>
+<p>sequencing error model, default = &quot;CONVOLUTION&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>se.constant</code></td>
+<td>
+<p>constrained constant, default = 1e-2.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>exhaust.iter</code>, <code>fixed.iter</code>, <code>short.iter</code>, and
+<code>short.eps</code> are used to control the iterations of initialization
+procedures and methods.
+</p>
+<p><code>EM.iter</code> and <code>EM.eps</code> are used to control the EM iterations.
+</p>
+<p><code>cm.reltol</code> and <code>cm.maxit</code> are used to control the ECM
+iterations.
+</p>
+<p>Arguments starting with <code>nm.</code> are options for the Nelder-Mead
+method as in <code>optim</code>. The C codes of Nelder-Mead are modified
+from the R math library and the options are all followed.
+<code>abstol</code> and <code>reltol</code> are for absolute and relative tolerances. 
+<code>Mu.given.QA</code> is for maximizing the profile function of
+<i>mu_k</i> given <i>Q_k</i>, and
+<code>QA.given.Mu</code> is for maximizing the profile function of
+<i>Q_k</i> given <i>mu_k</i>.
+</p>
+<p><code>est.non.seg.site</code> indicates whether to estimate the states of
+center sequences. If FALSE, the states will be fixed as the
+non segregating sites. Usually, there is no need to estimate.
+</p>
+<p><code>max.init.iter</code> is for certain initialization methods, e.g.
+<code>randomNJ</code> and <code>K-Medoids</code> need few tries to obtain an
+appropriate initial state.
+</p>
+<p><code>init.procedure</code> and <code>init.method</code> are for initializations.
+</p>
+<p><code>min.n.class</code> is the minimum number of sequences in a cluster to
+avoid bad initialization state and degenerated clusters.
+</p>
+<p><code>se.type</code>, <code>se.model</code>, and <code>se.constant</code> which are used only
+for sequencing error models and only for nucleotide data without labels.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns a list as <code>.EMC</code>. 
+</p>
+<p>The sequencing error controls are stored in
+<code>se.type</code>, <code>se.model</code>, and <code>se.constant</code>, for
+sequencing error type, model, and constrained constant of errors,
+respectively.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.EMC.html">.EMC</a></code>,
+<code><a href="11_d.boundary.method.html">.boundary.method</a></code>,
+<code><a href="11_d.code.type.html">.code.type</a></code>,
+<code><a href="11_d.edist.model.html">.edist.model</a></code>,
+<code><a href="11_d.em.method.html">.em.method</a></code>,
+<code><a href="11_d.identifier.html">.identifier</a></code>,
+<code><a href="11_d.init.method.html">.init.method</a></code>,
+<code><a href="11_d.init.procedure.html">.init.procedure</a></code>,
+<code><a href="11_d.substitution.html">.substitution.model</a></code>,
+<code><a href="../../stats/html/optim.html">optim</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="phyclust.se.html">phyclust.se</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# The same as .EMC
+.EMControl()
+
+# Except code.type, all others are the same as .EMC
+.EMControl(code.type = "SNP")
+.EMControl(code.type = .code.type[2])
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

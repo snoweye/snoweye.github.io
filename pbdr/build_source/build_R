@@ -1,0 +1,4 @@
+./configure --prefix=/home/pbdr/work-my/local/R-devel
+### Remove javaconf from "all:" tag of Makefile if no java
+make
+make install

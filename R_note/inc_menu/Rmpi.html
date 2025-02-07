@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">LAM, MPI, and Rmpi</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This page demonstrate a parallel computing tool implemented in R.
+You have to have a MPI environment and a Rmpi package to run this example.
+It also show the comparison with other methods.
+In general, not all computing problem can be easily parallelized such as MCMC,
+and not all parallel computing is more efficient than series computing.
+Parallel computing is also highly dependent on programing and algorithm.
+<hr>
+
+
+- <font color="#800000"><b>MPI -- Message Passing Interface</b></font>
+
+  With <a href="http://www.lam-mpi.org/" target="_blank">LAM/MPI</a> and
+  R package <a href="http://www.stats.uwo.ca/faculty/yu/Rmpi/" target="_blank">Rmpi</a>
+  by <a href="http://www.stats.uwo.ca/faculty/yu/" target="_blank">Dr. Hao Yu</a>.
+
+
+- <font color="#800000"><b>Download</b></font>
+
+  For Mandrake Linux system:<br>
+  - For <b>LAM/MPI</b>, it requires
+    - lam-devel-6.5.9-2mdk (my mirror <a href="./source/Rmpi/lam-devel-6.5.9-2mdk.rpm">here</a>),
+    - lam-runtime-6.5.9-2mdk (my mirror <a href="./source/Rmpi/lam-runtime-6.5.9-2mdk.rpm">here</a>),
+    - lam-doc-6.5.9-2mdk (my mirror <a href="./source/Rmpi/lam-doc-6.5.9-2mdk.rpm">here</a>),
+    - liblam0-devel-6.5.9-2mdk (my mirror <a href="./source/Rmpi/liblam0-devel-6.5.9-2mdk.rpm">here</a>). <br>
+  - For <b>Rmpi</b>, it requires Rmpi_0.4-6.tar.gz (my mirror <a href="./source/Rmpi/Rmpi_0.4-6.tar.gz">here</a>).
+
+
+- <font color="#800000"><b>Master & Salve</b></font>
+
+  The basic idea is <b>Master</b> for MPI rank 0
+  and <b>Slave</b> for MPI rank from 1 to n, where n is the universal size in your MPI enviroments.<br>
+
+  <table>
+  <tr>
+  <th valign="top"> Step:
+  <th align="left">
+  0. Initial. <br>
+  1. Master send to Slave. (bcast, send) <br>
+  2. Slave receive from Master. (bcast, recv) <br>
+  3. compute. <br>
+  4. Slave send to Master. (send) <br>
+  5. Master receive from Slave. (recv) <br>
+  6. complete and quit.
+  </table>
+
+  Here, create a file "<a href="./example/rmpi/rmpi_ms.r" target="_blank">rmpi_ms.r</a>" as follows,
+
+  ```
+  # File name: rmpi_ms.r
+  
+  call.mpi.master <- function(){
+    library(Rmpi)
+    mpi.spawn.Rslaves(needlog = FALSE)
+    mpi.bcast.Robj2slave(call.mpi.slave)
+    mpi.bcast.cmd(call.mpi.slave())
+  
+    x <- 100
+    mpi.bcast(as.integer(x), type = 1)
+  
+    mysize <- mpi.universe.size()
+    y <- 200
+    for(i in 1 : mysize){
+      mpi.send(as.integer(y), type = 1, dest = i, tag = 1)
+    }
+  
+    ret <- NULL
+    for(i in 1 : mysize){
+      ret.slave <- mpi.recv.Robj(source = i, tag = 2)
+      ret <- rbind(ret, ret.slave)
+    }
+    ret
+  }
+  
+  call.mpi.slave <- function(){
+    x <- mpi.bcast(integer(1), type = 1)
+    y <- mpi.recv(integer(1), type = 1, source = 0, tag = 1)
+  
+    myrank <- mpi.comm.rank()
+  
+    ret.slave <- c(myrank, x, y, myrank, x * myrank + y)
+    mpi.send.Robj(ret.slave, dest = 0, tag = 2)
+  }
+  
+  call.mpi.master()
+  ```
+
+  The output will like this,
+  ```
+            [,1] [,2] [,3] [,4] [,5]
+  ret.slave    1  100  200    1  300
+  ret.slave    2  100  200    2  400
+  ret.slave    3  100  200    3  500
+  ret.slave    4  100  200    4  600
+  ```
+
+
+- <font color="#800000"><b>Sum by Rmpi</b></font>
+
+  As the <a href="./loop.html">Loop</a> page, use MPI to split
+  the for loop and send to another slave to compute, reduce the computing time. Here are
+  examples "<a href="./example/rmpi/rmpi_for_1.r" target="_blank">rmpi_for_1.r</a>",
+  "<a href="./example/rmpi/rmpi_for_2.r" target="_blank">rmpi_for_2.r</a>",
+  "<a href="./example/rmpi/rmpi_apply.r" target="_blank">rmpi_apply.r</a>" and
+  "<a href="./example/rmpi/rmpi_rowSums.r" target="_blank">rmpi_rowSums.r</a>".
+  <br><br>
+
+
+- <font color="#800000"><b>Computing time</b></font>
+
+  For PIII-1.4G PC cluster with 4 nodes, the test computing time as follows,
+<table cellpadding="5">
+<tr>
+<th bgcolor="#d3dce3"> Sum by <br> <font color="red">Rmpi</font>
+<th bgcolor="#d3dce3"> for 1
+<th bgcolor="#d3dce3"> for 2
+<th bgcolor="#d3dce3"> apply 
+<th bgcolor="#d3dce3"> rowSums 
+<th bgcolor="#d3dce3"> <br>
+<tr>
+<th bgcolor="#d3dce3"> Time <br> (secs)
+<td bgcolor="#dddddd"> 86
+<td bgcolor="#dddddd"> 79
+<td bgcolor="#dddddd"> 41 
+<td bgcolor="#dddddd"> 5
+<td bgcolor="#dddddd"> <br>
+<tr>
+<th bgcolor="#d3dce3"> Sum by <br> <font color="red">Loop</font>
+<th bgcolor="#d3dce3"> for 1
+<th bgcolor="#d3dce3"> for 2
+<th bgcolor="#d3dce3"> apply 
+<th bgcolor="#d3dce3"> rowSums 
+<th bgcolor="#d3dce3"> dyn 
+<tr>
+<th bgcolor="#d3dce3"> Time <br> (secs)
+<td bgcolor="#dddddd"> 331
+<td bgcolor="#dddddd"> 307
+<td bgcolor="#dddddd"> 117
+<td bgcolor="#dddddd"> 2
+<td bgcolor="#dddddd"> 19
+</table>
+
+
+- <font color="#800000"><b>Conclusion</b></font>
+
+  The conclusion is the same in <a href="./loop.html">Loop</a> page. <br>
+  Use MPI to split independent job. <br>
+  Reduce by the number of CPUs? <br>
+  Communication times? <br>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">pbdR Home</a></li> /
+    <li><a href="../tutorial1.html">Tutorial 1</a></li> /
+    <li class="active">iris_ser</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Iris example in serial
+
+
+This is a serial code for the iris example which contains
+a series analysis based on iris dataset provided inside <code>R</code>.
+It can be run by a single processor as the usual interaction mode or
+by <code>Rscript</code> as
+
+```
+SHELL> Rscript --vanilla iris_ser.r
+```
+
+If the code is run in the interaction mode, a plot will be generated on screen.
+If the code is run via the <code>Rscript</code>, a file <code>Rplot.pdf</code>
+or a similar file will be created. The plot contains visualization of
+clustering results on the first two principal components.
+
+
+---
+#### Serial Code: (<a href="./iris_ser.r" target="_blank">iris_ser.r</a>)
+
+```
+# File name: iris_ser.r
+# Run: Rscript iris_ser.r
+
+rm(list = ls())                                       # Clean environment
+
+### Load data
+X <- as.matrix(iris[, -5])                            # Dimension 150 by 4
+X.cid <- as.numeric(iris[, 5])                        # True id
+
+### Transformation and check
+X.std <- scale(X)                                     # Standardize
+mu <- colMeans(X.std)                                 # Columns means are near 0
+cov <- cov(X.std)                                     # Diagonals are near 1
+print(mu)
+print(cov)
+
+### SVD
+X.svd <- svd(X.std)
+
+### Project on column space of singular vectors
+A <- X.svd$u %*% diag(X.svd$d)
+B <- X.std %*% X.svd$v                                # A ~ B
+X.prj <- A[, 1:2]
+
+### Clustering
+set.seed(1234)                                        # Set overall seed
+X.kms <- kmeans(X.std, 3)                             # K-means
+X.kms
+X.kms.cid <- X.kms$cluster                            # Classification
+
+library(EMCluster)                                    # Model-based clustering
+X.mbc <- init.EM(X.std, 3)                            # Initial by em-EM
+X.mbc
+X.mbc.cid <- X.mbc$class                              # Classification
+
+### Validation
+(X.kms.adjR <- RRand(X.cid, X.kms.cid)$adjRand)       # Adjusted Rand index
+(X.mbc.adjR <- RRand(X.cid, X.mbc.cid)$adjRand)
+
+### Swap classification id
+tmp <- X.kms.cid
+X.kms.cid[tmp == 2] <- 3
+X.kms.cid[tmp == 3] <- 2
+tmp <- X.mbc.cid
+X.mbc.cid[tmp == 2] <- 3
+X.mbc.cid[tmp == 3] <- 2
+
+### Display on first 2 components
+par(mfrow = c(2, 2))
+plot(X.prj, col = X.cid + 1, pch = X.cid,
+     main = "iris (true)", xlab = "PC1", ylab = "PC2")
+plot(X.prj, col = X.kms.cid + 1, pch = X.kms.cid,
+     main = paste("iris (kmeans)", sprintf("%.4f", X.kms.adjR)),
+     xlab = "PC1", ylab = "PC2")
+plot(X.prj, col = X.mbc.cid + 1, pch = X.mbc.cid,
+     main = paste("iris (model-based)", sprintf("%.4f", X.mbc.adjR)),
+     xlab = "PC1", ylab = "PC2")
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

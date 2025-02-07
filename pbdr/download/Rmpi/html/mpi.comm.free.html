@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Comm\_free API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.comm.free {Rmpi}"><tr><td>mpi.comm.free {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Comm\_free API</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.comm.free</code>  deallocates a communicator so it 
+points to MPI\_COMM\_NULL.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  mpi.comm.free(comm=1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When members associated with a communicator finish jobs or exit, they have to 
+call <code>mpi.comm.free</code> to release resource so <code><a href="mpi.comm.html">mpi.comm.size</a></code> 
+will return 0. If the comm  was created from an intercommunicator by 
+<code><a href="mpi.intercomm.merge.html">mpi.intercomm.merge</a></code>, use <code><a href="mpi.comm.disconnect.html">mpi.comm.disconnect</a></code> instead.
+</p>
+
+
+<h3>Value</h3>
+
+<p>1 if success. Otherwise 0. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>, 
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.comm.disconnect.html">mpi.comm.disconnect</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About pbdR</a></li>
+    <li class=""><a href="./tutorial1.html">Tutorial 1</a></li>
+    <li class=""><a href="./tutorial2.html">Tutorial 2</a></li>
+    <li class=""><a href="./tutorial3.html">Tutorial 3</a></li>
+    <li class=""><a href="./tutorial4.html">Tutorial 4</a></li>
+    <li class=""><a href="./tutorial5.html">Tutorial 5</a></li>
+    <li class=""><a href="./tutorial6.html">Tutorial 6</a></li>
+    <li class=""><a href="./vm.html">VirtualBox</a></li>
+    <li class=""><a href="./multiple_nodes.html">Multiple Nodes</a></li>
+    <li class="active"><a href="#">For Windows</a></li>
+    <li class=""><a href="./aws_ec2.html">Using AWS EC2</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Install Prebuild Binary pbdR Packages on Windows 7
+
+This is a temporary solution for installing pre-build binary pbdR packages
+on Windows 7.
+```
+> brary(RCurl)
+> github.dir <- "https://raw.githubusercontent.com/snoweye/pbdR_winbin/master/"
+> install <- paste(github.dir, "install_dp_pbdR.r", sep = "")
+> eval(parse(text = getURL(install, ssl.verifypeer = FALSE)))
+```
+
+
+---
+#### Build Binary pbdR Packages on Windows
+
+This section demonstrate how to build binary <code>pbd</code> packages from
+source code on Windows machines, and use <code>pbdMPI</code>
+as an example since this is the key
+step of all <code>pbd</code> packages.
+If you already have R and MS-MPI, you can just download the binary file
+from the download page, install by
+```
+SHELL> R CMD INSTALL pbdMPI_0.2-3.zip
+```
+and skip rest of this section. Otherwise,
+all files you needs are
+
+
+- "R-3.0.1-win.exe",
+  "<a href="http://cran.r-project.org/bin/windows/Rtools/Rtools31.exe"
+   target="_blank">Rtools31.exe</a>",
+  <code>R</code> packages
+  "<a href="http://cran.r-project.org/bin/windows/contrib/r-release/rlecuyer_0.3-3.zip"
+   target="_blank">rlecuyer_0.3.zip</a>"
+  (binary), and
+  "<a href="http://cran.r-project.org/src/contrib/pbdMPI_0.2-3.tar.gz"
+   target="_blank">pbdMPI_0.2-3.tar.gz</a>"
+  (source) from
+  <a href="http://cran.r-project.org" target="_blank">CRAN</a>;
+
+- Microsoft MPI, MS-MPI,
+  (HPC Pack 2012 R2 MS-MPI Redistributable Package) from
+  <a href="http://http://www.microsoft.com/en-us/download/"
+  target="_blank">Microsoft Developer Network</a>
+  or
+  <a href="http://msdn.microsoft.com/en-us/library/bb524831%28v=vs.85%29.aspx"
+  target="_blank">here</a>;
+
+- Batch file
+  "<a href="./download/build_pbdMPI.bat" target="_blank">build_pbdMPI.bat</a>".
+
+
+I assume all files are installed using default settings in most steps.
+Please click the following subsections:
+
+1. <a href="./windows/install_r.html">Install R</a>.
+
+2. <a href="./windows/install_rtools.html">Install Rtools</a>.
+
+3. <a href="./windows/install_msmpi.html">Install MS-MPI</a>.
+
+4. <a href="./windows/install_pbdmpi.html">Install pbdMPI</a>.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

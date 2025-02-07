@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Batch Jobs</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+There are two examples for batching jobs in the page.
+The first one will demonstrate different batching method, and
+the second will demonstrate a batching method with extra arguments.
+Some of Linux knowledges are required for understanding these commands,
+and they are also useful when you have to process bunch of jobs.
+More ways to batch jobs can be found at the page
+"<a href="./batch_more.html">Batch More</a>"
+in this web site
+and the page
+"<a href="../../hpsc/rscript.html">Rscript</a>"
+in the
+<a href="../../hpsc/index.html">HPSC</a>
+web site.
+<br>
+
+---
+#### <b>Example 1:</b>
+
+1. <font color="#800000"><b>For MS Windows user</b></font>
+
+   Use <code>Rterm.exe</code> or <code>Rcmd.exe</code> to substitute
+   <code>R</code> in the following command mode.
+
+2. <font color="#800000"><b>Hello world !</b></font>
+
+   First, create an R code file "<a href="./example/batch/hello_1.r" target="_blank">hello_1.r</a>" contains the following.
+   ```
+   # File name: hello_1.r
+   a <- c("Hello", "world", "!")
+   print(a)
+   b <- paste(a, collapse = " ")
+   print(b)
+   ```
+   Here, it sets an array variable "a" contains 3 elements, "Hello", "world", and "!", and
+   prints them. It also uses the function "paste" to join all elements in array "a" by " " (space)
+   and then it sets the array to a variable "b" and prints it.
+
+3. <font color="#800000"><b>Batch From Script</b></font>
+
+   Use the command mode to send "hello_1.r" as a batch job.
+   ```
+     SHELL> R CMD BATCH --vanilla --slave hello_1.r output_file
+   ```
+   or
+   ```
+     SHELL> nohup R CMD BATCH --vanilla --slave hello_1.r output_file &
+   ```
+   By default, the output will be saved in "hello_1.r.Rout" if an "output_file" isn't
+   assigned. The output file (hello_1.r.Rout) will as the following.
+   ```
+   > a <- c("Hello", "world", "!")
+   > print(a)
+   [1] "Hello" "world" "!"
+   > b <- paste(a, collapse = " ")
+   > print(b)
+   [1] "Hello world !"
+   >
+   ```
+
+4. <font color="#800000"><b>Batch From Command</b></font>
+
+   Use the command mode to send "hello_1.r" as a batch job from [STDIN] and show the
+   output on [SDTOUT]. The followings have similar commands, and can provide
+   same results, but they can be used in different purposes.
+   ```
+     SHELL> R --vanilla --slave < hello_1.r > output_file
+   ```
+   or
+   ```
+     SHELL> cat hello_1.r | R --vanilla --slave  > output_file
+   ```
+   or
+   ```
+     SHELL> echo 'source("hello_1.r")' | R --vanilla --slave  > output_file
+   ```
+   By default, the output will be show on the screen, you can use ">" to redirect the
+   output into "output_file". The output will like this.
+   ```
+   [1] "Hello" "world" "!"
+   [1] "Hello world !"
+   ```
+
+---
+#### <b>Example 2:</b>
+
+1. <font color="#800000"><b>Hello world, MOLAS !</b></font>
+
+   First, create an R code file "<a href="./example/batch/hello_2.r" target="_blank">hello_2.r</a>" contains the following.
+  ```
+  # File name: hello_2.r
+  a <- c("Hello", "world,", argv, "!")
+  print(a)
+  b <- paste(a, collapse = " ")
+  print(b)
+  ```
+   Here, it sets an array variable "a" contains 4 elements, "Hello", "world,", argv,
+   and "!", and prints them. The variable "argv" will be passed from STDIN command.
+   It also uses the function "paste" to join all elements in array "a" by " " (space)
+   and sets to a variable "b" and prints it.
+
+2. <font color="#800000"><b>Pass Variable From STDIN</b></font>
+
+   Use command mode to send "hello_2.r" for batch job from STDIN and show the
+   output on SDTOUT. The variable "argv" as "MOLAS" is assigned before the "hello_2.r" is passed to R.
+   ```
+     SHELL> echo 'argv <- "MOLAS"; source("hello_2.r")' | R --vanilla --slave  > output_file
+   ```
+   By default, the output will be shown on the screen, you can use ">" to redirect the
+   output into an "output_file". The output will like this.
+   ```
+   [1] "Hello" "world," "MOLAS" "!"
+   [1] "Hello world, MOLAS !"
+   ```
+
+3. <font color="#800000"><b>Background process in Linux</b></font>
+
+   The commends may include `echo`, `nohup`, `&`, `|`, `<`, and `>`.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

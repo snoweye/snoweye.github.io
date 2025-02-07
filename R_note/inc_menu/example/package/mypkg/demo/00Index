@@ -1,0 +1,2 @@
+RcallC	mypkg R call C
+RcallF	mypkg R call Fortran

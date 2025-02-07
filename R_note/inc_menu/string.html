@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">String and Parse</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+- <font color="#800000"><b>String process</b></font>
+
+  Function <code>paste()</code>, <code>nchar()</code>,
+  <code>strsplit()</code>, <code>substr()</code>, <code>match()</code>, ...
+
+```
+a <- paste("string", 9:1, ".txt", sep = "")
+nchar(a)
+strsplit(a, "\\.")
+substr(a, 1, 6) <- "Substr"; a
+match("Substr9.txt", a)
+```
+
+- <font color="#800000"><b>Regulas expression</b></font>
+
+  Function <code>grep()</code>, <code>gsub()</code>, ...
+
+  ```
+  a <- paste("string", 9:1, ".txt", sep = "")
+  grep("([1,3,5-7])", a)
+  b <- paste("string", 9:1, ".txt", sep = "", collapse = " ")
+  gsub("([1,3,5-7]).(txt)", "_\\1-\\2", b)
+  ```
+
+- <font color="#800000"><b>Expression and Parse</b></font>
+
+  Function <code>expression()</code>, <code>parse()</code>, ...
+
+  These are important functions for computing in text and
+  useful for processing automatically jobs as shown in
+  "<a href="./batch_more.html">Batch More</a>".
+
+  ```
+  a <- 0.05
+  expression(alpha == 0.05)
+  (ret <- parse(text = paste("alpha == ", a, sep = "")))
+  plot(1, 1, main = ret)
+  text(1, 1.2, ret)
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

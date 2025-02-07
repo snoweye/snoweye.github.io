@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate a Rooted Tree with a Star Shape</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gen.star.tree {phyclust}"><tr><td>gen.star.tree {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate a Rooted Tree with a Star Shape</h2>
+
+<h3>Description</h3>
+
+<p>Generate a rooted tree with a star shape based on a sequence calls
+of several functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gen.star.tree(N, total.height = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>number of leaves.</p>
+</td></tr>
+<tr valign="top"><td><code>total.height</code></td>
+<td>
+<p>total tree height.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A tree with a star shape means that all internal branches are 0 and
+all leaf branches are equal.
+</p>
+<p>This function combining with <code>gen.seq.HKY</code> or <code>gen.seq.SNP</code>
+is used in simulation studies and bootstrap tree samples 
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a rooted tree in <code>Class phylo</code> with a star shape.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ms.html">ms</a></code>.
+<code><a href="as.star.tree.html">as.star.tree</a></code>,
+<code><a href="get.rooted.tree.height.html">get.rooted.tree.height</a></code>.
+<code><a href="rescale.rooted.tree.html">rescale.rooted.tree</a></code>.
+<code><a href="../../ape/html/as.phylo.html">as.phylo</a></code>,
+<code><a href="../../ape/html/plot.phylo.html">plot.phylo</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+ret.star &lt;- gen.star.tree(5)
+plot(ret.star, type = "u")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

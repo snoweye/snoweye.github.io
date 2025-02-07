@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">pbdR Home</a></li> /
+    <li><a href="../tutorial1.html">Tutorial 1</a></li> /
+    <li class="active">iris_spmd</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Iris example in SPMD
+
+
+This is a SPMD version for the iris example. This intends to perform
+parallel computing on distributed data.
+It should be run by four processors
+by <code>Rscript</code> as
+
+```
+SHELL> mpiexec -np 4 Rscript iris_spmd.r
+```
+
+A file <code>Rplot.pdf</code>
+or a similar file will be created. The plot contains visualization of
+clustering results on the first two principal components.
+
+
+---
+#### SPMD Code: (<a href="./iris_spmd.r" target="_blank">iris_spmd.r</a>)
+
+```
+# File name: iris_spmd.r
+# Run: mpiexec -np 4 Rscript iris_spmd.r
+
+rm(list = ls())                                       # Clean environment
+library(pbdMPI, quiet = TRUE)                         # Load library
+if(comm.size() != 4)
+  comm.stop("4 processors are required.")
+
+### Load data
+X <- as.matrix(iris[, -5])                            # Dimension 150 by 4
+X.cid <- as.numeric(iris[, 5])                        # True id
+
+### Distribute data
+jid <- get.jid(nrow(X))
+X.spmd <- X[jid,]                                     # SPMD row-major format
+
+### Standardized
+N <- allreduce(nrow(X.spmd))                          # 150
+p <- ncol(X.spmd)                                     # 4
+mu <- allreduce(colSums(X.spmd / N))
+X.std <- sweep(X.spmd, 2, mu, FUN = "-")              # Substract mean
+std <- sqrt(allreduce(colSums(X.std^2 / (N - 1))))
+X.std <- sweep(X.std, 2, std, FUN = "/")              # Divide standard error
+
+### SVD manually in serial
+X.tmp <- crossprod(X.std)                             # X'X (local)
+X.tmp <- allreduce(X.tmp)
+dim(X.tmp) <- c(p, p)
+ret <- eigen(X.tmp)                                   # X'X = V D^2 V'
+d <- sqrt(ret$values)
+v <- ret$vectors
+u <- X.std %*% v %*% diag(1/d)                        # Why X V D^(-1)) = U?
+
+### Validation 
+tmp <- svd(scale(X))
+comm.print(c(sum(abs(tmp$u[jid,] - u)),
+             sum(abs(tmp$v - v)),
+             sum(abs(tmp$d - d))))
+
+### Project on column space of singular vectors
+A <- u %*% diag(d)
+B <- X.std %*% v                                      # A ~ B 
+X.prj <- A[, 1:2]                                     # Only useful for plot
+X.prj <- do.call("rbind", allgather(X.prj))
+
+### Clustering
+library(pmclust, quiet = TRUE)
+comm.set.seed(123, diff = TRUE)
+
+X.spmd <- X.std
+PARAM.org <- set.global(K = 3)                        # Preset storage
+.pmclustEnv$CONTROL$debug <- 0                        # Disable debug messages
+PARAM.org <- initial.center(PARAM.org)                # Initial parameters
+PARAM.kms <- kmeans.step(PARAM.org)                   # K-means
+X.kms.cid <- allgather(.pmclustEnv$CLASS.spmd,
+                       unlist = TRUE)
+
+PARAM.org <- set.global(K = 3)                        # Preset storage
+.pmclustEnv$CONTROL$debug <- 0                        # Disable debug messages
+PARAM.org <- initial.em(PARAM.org,
+                        MU = PARAM.kms$MU)            # Initial by K-means
+PARAM.mbc1 <- em.step(PARAM.org)                      # Model-based clustering
+X.mbc1.cid <- allgather(.pmclustEnv$CLASS.spmd,
+                        unlist = TRUE)
+
+PARAM.org <- set.global(K = 3, RndEM.iter = 1000)     # Preset storage
+.pmclustEnv$CONTROL$debug <- 0                        # Disable debug messages
+PARAM.org <- initial.RndEM(PARAM.org)                 # Initial by Rand-EM
+PARAM.mbc2 <- em.step(PARAM.org)                      # Model-based clustering
+X.mbc2.cid <- allgather(.pmclustEnv$CLASS.spmd,
+                        unlist = TRUE)
+
+### Validation
+X.kms.adjR <- EMCluster::RRand(X.cid, X.kms.cid)$adjRand
+X.mbc1.adjR <- EMCluster::RRand(X.cid, X.mbc1.cid)$adjRand
+X.mbc2.adjR <- EMCluster::RRand(X.cid, X.mbc2.cid)$adjRand
+comm.print(c(X.kms.adjR, X.mbc1.adjR, X.mbc2.adjR))
+
+### Swap classification id
+tmp <- X.kms.cid
+X.kms.cid[tmp == 1] <- 2
+X.kms.cid[tmp == 2] <- 1
+tmp <- X.mbc1.cid
+X.mbc1.cid[tmp == 1] <- 2
+X.mbc1.cid[tmp == 2] <- 1
+
+### Display on first 2 components
+if(comm.rank() == 0){
+  par(mfrow = c(2, 2))
+  plot(X.prj, col = X.cid + 1, pch = X.cid,
+       main = "iris (true)", xlab = "PC1", ylab = "PC2")
+  plot(X.prj, col = X.kms.cid + 1, pch = X.kms.cid,
+       main = paste("iris (kmeans)", sprintf("%.4f", X.kms.adjR)),
+       xlab = "PC1", ylab = "PC2")
+  plot(X.prj, col = X.mbc1.cid + 1, pch = X.mbc1.cid,
+       main = paste("iris (model-based 1)", sprintf("%.4f", X.mbc1.adjR)),
+       xlab = "PC1", ylab = "PC2")
+  plot(X.prj, col = X.mbc2.cid + 1, pch = X.mbc2.cid,
+       main = paste("iris (model-based 2)", sprintf("%.4f", X.mbc2.adjR)),
+       xlab = "PC1", ylab = "PC2")
+}
+
+### Finish
+finalize()
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Classes and S3</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This section will talk about how we can use class and define the method
+for a class to manipulate the generic functions in R.
+For S4 methods, see the section
+<a href="./s4.html">S4 Methods</a>
+for details.
+<hr>
+
+#### <b>Examples:</b><br>
+
+- <font color="#800000"><b>Class and UseMethod</b></font>
+
+  This is a silly example, but it gives a hint to make a class by
+  <code>class()</code> and use generic functions by using
+  <code>UseMethod()</code>.
+  In R, you can define your generic functions for
+  <code>print()</code>.
+  Directly input object <code>a.1</code> is the same as <code>print(a.1)</code>.
+
+
+  ```
+  a.1 <- 3.1415926
+  class(a.1) <- "my.1"
+  a.2 <- 6.1415926
+  class(a.2) <- "my.2"
+  
+  my.fcn <- function(x){
+    UseMethod("my.usefcn", x)
+  }
+  my.usefcn.my.1 <- function(x){
+    x + 1
+  }
+  my.usefcn.my.2 <- function(x){
+    x + 2
+  }
+  
+  ### First call
+  my.fcn(a.1)
+  my.fcn(a.2)
+  a.1
+  a.2
+  
+  
+  print.my.1 <- function(x, digits = 3){
+    print(unclass(x), digits = digits)
+  }
+  print.my.2 <- function(x, digits = 6){
+    print(unclass(x), digits = digits)
+  }
+  
+  ### Second call
+  my.fcn(a.1)
+  my.fcn(a.2)
+  print(a.1)
+  print(a.2)
+  a.1
+  a.2
+  ```
+
+  At first call, <code>my.fcn()</code> will return the object's attributes since
+  there is no default <code>print()</code> function for these classes
+  <code>my.1</code> and <code>my.2</code>.
+
+
+  ```
+  > my.fcn(a.1)
+  [1] 4.141593
+  attr(,"class")
+  [1] "my.1"
+  > my.fcn(a.2)
+  [1] 8.141593
+  attr(,"class")
+  [1] "my.2"
+  > a.1
+  [1] 3.141593
+  attr(,"class")
+  [1] "my.1"
+  > a.2
+  [1] 6.141593
+  attr(,"class")
+  [1] "my.2"
+  ```
+
+  At second call, <code>print.my.1()</code>, <code>print.my.2()</code>
+  are defined by the
+  class' name, so the function's returns are also followed. The
+  attributes are discarded in <code>print()</code> by using
+  <code>unclass()</code>.
+
+
+  ```
+  > my.fcn(a.1)
+  [1] 4.14
+  > my.fcn(a.2)
+  [1] 8.1416
+  > print(a.1)
+  [1] 3.14
+  > print(a.2)
+  [1] 6.14159
+  > a.1
+  [1] 3.14
+  > a.2
+  [1] 6.14159
+  ```
+
+
+- <font color="#800000"><b>Summary and Print</b></font>
+
+  Here, I define some generic functions for <code>summary()</code>, and
+  <code>print()</code>,
+  so they can summary the results by the input's attribute and
+  print it by the summary's attribute, not the input's attribute.
+
+
+  ```
+  summary.my.3 <- function(x){
+    x <- x + 10
+    class(x) <-"summary.3" 
+    x
+  }
+  summary.my.4 <- function(x){
+    x <- x + 20
+    class(x) <-"summary.4" 
+    x
+  }
+  print.summary.3 <- function(x, digits = 3){
+    cat("Result: ", format(x, digits = digits), "\n")
+  }
+  print.summary.4 <- function(x, digits = 6){
+    cat("Result: ", format(x, digits = digits), "\n")
+  }
+  
+  a.1 <- 3.1415926
+  class(a.1) <- "my.3"
+  a.2 <- 6.1415926
+  class(a.2) <- "my.4"
+  summary(a.1)
+  summary(a.2)
+  ```
+
+  The results for the <code>summary()</code>.
+
+
+  ```
+  > summary(a.1)
+  Result:  13.1 
+  > summary(a.2)
+  Result:  26.1416
+  ```
+
+
+- <font color="#800000"><b>Overwrite Operators</b></font>
+
+  This is also the other silly example, but I want to demonstrate overwrite
+  functions in R and user defined function for binary operators.
+  In R, you can redefine an operator or use
+  <code>%any%</code> to make a new one.
+  I define a similar operator of two sets in the following.
+
+
+  ```
+  a.1 <- c("a", "b")
+  a.2 <- 4:7
+  class(a.1) <- "my.5"
+  
+  ### Overwrite "+" for a new class.
+  "+.my.5" <- function(a, b) c(a, b) 
+  a.1 + a.2
+  
+  ### Define a new one.
+  "%union%" <- function(a, b) c(a, b)
+  a.1 %union% a.2
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

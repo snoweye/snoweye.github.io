@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About pbdR</a></li>
+    <li class=""><a href="./tutorial1.html">Tutorial 1</a></li>
+    <li class=""><a href="./tutorial2.html">Tutorial 2</a></li>
+    <li class=""><a href="./tutorial3.html">Tutorial 3</a></li>
+    <li class="active"><a href="#">Tutorial 4</a></li>
+    <li class=""><a href="./tutorial5.html">Tutorial 5</a></li>
+    <li class=""><a href="./tutorial6.html">Tutorial 6</a></li>
+    <li class=""><a href="./vm.html">VirtualBox</a></li>
+    <li class=""><a href="./multiple_nodes.html">Multiple Nodes</a></li>
+    <li class=""><a href="./windows.html">For Windows</a></li>
+    <li class=""><a href="./aws_ec2.html">Using AWS EC2</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+Tutorial 4 is all about two new <code>pbdR</code> packages,
+<code>pbdCS</code> and <code>pbdZMQ</code>, on windows system.
+The simple four steps are given in next with very brief explanations.
+
+- <b>Step 0:</b>
+  Start a windows command prompt by typing <code>cmd.exe</code> to
+  "Start -> Search programs and files -> cmd.exe".
+  <table>
+    <tbody>
+      <tr class="success">
+        <td>
+          <img src="./figures_pbdcs/pbdcs_step_0.png" align="top" border="1"></img>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+- <b>Step 1:</b>
+  Set path to <code>R</code> and <code>MPI</code>.
+  <table>
+    <tbody>
+      <tr class="success">
+        <td>
+          <img src="./figures_pbdcs/pbdcs_step_1.png" align="top" border="1"></img>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+- <b>Step 2:</b>
+  1. Run <code>R</code> from command line.
+  2. Load <code>pbdCS</code> and <code>pbdZMQ</code> libraries
+     inside <code>R</code>.
+  3. Launch 4 <code>pbdR</code> servers by
+     <code>pbd_launch_servers(nranks = 4)</code>.
+  4. Launch <code>pbdR</code> client by
+     <code>pbd_launch_client()</code>.
+  5. Ask servers to do the works, such as
+     <code>allreduce(5)</code>.<br>
+     Note that there are 4 servers, so the results should be 20.
+  6. Run <code>Rgui.exe</code> to have a <code>R</code> GUI and go to next
+     <b><font color="#800000">Step 3</font></b>.
+  <table>
+    <tbody>
+      <tr class="success">
+        <td>
+          <img src="./figures_pbdcs/pbdcs_step_2.png" align="top" border="1"></img>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+- <b>Step 3:</b>
+  Do the same things as <b>Step 2</b>,
+  but in <code>R</code> GUI instead typing in the command line.<br>
+  Note that this <code>R</code> is executed from a command line with
+  <code>MPI</code> in the environment variable <code>PATH</code>
+  in order to have 4 servers run correctly.
+  <table>
+    <tbody>
+      <tr class="success">
+        <td>
+          <img src="./figures_pbdcs/pbdcs_step_3.png" align="top" border="1"></img>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

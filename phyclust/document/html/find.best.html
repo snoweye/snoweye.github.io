@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find the Best Solution of phyclust</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for find.best {phyclust}"><tr><td>find.best {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find the Best Solution of phyclust</h2>
+
+<h3>Description</h3>
+
+<p>Based on input initialization procedures and methods,
+this function tries to find the best solution in terms of the highest
+log-likelihood value.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+find.best(X, K, EMC = .EMC, manual.id = NULL, byrow = TRUE,
+    init.procedure = .init.procedure, init.method = .init.method,
+    file.tmp = NULL, visible = FALSE, save.all = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>EMC</code></td>
+<td>
+<p>EM control.</p>
+</td></tr>
+<tr valign="top"><td><code>manual.id</code></td>
+<td>
+<p>manually input class ids.</p>
+</td></tr>
+<tr valign="top"><td><code>byrow</code></td>
+<td>
+<p>advanced option for <code>X</code>, default = TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>init.procedure</code></td>
+<td>
+<p>customized initialization procedures.</p>
+</td></tr>
+<tr valign="top"><td><code>init.method</code></td>
+<td>
+<p>customized initialization methods.</p>
+</td></tr>
+<tr valign="top"><td><code>file.tmp</code></td>
+<td>
+<p>a file for saving temporary results.</p>
+</td></tr>
+<tr valign="top"><td><code>visible</code></td>
+<td>
+<p>TRUE for reporting iterations.</p>
+</td></tr>
+<tr valign="top"><td><code>save.all</code></td>
+<td>
+<p>TRUE for saving all results.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>X</code> should be a numerical matrix containing sequence data that
+can be transfered by <code>code2nid</code> or <code>code2sid</code>.
+</p>
+<p><strong>Note</strong>: gaps <code>-</code> are not supported yet, drop them from data.
+</p>
+<p><code>EMC</code> contains all options used for EM algorithms.
+</p>
+<p><code>manual.id</code> manually input class ids as an initialization only for
+the initialization method, 'manualMu'.
+</p>
+<p><code>byrow</code> used in bootstraps to avoid transposing matrix 'X'. If
+FALSE, then the 'X' should be have the dimension <i>L*K</i>.
+</p>
+<p><code>init.procedure</code> and <code>init.method</code> are methods for searching
+the best result. This function will try all combinations of these two
+options.
+</p>
+<p><code>file.tmp</code> is used to save temporary results due to long computing.
+If <code>NULL</code>, there will no saving in each combinations.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An list with class <code>phyclust</code> will be returned containing
+several elements, see <code>phyclust</code> for detail. 
+</p>
+
+
+<h3>ToDo(s)</h3>
+
+
+<ul>
+<li><p> implement codes for gaps <code>-</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.EMC.html">.EMC</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>.
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+EMC.1 &lt;- .EMControl(exhaust.iter = 1, short.iter = 5, EM.iter = 5)
+(ret.1 &lt;- find.best(seq.data.toy$org, 2, EMC = EMC.1))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

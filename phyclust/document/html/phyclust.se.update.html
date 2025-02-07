@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update phyclust Results by the Sequencing Error Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phyclust.se.update {phyclust}"><tr><td>phyclust.se.update {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update phyclust Results by the Sequencing Error Model</h2>
+
+<h3>Description</h3>
+
+<p>Since <code>phyclust.se</code> is difficult to optimize on a constrained high
+dimension parameter space, the <code>phyclust</code> is relatively easier to
+find a better result, as well as the <code>find.best</code> function.
+</p>
+<p>This function will use the <code>phyclust</code> result as initial parameters and
+perform a sequencing error model. All parameters (Eta, Mu, Q, ...) in this
+function will be updated through the EM algorithm as <code>phyclust.se</code>.
+</p>
+<p>Typically, this function run on the <code>find.best</code> results will yield
+a better result than on the <code>phyclust.se</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phyclust.se.update(X, EMC = .EMC, ret.phyclust = NULL,
+    K = NULL, Eta = NULL, Mu = NULL, pi = NULL, kappa = NULL,
+    Tt = NULL, byrow = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>EMC</code></td>
+<td>
+<p>EM control.</p>
+</td></tr>
+<tr valign="top"><td><code>ret.phyclust</code></td>
+<td>
+<p>an object with the class <code>phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>Eta</code></td>
+<td>
+<p>proportion of subpopulations, <i>eta_k</i>, length = <code>K</code>, sum to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>Mu</code></td>
+<td>
+<p>centers of subpopulations, dim = <i>K*L</i>, each row is a center.</p>
+</td></tr>
+<tr valign="top"><td><code>pi</code></td>
+<td>
+<p>equilibrium probabilities, each row sums to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+<p>transition and transversion bias.</p>
+</td></tr>
+<tr valign="top"><td><code>Tt</code></td>
+<td>
+<p>total evolution time, <i>t</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>byrow</code></td>
+<td>
+<p>advanced option for <code>X</code>, default = TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>All the input arguments are the same as the inputs of the function
+<code>phyclust.em.step</code> and <code>phyclust.update</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns an object with class <code>phyclust</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.se.html">phyclust.se</a></code>,
+<code><a href="phyclust.update.html">phyclust.update</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="find.best.html">find.best</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+X &lt;- seq.data.toy$org
+
+(ret.1 &lt;- find.best(X, 4))
+(ret.2 &lt;- phyclust.se.update(X, ret.phyclust = ret.1))
+.EMC$se.constant &lt;- 1e-3
+(ret.3 &lt;- phyclust.se.update(X, ret.phyclust = ret.2))
+
+### Search optimal error
+func &lt;- function(C){
+  .EMC$se.constant &lt;&lt;- C
+  -phyclust.se.update(X, ret.phyclust = ret.1)$logL
+}
+(ret.opt &lt;- optimize(f = func, lower = 1e-3, upper = 1e-1))
+.EMC$se.constant &lt;- ret.opt$minimum
+(ret.se.opt &lt;- phyclust.se.update(X, ret.phyclust = ret.1))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About phyclust</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class="active"><a href="#">Method</a></li>
+    <li class=""><a href="./download.html">Download</a></li>
+    <li class=""><a href="./document.html">Document</a></li>
+    <li class=""><a href="./jargon.html">Jargon</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./application.html">Application</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### Phylogenetics
+Usually, the mutation processes are modeled by an instantaneous
+transition rate matrix $\boldsymbol{Q}$
+with a state apace $\mathcal{S} = \\{A, G, C, T \\}$.
+A sequence $\boldsymbol{x}\_n = (x\_{n1},x\_{n2},\ldots, x\_{nL})$ has length
+$L$ sites/loci taking values from
+the state space, and sites
+$x\_{nl}$
+are assumed to be mutated independently.
+According to Continuous Time Markov Chain (CTMC) theory,
+the transition probability/density of mutations from a certain
+$s \in \mathcal{S}$ to
+$x\_{nl}$ in time
+$t$ is
+$P\_{s, x\_{nl}}(t) = e^{\boldsymbol{Q}t}$
+which can serve as a distribution for mutation processes of
+sequences. 
+Moreover, sequences coming from different subpopulation may
+mutate differently so that the mutation processes
+can be modeled by different instantaneous transition rate matrices, mutated
+around different central sequences, and mutated in different time scales.
+
+
+---
+#### Model-Based Clustering
+A finite mixture model provides a statistical framework for clustering.
+The multivariate normal distribution
+$MVN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$
+is one of the most popular models.
+Imagine that we may have
+$L$
+coordinates in a huge discrete space, and
+each coordinate has four axes/directions.
+Like
+$MVN(\boldsymbol{\mu}, \boldsymbol{\Sigma})$
+sequences
+$\\{\boldsymbol{x}\_n\\}|\_{n=1}^N$
+are mutated from or clouded around some unknown ancestral/central sequences
+$\boldsymbol{\mu}\_k$, and they also
+disperse on the space oriented by
+$\boldsymbol{Q}$ and
+$t$
+Note that the
+$\boldsymbol{\mu}\_k$
+can or can not be one of
+$\\{\boldsymbol{x}\_n\\}\_{n=1}^N$.
+More importantly,
+$\boldsymbol{\mu}\_k$
+takes values from
+$\mathcal{S}$
+and can be a function of other interesting explanatory variables
+in terms of generalized linear model.
+
+In a simplified case,
+we adopt the transition probability/density
+$f\_k(\cdots)$
+as a mixture distribution and assume all
+$K$
+components mixed with proportions
+$\eta\_k$ and
+share with the same
+$\boldsymbol{Q}$ and
+$t$, but the ancestral/central sequences
+$\boldsymbol{\mu}\_k$ are different.
+Then, the essential model of phyloclustering is
+$$
+L(\Theta | \boldsymbol{X})
+= \prod\_{n = 1}^N
+f(\boldsymbol{x}\_n| \boldsymbol{\mu}, \boldsymbol{Q}, t)
+= \prod\_{n = 1}^N
+\left[
+\sum\_{k = 1}^K \eta\_k
+(\boldsymbol{f}\_k(\boldsymbol{s}| \boldsymbol{\mu}\_k, \boldsymbol{Q}, t)
+\otimes
+\boldsymbol{p}\_e(\boldsymbol{x}\_n|\boldsymbol{s}))
+\right]
+$$
+where
+$
+\Theta = \\{\eta\_1, \eta\_2, \ldots, \eta\_K,
+\boldsymbol{\mu}\_1, \boldsymbol{\mu}\_2, \ldots,
+\boldsymbol{\mu}\_K, \boldsymbol{Q}, t\\}
+$
+are unknown parameters to be estimated by the EM algorithm.
+The sequences are classified by the maximum posterior probabilities.
+
+
+---
+#### Haplotype Grouping
+Haplotypes carry more information than single locus for identifying
+population structure and finding disease genes.
+Directly extending the frequency idea from alleles to haplotypes is restricted
+due to computation complexities caused by the linkage disequilibrium assumption.
+In genetic studies and association studies, the haplotype analysis is a
+powerful tool to narrow down the location of disease genes.
+For SNP sequences, the state space is
+$\mathcal{S} = \\{1, 2 \\}$ in phyloclustering.
+Several different aspect methods have been proposed,
+and Hap-Clustering (Tzeng, 2005) is one of them using evolution ideas
+to group haplotype based on haplotype frequencies.
+<br><br>
+
+
+---
+#### Sequencing Error Modeling
+<p>
+The next generation sequencing techniques produce high-throughput
+sequencing for genomes, broad research possibility, and enhance
+scientific curiosity.
+But, high sequencing error affect the clustering results, as well as the
+haplotype identification. Therefore, the estimations such as for
+population structure, community diversity, selection determination
+may be biased. The errors can be modeled as well and incorporated into
+model-based clustering, as the following:
+$$
+L(\Theta | \boldsymbol{X})
+= \prod\_{n = 1}^N
+f(\boldsymbol{x}\_n| \boldsymbol{\mu}, \boldsymbol{Q}, t)
+= \prod\_{n = 1}^N
+\left[
+\sum\_{k = 1}^K \eta\_k
+(\boldsymbol{f}\_k(\boldsymbol{s}| \boldsymbol{\mu}\_k, \boldsymbol{Q}, t)
+\otimes
+\boldsymbol{p}\_e(\boldsymbol{x}\_n|\boldsymbol{s}))
+\right]
+$$
+that
+$f\_k(\cdots)$
+is replaced by a convolution of
+mutation process
+$\boldsymbol{f}\_k(\cdots)$
+and probability of sequencing error
+$\boldsymbol{p}\_e(\cdots)$.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+

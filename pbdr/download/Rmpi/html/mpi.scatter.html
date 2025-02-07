@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Scatter and MPI\_Scatterv APIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.scatter {Rmpi}"><tr><td>mpi.scatter {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Scatter and MPI\_Scatterv APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.scatter</code> and <code>mpi.scatterv</code> are the inverse operations of 
+<code><a href="mpi.gather.html">mpi.gather</a></code> and <code><a href="mpi.gather.html">mpi.gatherv</a></code> respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.scatter(x, type, rdata, root = 0,  comm = 1) 
+mpi.scatterv(x, scounts, type, rdata, root = 0, comm = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data to be scattered.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>1 for integer, 2 for double, and 3 for character. Others are not 
+supported.</p>
+</td></tr>
+<tr valign="top"><td><code>rdata</code></td>
+<td>
+<p>the receive buffer. Must be the same type as the sender</p>
+</td></tr> 
+<tr valign="top"><td><code>scounts</code></td>
+<td>
+<p>int vector specifying the block length inside a message to be 
+scattered to other members.</p>
+</td></tr>
+<tr valign="top"><td><code>root</code></td>
+<td>
+<p>rank of the receiver</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>mpi.scatter</code> scatters the message x to all members. Each member receives 
+a portion of x with dim as length(x)/size in rank order, where size is the 
+total number of members in a comm. So the receive buffer can be prepared as 
+either integer(length(x)/size) or double(length(x)/size). For 
+<code>mpi.scatterv</code>, scounts counts the portions (different dims) of x sent to 
+each member. Each member needs to prepare the receive buffer as either 
+integer(scounts[i]) or double(scounts[i]). 
+</p>
+
+
+<h3>Value</h3>
+
+<p>For non-root members, <code>mpi.scatter</code> or <code>scatterv</code> returns the
+scattered message and ignores whatever is in x (or scounts). For the root 
+member, it returns the portion belonging to itself.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.gather.html">mpi.gather</a></code>, <code><a href="mpi.gather.html">mpi.gatherv</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Need 3 slaves to run properly
+#Or run  mpi.spawn.Rslaves(nslaves=3)
+  num="123456789abcd"
+  scounts&lt;-c(2,3,1,7)
+  mpi.bcast.cmd(strnum&lt;-mpi.scatter(integer(1),type=1,rdata=integer(1),root=0))
+  strnum&lt;-mpi.scatter(scounts,type=1,rdata=integer(1),root=0)
+  mpi.bcast.cmd(ans &lt;- mpi.scatterv(string(1),scounts=0,type=3,rdata=string(strnum),
+					root=0))
+  mpi.scatterv(as.character(num),scounts=scounts,type=3,rdata=string(strnum),root=0)
+  mpi.remote.exec(ans)
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

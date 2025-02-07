@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot an Unrooted Trees.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotnj {phyclust}"><tr><td>plotnj {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot an Unrooted Trees.</h2>
+
+<h3>Description</h3>
+
+<p>This is a enhanced version of <code>plot.phylo</code> in <span class="pkg">ape</span> which
+can plot trees in <code>Class phylo</code> including neighbor-joining trees,
+unrooted trees, trees with star shapes, ... etc.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotnj(unrooted.tree, X.class = NULL, type = "u", main = NULL,
+   show.tip.label = FALSE, show.node.label = FALSE,
+   edge.width = 1, edge.width.class = edge.width, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>unrooted.tree</code></td>
+<td>
+<p>an unrooted tree in <code>Class phylo</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>X.class</code></td>
+<td>
+<p>class ids indicated for all tips.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>plot types, see <code>plot.phylo</code> in <span class="pkg">ape</span> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main label.</p>
+</td></tr>
+<tr valign="top"><td><code>show.tip.label</code></td>
+<td>
+<p>show tip label if available.</p>
+</td></tr>
+<tr valign="top"><td><code>show.node.label</code></td>
+<td>
+<p>show node label if available.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.width</code></td>
+<td>
+<p>edge width for all internal branches if <code>X.class</code> is set.</p>
+</td></tr>
+<tr valign="top"><td><code>edge.width.class</code></td>
+<td>
+<p>edge width for tip branches if <code>X.class</code> is set.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other options passed to <code>plot.phylo</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is built to plot unrooted trees, but it may also apply
+for other trees in <code>Class phylo</code>.
+</p>
+<p><code>type</code> can be &quot;u&quot;, &quot;p&quot;, &quot;c&quot;, &quot;f&quot;, &quot;r&quot; as in <code>plot.phylo</code>.
+</p>
+<p>If <code>X.class</code> is set, then the tip branches will be drawn with
+colors by class ids, and the colors are controlled by <code>.color</code>.
+The width of branches is controlled by <code>edge.width</code> for all internal
+branches and by <code>edge.width.class</code> for tip branches.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a tree plot.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../ape/html/plot.phylo.html">plot.phylo</a></code>,
+<code><a href="11_d.Color.html">.Color</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+ret.ms &lt;- ms(nsam = 24, opts = "-T -G 0.5")
+tree.anc &lt;- read.tree(text = ret.ms[3])
+
+is.rooted(tree.anc)
+tree.new &lt;- as.star.tree(tree.anc)
+X.class &lt;- rep(1:6, each = 4)
+
+par(mfrow = c(2, 2))
+plotnj(tree.anc, X.class, type = "u", edge.width.class = 2,
+       main = "unrooted tree")
+plotnj(tree.new, X.class, type = "u", edge.width.class = 2,
+       main = "star tree")
+plotnj(tree.anc, X.class, type = "c", edge.width.class = 2,
+       main = "unrooted tree in cladogram")
+plotnj(tree.new, X.class, type = "r", edge.width.class = 2,
+       main = "star tree in radial")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

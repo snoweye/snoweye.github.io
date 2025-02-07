@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">C Call R API</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+- <font color="#800000"><b>Reference</b></font>
+
+  Read the web page <a href="http://cran.r-project.org/manuals.html" target="_blank">The R Manuals</a>, and
+  the PDF document Writing R Extensions (Chapter 5) in The R Manuals
+  (my mirror <a href="./reference/R-exts.pdf" target="_blank">here</a>).
+
+- <font color="#800000"><b>C code</b></font>
+
+  The C code "<a href="./example/Call_R/callR.c" target="_blank">callR.c</a>" will
+  generate 10 random variables from standard normal (mu = 0, sigma = 1) and compute theirs cumulative probability,
+  and sort these 10 random variables, and print all results. <br>
+
+  ```
+  #include <R.h>
+  #include <Rmath.h>
+  
+  void callR(){
+    int i;
+    double mu, sigma, PHI_X, *X;
+  
+    mu = 0;
+    sigma = 1;
+  
+    X = (double *) R_alloc(10, sizeof(double));
+  
+    Rprintf("Before sort\n");
+    GetRNGstate();
+    for(i = 0; i < 10; i++){
+      X[i] = rnorm(mu, sigma);
+      PHI_X = pnorm(X[i], mu, sigma, 1, 0);
+      Rprintf("X: %f, PHI(X): %f\n", X[i], PHI_X);
+    }
+    PutRNGstate();
+  
+    R_rsort(X, 10);
+    Rprintf("After sort\n");
+    for(i = 0; i < 10; i++){
+      PHI_X = pnorm(X[i], mu, sigma, 1, 0);
+      Rprintf("X: %f, PHI(X): %f\n", X[i], PHI_X);
+    }
+  }
+  ```
+
+
+- <font color="#800000"><b>Compile</b></font>
+
+  - <b>Linux:</b><br>
+
+    ```
+      SHELL> gcc -shared -o callR.so callR.c -I/usr/lib/R/include/ -L/usr/lib/R/bin/ -lR
+    ```
+
+    or
+
+    ```
+      SHELL> R CMD SHLIB callR.c
+    ```
+
+    The output will be a shared library "<a href="./example/Call_R/callR.so" target="_blank">callR.so</a>"
+    which is a dynamic loading file as the dll file in MS Windows.
+
+
+- <font color="#800000"><b>R script</b></font>
+
+  Create a R script "<a href="./example/Call_R/callR.r" target="_blank">callR.r</a>" to load the library and
+  execute it.
+
+  ```
+  dyn.load("callR.so")
+  set.seed(10)
+  out <- .C("callR")
+  dyn.unload("callR.so")
+  ```
+
+
+- <font color="#800000"><b>Output</b></font>
+
+  The output is as the following,
+
+  ```
+  Before sort
+  X: 0.018746, PHI(X): 0.507478
+  X: -0.184253, PHI(X): 0.426908
+  X: -1.371331, PHI(X): 0.085136
+  X: -0.599168, PHI(X): 0.274531
+  X: 0.294545, PHI(X): 0.615829
+  X: 0.389794, PHI(X): 0.651656
+  X: -1.208076, PHI(X): 0.113509
+  X: -0.363676, PHI(X): 0.358050
+  X: -1.626673, PHI(X): 0.051903
+  X: -0.256478, PHI(X): 0.398791
+  After sort
+  X: -1.626673, PHI(X): 0.051903
+  X: -1.371331, PHI(X): 0.085136
+  X: -1.208076, PHI(X): 0.113509
+  X: -0.599168, PHI(X): 0.274531
+  X: -0.363676, PHI(X): 0.358050
+  X: -0.256478, PHI(X): 0.398791
+  X: -0.184253, PHI(X): 0.426908
+  X: 0.018746, PHI(X): 0.507478
+  X: 0.294545, PHI(X): 0.615829
+  X: 0.389794, PHI(X): 0.651656
+  ```
+
+
+- <font color="#800000"><b>Question</b></font>
+
+  <font color="red">Why not to use executable file? How to build a "callR.exe"?</font> <br>
+  See <a href="./standalone.html">Standalone.</a>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

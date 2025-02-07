@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Batch More</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This section will talk about how we can batch jobs inside R
+scripts.
+
+<hr>
+
+#### <b>Examples:</b><br>
+
+- <font color="#800000"><b>assign, parse and eval</b></font>
+
+  ```
+  assign("a", 3:4)
+  sum(a)
+  sum(b <- 3:4)
+  a
+  b
+  (cmd <- paste("sum(", "d", "<-", "3:4)", sep = " "))
+  eval(parse(text = cmd))
+  d
+  ```
+
+  This is a silly example, but it gives a hint to process a command
+  from a given string. The command <code>assign()</code> is similar to "<-",
+  <code>parse()</code> can parse a string/text into an expression object which
+  can be executed by <code>eval()</code>. At the above, "a", "b", and "d" are
+  all the same as a vector contains 2 elements "3, 4".
+
+
+- <font color="#800000"><b>call and eval</b></font>
+
+  ```
+  a <- function(x, y = 4, detail = FALSE){
+    ifelse(detail, x+y, 0)
+  }
+  
+  b <- list(quote(a), quote(2), quote(3), quote(detail = TRUE))
+  mode(b) <- "call"
+  b
+  (d <- eval(b))
+  b[[4]] <- FALSE
+  b
+  (e <- eval(b))
+  ```
+
+  The object "b" is a "call" structure that can be used in eval().
+  The result for the object "d" should be 5, not 6,
+  and the object "e" should be 0, as the following.
+
+  ```
+  > b
+  a(2, 3, TRUE)
+  > (d <- eval(b))
+  [1] 5
+  > b[[4]] <- FALSE
+  > b
+  a(2, 3, FALSE)
+  > (e <- eval(b))
+  [1] 0
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class="active"><a href="#">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<i>Single Program Multiple Data</i> (SPMD) is a common design of program
+for parallel computing. For more details, a Wikipedia page about
+<a href="http://en.wikipedia.org/wiki/SPMD" target="_blank">SPMD</a>
+gives a clear explanation among different designs.
+I only demonstrate a few example here by using
+<code>Rscript</code> with the R package <code>Rmpi</code>.
+
+
+---
+#### Why SPMD?
+
+- Ease programming and debugging efforts.
+- Scalability for parallel computing.
+- Distributed system for ultra-large/unlimited datasets.
+- Reduce traffics of communication.
+
+
+---
+#### <font color="#800000">Advantages of SPMD over Master/Worker</font>
+
+1. It is very close to the serial code.
+   i.e. <font color="green"><b>SPMD is easy to modify from serial.</b></font>
+2. It is much shorter than the original Master/Worker version.
+   i.e. <font color="green"><b>SPMD is traceable for debugging.</b></font>
+3. It makes the master as one of workers.
+   i.e. <font color="green"><b>SPMD fully utilizes resources.</b></font>
+4. It can run in Master/Worker mode.
+   i.e. <font color="green"><b>SPMD can do interaction, as well.</b></font>
+5. It can also reduce intercommunication among processors.
+   i.e. <font color="green"><b>SPMD can deal with ultra-large/unlimited data.</b></font>
+6. It is easy to automatically process large numbers of independent jobs.
+   i.e. <font color="green"><b>SPMD can parallelize by jobs.</b></font>
+
+
+---
+#### pbdMPI
+
+<code>pbdMPI</code> provides an efficient interface to MPI by
+utilizing S4 classes and methods with a focus on Single
+Program/Multiple Data (SPMD) parallel programming style, which is
+intended for batch parallel execution. pbdMPI are SPMD
+extensions rewritten from Rmpi with many
+performance improvements.
+
+- Great extension for general R objects via S4 methods.
+- Avoid potential dead locks in an interactive model.
+- Gain performance from directly calls to MPI functions. 
+- Reduce cost of compression in communication.
+- Ease programming and debugging efforts.
+
+
+---
+#### Examples
+
+- A quick example for <code>pbdMPI</code> with possible extension to
+  <code>Rmpi</code> can be found at <a href="./example.html">Example</a>.
+- More examples for statistical computing can be found at
+  <a href="./cookbook.html">Cookbook</a>.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

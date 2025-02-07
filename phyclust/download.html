@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About phyclust</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./method.html">Method</a></li>
+    <li class="active"><a href="#">Download</a></li>
+    <li class=""><a href="./document.html">Document</a></li>
+    <li class=""><a href="./jargon.html">Jargon</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./application.html">Application</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### R Package
+
+The stable version of <code>phyclust</code> is available on
+<a href="http://cran.r-project.org/web/packages/phyclust/index.html"
+target="_blank">CRAN</a> or
+<a href="http://cran.r-project.org/mirrors.html"
+target="_blank">mirror sites</a>
+from <a href="http://www.r-project.org"
+target="_blnak">R-project</a>, or
+in the following:
+
+- Developing code (github):
+  <a href="https://github.com/snoweye/phyclust"
+  target="_blank">phyclust</a>
+
+
+---
+#### Installation
+
+- An  R is necessary.
+
+- The <code>phyclust</code> requires the other R package,
+  <a href="http://cran.r-project.org/web/packages/ape/index.html"
+  target="_blank">
+  <code>ape</code></a>,
+  for phylogenetic tree illustrations and for calculations.
+  The <code>ape</code> is available from  its
+  <a href="http://ape.mpl.ird.fr/" target="_blank">original home</a> or
+  <a href="http://cran.r-project.org/" target="_blank">CRAN</a>.
+  <br>
+  <b>Note</b>: the <code>ape</code> requires other packages such as
+  <code>gee</code>, <code>nlme</code> and <code>lattice</code>
+  that are also available from CRAN.
+
+- Some easy ways to install <code>phyclust</code>,
+  * Use the R command to install from the download file,
+    ```
+    SHELL> R CMD INSTALL phyclust_0.1-1.tar.gz
+    ```
+  * Use the install function inside of R from the CRAN.
+    ```
+    R> install.packages("phyclust")
+    ```
+  * Use "<code>Install package(s) from local zip files...</code>"
+    from the R menu in a window environment.
+
+
+---
+#### C Library
+
+- Stable version:
+  * Source code:
+    <a href="./download/phyclust-c_0.1-5.tar.gz">phyclust-c_0.1-5.tar.gz</a>
+
+The core of <code>phyclust</code> is implemented in C and
+in a modular way, including flexible data structures and function pointers
+which allow easy extension to other data types, evolutionary
+models and optimization algorithms.
+The <code>C</code> core accesses <code>R</code> functions,
+for optimizations and random number generation, using the
+<code>R API</code>, but it can also be
+compiled as a standalone library for linking to other applications.
+The testing codes for some main functions are also provided, and
+it is possible to develop command line interface or standalone software
+based on <code>phyclust-c</code> without using R.
+
+
+---
+#### PHP Web Interface
+
+- Source code:
+  <a href="./download/phyclust-php_0.1-1.tar.gz">phyclust-php_0.1-1.tar.gz</a>
+
+There is a accessible version web interface
+which is an example for using <code>phyclust</code>
+and can be extended to a web service.
+An executable R and the
+<code>phyclust</code> R package are required for this interface,
+and the interface is only tested on the Linux environment.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Debug</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+I only list few functions and commands that I use them to
+find bugs in R and C. I will come back to explain them when
+I have time.
+<br>
+<br>
+
+
+#### <font color="#800000"><b>Debug in R</b></font>
+
+- <a href="./reference/debug/Rdebug.pdf">Rdebug.pdf</a>
+
+  - I lost the original of this file. Please tell me where this good
+    slide came from if you knew.
+
+- <a href="./reference/debug/R-debug-tools.pdf">R-debug-tools.pdf</a>
+
+  - Roger D. Peng, UCLA, Department of Statistics.
+
+
+#### <font color="#800000"><b>Debug in C</b></font>
+
+- <a href="http://www.gnu.org/software/ddd/" target="_blank">ddd</a>
+- Linux command: <code>nm</code>, <code>ld</code>, <code>gprof</code>.
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
+
+  Quick Example:
+
+  ```
+  SHELL> gcc -g -o a.out *.c
+  SHELL> valgrind --show-reachable=yes --leak-check=full a.out
+  SHELL> valgrind --track-origins=yes ./a.out
+  SHELL> gcc -pg -o a.out *.c
+  SHELL> ./a.out
+  SHELL> gprof > a.prof
+  ```
+
+
+#### <font color="#800000"><b>Debug in R call C</b></font>
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
+
+  Quick Example:
+
+  ```
+  SHELL> gcc -shared -g -o a.so *.c
+  SHELL> R -d "valgrind --show-reachable=yes --tool=memcheck --leak-check=full" \
+           --vanilla < a.r
+  SHELL> R -d "valgrind --track-origins=yes" --vanilla < a.r
+  ```
+
+  Here, "a.r" should load "a.so" at the first.
+
+- <a href="http://bioconductor.fhcrc.org/workshops/2010/AdvancedR/using-gdb-with-R.mov" target="_blank">Debugging with GDB</a> 
+
+
+
+#### <font color="#800000"><b>Debug in MPI for R call C</b></font>
+- <a href="http://valgrind.org/" target="_blank">valgrind</a> 
+
+  Quick Example:
+
+  ```
+  SHELL> gcc -shared -g -o a.so *.c
+  SHELL> mpiexec -np 2 R -d \
+         "valgrind --show-reachable=yes --tool=memcheck --leak-check=full --log-file=a.log" \
+         --vanilla -f a.r
+  SHELL> mpiexec -np 2 R -d \
+         "valgrind --track-origins=yes --log-file=a.log" \
+         --vanilla -f a.r
+  ```
+
+  Here, "a.so" is a MPI application, "a.r" should load "a.so" at the first, and
+  the output file "a.log" has the tracing results.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2556553-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2556553-3');
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">About phyclust</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./method.html">Method</a></li>
+    <li class=""><a href="./download.html">Download</a></li>
+    <li class=""><a href="./document.html">Document</a></li>
+    <li class=""><a href="./jargon.html">Jargon</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./application.html">Application</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### Phylogenetic Clustering
+
+This website provides essential knowledge of
+  <a href="./overview.html"><i>Phylogenetic Clustering</i></a>
+  (<i>Phyloclustering</i>).
+  It provides implementations for studying <i>phyloclustering</i>:
+
+- an <code>R</code> package <code><b>phyclust</b></code> available on
+  <a href="http://cran.r-project.org/web/packages/phyclust/index.html"
+  target="_blank">CRAN</a>, and
+- a <code>C</code> library <code><b>phyclust-c</b></code>
+  which is the core of <code><b>phyclust</b></code>.
+
+The <code><b>phyclust</b></code>
+  is an <code>R</code> package developed for studying <i>phyloclustering</i>
+  and exploring population structure of DNA sequence data.
+  An evolutionary Continuous Time Markov Chain model-based approach
+  is developed to determine population structure from molecular data
+  without assuming linkage equilibrium.
+  The <code>phyclust</code> is designed in <code>C</code> for performance
+  and interfaced with <code>R</code> for visualization,
+  and sets up a common platform and
+  incorporates other popular open source software for
+  simulating data and additional analyses.
+  The <code>phyclust</code>
+
+- utilizes the R package
+  <a href="http://ape.mpl.ird.fr/" target="_blank"><code>ape</code></a>
+  (Paradis, Claude, and  Strimmer 2004)
+  to present the concept of <i>phyloclustering</i>,
+- incorporates C program
+  <a href="http://home.uchicago.edu/~rhudson1/source/mksamples.html"
+  target="_blank"><code>ms</code></a> (Hudson 2002)
+  for generating coalescent trees,
+- incorporates C program
+  <a href="http://tree.bio.ed.ac.uk/software/seqgen/"
+  target="_blank"><code>seq-gen</code></a> (Rambaut and Grassly 1997)
+  for simulating sequences,
+- incorporates C program
+  <a href="http://abacus.gene.ucl.ac.uk/software/paml.html"
+  target="_blank"><code>PAML baseml</code></a> (Yang 1997,2007)
+  for finding ancestral trees, and
+- integrates R code
+  <a href="http://www4.stat.ncsu.edu/~jytzeng/software.php"
+  target="_blank"><code>Hap-Clustering</code></a> (Tzeng 2005)
+  an alternative method for SNP sequences.
+
+
+---
+#### Need Help
+- Bugs Report:
+  <a href="mailto:wccsnow @ gmail.com">wccsnow @ gmail.com</a>
+
+
+---
+#### Authors
+- <a href="http://snoweye.github.io" target="_blank"> Wei-Chen Chen</a> and
+  <a href="http://thirteen-01.stat.iastate.edu/"
+  target="_blank">Karin S. Dorman</a>.
+
+
+---
+#### Acknowledgement
+- This is a joint work with Drs. Karin S. Dorman, Ranja Maitra and
+  Susan L. Carpenter.
+- Wei-Chen thanks Drs.  Dorman and Maitra of Iowa State University for helpful
+  discussion, and is a research assistant on grant
+  National Science Foundation CAREER # DMS-0437555.
+
+
+---
+#### Citation
+- When mentioning the Phyloclustering methodology or
+  the package <code>phyclust</code>, please cite:
+  ```
+  @ARTICLE{snoweye2011,
+    author = {Chen, W.-C.},
+    title = {Overlapping Codon model, Phylogenetic
+             Cluetering, and Alternative Partial Expectation
+             Conditional Maximization Algorithm},
+    journal = {Ph.D. Diss., Iowa Stat University},
+    year = {2011},
+    url = {http://gradworks.umi.com/34/73/3473002.html}
+  }
+```
+- When utilizing the incorporated <code>C</code> programs in the
+  package <code>phyclust</code>, please also cite
+  the corresponding references mentioned in the help pages of
+  <code>phyclust</code>.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

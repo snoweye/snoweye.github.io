@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read Data from Files by Formats and Return a seq.data Object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for file.read {phyclust}"><tr><td>file.read {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read Data from Files by Formats and Return a seq.data Object</h2>
+
+<h3>Description</h3>
+
+<p>Two major file formats are supported in <span class="pkg">phyclust</span>,
+<code>Format phylip</code> and <code>Format fasta</code>.
+<strong>These functions only read files in basic syntax</strong>, and
+return an object in <code>Class seq.data</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.fasta(filename, byrow = TRUE, code.type = .code.type[1], aligned = TRUE,
+           sep = "")
+read.fasta.format(filename, byrow = TRUE, aligned = TRUE, sep = "")
+
+read.phylip(filename, byrow = TRUE, code.type = .code.type[1], sep = "")
+read.phylip.format(filename, byrow = TRUE, sep = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>a file name where data is read from.</p>
+</td></tr>
+<tr valign="top"><td><code>byrow</code></td>
+<td>
+<p>advanced option, default = TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>aligned</code></td>
+<td>
+<p>indicate aligned data.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>use to split sites, &quot;&quot; (default) and &quot;,&quot; for &quot;CODON&quot;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For unaligned sequences, <code>read.fasta</code> returns a list storing data.
+<code>read.phylip</code> is only for aligned data and returns a matrix.
+</p>
+<p><code>read.fasta.format</code> and <code>read.phylip.format</code> will read in
+original coding without any transformation as <code>code.type = NULL</code>
+in <code>write.fasta</code> and <code>write.phylip</code>. Suppose these functions
+return an object <code>ret</code>, one can write other functions <code>ret2aa()</code>
+to post transform the coding and replace <code>ret$org</code> by the results of
+<code>ret2aa(ret$org.code)</code>.
+</p>
+<p><code>byrow</code> indicates the data will be store by row or not. Usually,
+the default is TRUE. The FALSE is only for advance users
+with careful manipulations and for speeding up the bootstraps.
+</p>
+<p><code>sep</code> can specify a character which is used to split sites in file.
+By default, &quot;&quot; denote no character between sites. Only &quot;CODON&quot; id requires
+a character to avoid ambiguity
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return an object in <code>Class seq.data</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="file.write.html">write.fasta</a></code>,
+<code><a href="file.write.html">write.phylip</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# PHYLIP
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/crohn.phy", sep = "")
+(my.snp &lt;- read.phylip(data.path, code.type = "SNP"))
+
+# FASTA
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
+(my.pony &lt;- read.fasta(data.path))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

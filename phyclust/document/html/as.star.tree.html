@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Coerce a Rooted Tree to a Star Tree in Class phylo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.star.tree {phyclust}"><tr><td>as.star.tree {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Coerce a Rooted Tree to a Star Tree in Class phylo</h2>
+
+<h3>Description</h3>
+
+<p>Coerce a rooted tree generating by <code>ms</code> to a star tree and
+maintain a bifurcation structure.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as.star.tree(rooted.tree, keep.bifurcation = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rooted.tree</code></td>
+<td>
+<p>a rooted tree in <code>Class phylo</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>keep.bifurcation</code></td>
+<td>
+<p>keep a bifurcation structure.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A tree with a star shape means that all internal branches are 0 and
+all leaf branches are equal.
+</p>
+<p>The <code>rooted.tree</code> should be in a <code>phylo</code> class of <span class="pkg">ape</span>,
+and may be created by <code>ms</code>.
+</p>
+<p>Basically, it is a list with an attribute that the class is phylo, and
+the other elements are:
+</p>
+
+<ul>
+<li><p>'edge'edge ids.
+</p>
+</li>
+<li><p>'Nnode'number of internal nodes.
+</p>
+</li>
+<li><p>'tip.lab'number of tips (leaves).
+</p>
+</li>
+<li><p>'edge.length'length of edges.
+</p>
+</li></ul>
+
+<p>If <code>keep.bifurcation</code> is TRUE, then internal branches are set to be 0
+and leaves branches are set to the original tree height. Otherwise,
+the internal branches will be dropped from rooted.tree.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a rooted tree in <code>Class phylo</code> with a star shape.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="ms.html">ms</a></code>,
+<code><a href="../../ape/html/read.tree.html">read.tree</a></code>,
+<code><a href="../../ape/html/as.phylo.html">as.phylo</a></code>,
+<code><a href="../../ape/html/plot.phylo.html">plot.phylo</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+ret.ms &lt;- ms(5, 1, opts = paste("-T", sep = " "))
+tree.ms &lt;- read.tree(text = ret.ms[3])
+str(tree.ms)
+(tree.star &lt;- as.star.tree(tree.ms))
+
+# Plot results
+par(mfrow = c(1, 2))
+plot(tree.ms, type = "u", main = "original tree")
+plot(tree.star, type = "u", main = "as star tree")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A Toy Dataset in Class seq.data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seq.data {phyclust}"><tr><td>seq.data {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A Toy Dataset in Class seq.data</h2>
+
+<h3>Description</h3>
+
+<p>A toy dataset, <code>seq.data.toy</code>, with 100 nucleotide sequences
+and 200 sites in 4 clusters.
+<code>seq.data.gap</code> contains some missing values indicated by &quot;-&quot;.
+</p>
+
+
+<h3>Format</h3>
+
+<p>This data contains a list with a <code>seq.data</code> structure described
+in the &lsquo;Details&rsquo; section.
+</p>
+
+
+<h3>Details</h3>
+
+<p>A toy dataset is generated to demonstrate <span class="pkg">phyclust</span>.
+It has 100 nucleotide sequences and 200 sites in 4 clusters
+where the ancestral tree height 0.15 and the descendant tree height 0.09,
+and sequences are evolved by a HKY85 model.
+</p>
+<p>The structre of class <code>seq.data</code> is a list containing:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+    <code>code.type</code> </td><td style="text-align: left;"> either "NUCLEOTIDE" or "SNP". </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>info</code>      </td><td style="text-align: left;"> header for phylip file. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>nseq</code>      </td><td style="text-align: left;"> number of sequences, <i>N</i>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>seqlen</code>    </td><td style="text-align: left;"> length of sequences, <i>L</i>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>seqname</code>   </td><td style="text-align: left;"> sequence names. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>org.code</code>  </td><td style="text-align: left;"> original codes, dim = <i>N*L</i>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>org</code>       </td><td style="text-align: left;"> transfered ids, dim = <i>N*L</i>. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    <code>byrow</code>     </td><td style="text-align: left;"> TRUE for dim = <i>N*L</i>, FALSE for transpose. </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+  </td>
+</tr>
+
+</table>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="print.summary.html">print.seq.data</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+seq.data.toy
+seq.data.gap
+
+par(mfrow = c(1, 2))
+plotdots(seq.data.toy$org)
+plotdots(seq.data.gap$org)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

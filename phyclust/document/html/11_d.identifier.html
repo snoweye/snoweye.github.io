@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Identifiers for Evolution Models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .identifier {phyclust}"><tr><td>.identifier {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Identifiers for Evolution Models</h2>
+
+<h3>Description</h3>
+
+<p>Identifiers for evolution models identify the <i>Q_k</i> matrix and
+evolution time <i>t_k</i> for subpopulations.
+The first element is the default value.
+<strong>This is a read-only object and the elemental order is followed in C.</strong>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>.identifier</pre>
+
+
+<h3>Format</h3>
+
+<p>A character vector contains implemented identifiers in C.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Four major identifiers are implemented in C, <code>EE</code>, <code>EV</code>,
+<code>VE</code>, and <code>VV</code>. The first letter indicates the structure
+for <i>Q_k</i> matrix, and the second letter indicates the
+evolution time <i>t_k</i> for subpopulations. <code>E</code> and
+<code>V</code> indicate equal and varied for all subpopulations.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.EMC.html">.EMC</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+.identifier
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

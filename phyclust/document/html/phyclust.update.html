@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update phyclust Results</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phyclust.update {phyclust}"><tr><td>phyclust.update {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update phyclust Results</h2>
+
+<h3>Description</h3>
+
+<p>This function will run the EM algorithm on initial parameters
+specified by users or from other initial procedures. All parameters
+(Eta, Mu, Q, ...) in this function will be updated.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phyclust.update(X, EMC = .EMC, ret.phyclust = NULL, K = NULL,
+    Eta = NULL, Mu = NULL, pi = NULL, kappa = NULL, Tt = NULL,
+    label = NULL, byrow = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>EMC</code></td>
+<td>
+<p>EM control.</p>
+</td></tr>
+<tr valign="top"><td><code>ret.phyclust</code></td>
+<td>
+<p>an object with the class <code>phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>Eta</code></td>
+<td>
+<p>proportion of subpopulations, <i>eta_k</i>, length = <code>K</code>, sum to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>Mu</code></td>
+<td>
+<p>centers of subpopulations, dim = <i>K*L</i>, each row is a center.</p>
+</td></tr>
+<tr valign="top"><td><code>pi</code></td>
+<td>
+<p>equilibrium probabilities, each row sums to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>kappa</code></td>
+<td>
+<p>transition and transversion bias.</p>
+</td></tr>
+<tr valign="top"><td><code>Tt</code></td>
+<td>
+<p>total evolution time, <i>t</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>label of sequences for semi-supervised clustering.</p>
+</td></tr>
+<tr valign="top"><td><code>byrow</code></td>
+<td>
+<p>advanced option for <code>X</code>, default = TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is equivalent to run <code>exhaustEM</code> on one specified
+initial parameters, and no initial procedure is involved. While this
+function is a little bit different to run <code>phyclust</code> with
+<code>manual.id</code> where <code>Mu</code> will be reestimated as the new initials.
+Simply speaking, this function only runs the EM algorithm given the
+initial parameters.
+</p>
+<p>All the input arguments are the same as the inputs of the functions
+<code>phyclust</code> and <code>phyclust.em.step</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns an object with class <code>phyclust</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="find.best.html">find.best</a></code>,
+<code><a href="phyclust.se.html">phyclust.se</a></code>,
+<code><a href="phyclust.se.update.html">phyclust.se.update</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+EMC.1 &lt;- .EMC
+EMC.1$EM.iter &lt;- 1
+# the same as EMC.1 &lt;- .EMControl(EM.iter = 1)
+X &lt;- seq.data.toy$org
+
+(ret.1 &lt;- phyclust(X, 2, EMC = EMC.1))
+(ret.2 &lt;- phyclust.update(X, ret.phyclust = ret.1))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

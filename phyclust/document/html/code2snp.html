@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transfer Nucleotide Codes / nids and SNPs / sids</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for code2snp {phyclust}"><tr><td>code2snp {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transfer Nucleotide Codes / nids and SNPs / sids</h2>
+
+<h3>Description</h3>
+
+<p>Transfer nucleotide codes (A, G, C, T, -) and SNPs (1, 2, -).
+Transfer nucleotide ids (0, 1, 2, 3, 4) and SNP ids (0, 1, 2).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+### S3 methods for a list, vector or matrix (default).
+code2snp(codeseq)
+snp2code(snpseq, half = TRUE)
+
+nid2sid(nidseq)
+sid2nid(sidseq, half = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>codeseq</code></td>
+<td>
+<p>a character vector contains nucleotide codes, A, G, C, T, or -.</p>
+</td></tr>
+<tr valign="top"><td><code>snpseq</code></td>
+<td>
+<p>a character vector contains SNPs, 1, 2, or -.</p>
+</td></tr>
+<tr valign="top"><td><code>half</code></td>
+<td>
+<p>nucleotide codes will be half assigned, see the &lsquo;Details&rsquo; for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>nidseq</code></td>
+<td>
+<p>a numerical vector contains nucleotide ids, 0, 1, 2, 3, or 4.</p>
+</td></tr>
+<tr valign="top"><td><code>sidseq</code></td>
+<td>
+<p>a numerical vector contains SNP ids, 0, 1, or 2.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are based on the internal object <code>.nucleotide</code> and 
+<code>.snp</code> to transfer nucleotide codes and SNPs.
+For <code>code2snp</code>, A, G are transfered to 1, and C, T are transfered to 2.
+For <code>snp2code</code>, 1 is transfered half to A and G, and 2 is transfered
+half to C and T if <code>half = TRUE</code>. Otherwise, 1 is all transfered to A,
+and 2 is all transfered to C.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>code2nid</code> returns a character vector containing nucleotide ids, and
+<code>nid2code</code> returns a character vector containing nucleotide codes. 
+</p>
+<p><code>nid2sid</code> returns a numerical vector containing SNP ids, and
+<code>sid2nid</code> returns a numerical vector containing nucleotide ids.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.standard.code.html">.nucleotide</a></code>,
+<code><a href="11_d.standard.code.html">.snp</a></code>,
+<code><a href="code2nid.html">code2nid</a></code>,
+<code><a href="code2nid.html">nid2code</a></code>,
+<code><a href="snp2sid.html">snp2sid</a></code>,
+<code><a href="snp2sid.html">sid2snp</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# For codes
+a.vector &lt;- c("A", "C", "G", "-", "T")
+code2snp(a.vector)
+snp2code(code2snp(a.vector))
+snp2code(code2snp(a.vector), half = FALSE)
+
+# For ids
+a.sid.vector &lt;- c(0, 2, 1, 4, 3)
+nid2sid(a.sid.vector)
+sid2nid(nid2sid(a.sid.vector))
+sid2nid(nid2sid(a.sid.vector), half = FALSE)
+
+# Test list
+a.list &lt;- list(a, a)
+code2snp(a.list)
+snp2code(code2snp(a.list))
+snp2code(code2snp(a.list), half = FALSE)
+
+# Test matrix
+a.matrix &lt;- rbind(a, a)
+code2snp(a.matrix)
+snp2code(code2snp(a.matrix))
+snp2code(code2snp(a.matrix), half = FALSE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

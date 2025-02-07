@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">MS Windows</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<font color="red"><b>This page is for MS Windows only!!</b></font>
+
+This is not a necessary process for running a R, but is required
+when you want to build packages or install from source code on MS Windows.
+
+
+---
+<b>For R version after than 2.0</b> <br>
+There is a useful package for the following process
+including almost everything you need to build a package.
+See the page of
+<a href = "http://www.murdoch-sutherland.com/Rtools/" target="_blank">Rtools</a> for details.
+
+
+- <font color="#800000"><b>Modify Batch File</b></font>
+
+  Modify the environment variable to the correct path and will be as the following,
+
+  ```
+  @ECHO OFF
+  DOSKEY
+  SET PROMPT=$g
+  
+  SET R_HOME=C:\PROGRA~1\R\R-2.7.1
+  SET RHOME=%R_HOME%
+  SET TOOLS_HOME=C:\PROGRA~1\RTOOLS\BIN
+  SET MINGW_HOME=C:\PROGRA~1\RTOOLS\MINGW
+  SET PERL_HOME=C:\PERL
+  SET CHM_HOME=C:\PROGRA~1\HTMLHE~1
+  
+  SET PATH=%TOOLS_HOME%;%MINGW_HOME%\BIN;%PERL_HOME%\BIN;%R_HOME%\BIN;%CHM_HOME%;%PATH%
+  ```
+
+---
+<b>For R version earlier than 2.0</b> <br>
+The following contains the basic requirement to construct the environment
+for building a package.
+
+- <font color="#800000"><b>Reference</b></font> <br>
+  <font color="red">See the page <a href="http://www.stats.ox.ac.uk/pub/Rtools/" target="_blank">Building R for Windows</a>
+  or <a href="http://www.murdoch-sutherland.com/Rtools/" target="_blank">here</a>
+  (my mirror <a href="./reference/windows/" target="_blank">here</a>).
+  </font>
+
+
+- <font color="#800000"><b>Download</b></font>
+
+  The necessary software are as the following,
+  1. <b>Unix Toolkit:</b>
+     From <a href="http://www.stats.ox.ac.uk/pub/Rtools/tools.zip">www.stats.ox.ac.uk</a>
+     with <a href="http://www.stats.ox.ac.uk/pub/Rtools/sources-tools/" target="_blank">source</a>
+     (my mirror <a href="./source/tools/tools.zip">here</a>).
+  2. <b>Windows Perl:</b>
+     <a href="http://www.activestate.com/" target="_blank">Active Perl</a>
+     with version ActivePerl-5.8.4.810-MSWin32-x86
+     (my mirror <a href="./source/tools/ActivePerl-5.8.4.810-MSWin32-x86.zip">here</a>).
+  3. <b>C Compiler:</b>
+     <a href="http://www.mingw.org/" target="_blank">MinGW32</a>
+     with version MinGW-3.1.0-1.exe
+     (my mirror <a href="./source/tools/MinGW-3.1.0-1.exe">here</a>).
+  4. <b>Batch:</b>
+     The batch file for Windows "<a href="./source/tools/SET_BUILD.BAT">SET_BUILD.BAT</a>".
+
+  For MS Windows 95, you have to have the <a href="ftp://ftp.microsoft.com/softlib/mslfiles/msvcrt.exe">msvcrt.exe</a>
+  (my mirror <a href="./source/tools/msvcrt.exe">here</a>).
+
+
+- <font color="#800000"><b>Install</b></font>
+  1. <b>Unix Toolkit:</b> unzip all files to C:\PROGRA~1\TOOLS\
+  2. <b>Windows Perl:</b> unzip the ActivePerl-5.8.4.810-MSWin32-x86.zip and copy the extracted
+     Perl subdirectory to C:\PROGRA~1\PERL\
+  3. <b>C Compiler:</b> click the MinGW-3.1.0-1.exe and install to C:\PROGRA~1\MinGW\
+  4. <b>Batch:</b> copy to C:\PROGRA~1\R\
+
+  For Windows 95, click the msvcrt.exe and move all extracted files to C:\WINDOWS\SYSTEM\
+
+
+- <font color="#800000"><b>Modify Batch File</b></font>
+
+  Modify the environment variable to the correct path and will be as the following,
+
+  ```
+  @ECHO OFF
+  DOSKEY
+  SET PROMPT=$g
+  
+  SET R_HOME=C:\PROGRA~1\R\RW1071
+  SET RHOME=%R_HOME%
+  SET TOOLS_HOME=C:\PROGRA~1\TOOLS
+  SET MINGW_HOME=C:\PROGRA~1\MINGW
+  SET PERL_HOME=C:\PROGRA~1\PERL
+  
+  SET PATH=%TOOLS_HOME%;%MINGW_HOME%\BIN;%PERL_HOME%\BIN
+  ```
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

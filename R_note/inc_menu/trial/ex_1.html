@@ -1,0 +1,50 @@
+
+<br>
+<font size=+1 color="green"><b>Example 1 -- PHP communicate with R</b></font>
+<br><br>
+<font color="red"><b>This page is for Linux only!!</b></font> <br>
+
+<ol>
+<li> <font color="#800000"><b>PHP code (ex_1.php)</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+&lt;?
+
+  $cmd = "echo 'argv <- \"ex_1.r\"; source(argv)' | " .
+         "/usr/bin/R --vanilla --slave";
+  $ret = system($cmd);
+  echo $ret;
+
+?&gt;
+</pre>
+</code>
+</table>
+<br>
+This <code>PHP</code> file use shell command <code>echo</code> pipe arguments to <code>R</code> and accept the return from <code>R</code> and show it on web page.
+<br><br>
+
+<li> <font color="#800000"><b>R script (ex_1.r)</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+print(argv)
+</code>
+</table>
+<br>
+This <code>R</code> script just print the arguments.
+<br><br>
+
+<li> <font color="#800000"><b>Browse</b></font>
+<br>
+Put the "ex_1.php" and "ex_1.r" into the same directory and open web browser to link "ex_1.php". <br>
+Click <a href="./ex_1.php" target="_blank">here</a> to see the output return from <code>R</code> script "ex_1.r".
+
+</ol>

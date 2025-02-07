@@ -1,0 +1,166 @@
+# http://www.r-project.org/
+# http://cran.r-project.org/
+# http://www.google.com/
+
+
+### Environment Functions.
+q()
+help()
+help("ls")
+help.start()
+# Or Web help pages.
+
+a <- 1
+.a <- 2
+ls()
+ls(all.names = TRUE)
+a
+.a
+rm(list = ls())
+ls()
+ls(all.names = TRUE)
+rm(list = ls(all.names = TRUE))
+ls(all.names = TRUE)
+
+getwd()
+setwd("C:/Documents and Settings/snoweye/Desktop/")
+setwd("C:\\Documents and Settings\\snoweye\\Desktop\\")
+# Or by clicking from the top menu "File -> Change dir ..."
+
+
+### Library Functions.
+search()
+library()
+library("base")
+demo()
+demo("graphics")
+demo("image")
+
+
+### Basic notation.
+b <- c("a", "string", "vector", "in", "b")
+length(b)
+
+d <- matrix(1:15, nrow = 3, ncol = 5)
+dim(d)
+d
+d[c(1, 3), ]
+d[-2,]
+d[, 1:2]
+
+e <- data.frame(v1 = 1:3, v2 = 4:6, v3 = 7:9)
+names(e)
+colnames(e)
+rownames(e)
+str(f.1)
+
+e[c(1, 3), ]
+e[-2,]
+e[, 1:2]
+e$v1
+e[, c("v1", "v3")]
+
+
+### I/O Functions.
+save(list = ls(), file = "all.rda")
+rm(list = ls(all.names = TRUE))
+load("all.rda")
+ls(all.names = TRUE)
+
+write.csv(e, file = "e-1.csv")
+f.1 <- read.csv("e-1.csv")
+
+write.csv(e, file = "e-2.csv", row.names = FALSE)
+f.2 <- read.csv("e-2.csv")
+
+
+### Description Statistics.
+sum(e)
+min(e)
+max(e)
+mean(e)
+var(e)
+median(e)
+quantile(e, prob = c(0.25, 0.75))
+
+
+### Distribution Related Functions.
+dnorm(0, mean = 0, sd = 1)
+qnorm(0)
+pnorm(0)
+
+set.seed(123)
+rnorm(10)
+
+
+### Plot Functions.
+plot()
+lines()
+points()
+# http://addictedtor.free.fr/graphiques/
+par()
+axis()
+box()
+main()
+legend()
+colors()
+
+
+### Exercises.
+# Ex 1.
+rm(list = ls())
+set.seed(1234)
+x <- 1:30
+y1 <- rnorm(30)
+summary(y1)
+(y2 <- rnorm(30))
+plot(x, y1)
+
+# Ex 2.
+windows()
+par(mfrow = c(2, 2))
+
+plot(x, y1, type = "n", xlab = "x", ylab = "y", main = "Exercise 2")
+points(x, y1, col = "green", pch = 2)
+lines(x, y2, col = 4, lty = 2)
+legend(3, 2.7, c("y1", "y2"), lty = c(0, 2), pch = c(2, -1),
+       col = c("green", 4))
+
+boxplot(y1, y2)
+hist(y1)
+plot(y1, y2)
+
+
+### 5 minutes paper: answering the following questions.
+# 1. (Notations)
+#   What do the functions of "seq()" and "rep()" for?
+#   What are the results of "seq(1, 5)" and "rep(1, 5)"?
+#
+# 2. (Distribution)
+#   a. Find the distribution related functions for Chi Square,
+#      t, F, Binomial, and Poisson distributions. List them by objectives:
+#
+#               | density/mass | quantile | cdf         | radom number
+#      ---------+--------------+----------+-------------+-------------
+#      Normal   | dnorm()      | qnorm()  | pnorm()     | rnorm()
+#      Chi^2    |              |          |             |
+#      t        |              |          |             |
+#      F        |              |          |             |
+#      Binomial |              |          |             |
+#      Poisson  |              |          |             |
+#
+#   b. What library do these functions belong to?
+#
+# 3. (Probability)
+#   Are the following statements equal and why?
+#   a. "1 - qnorm(0.95)" and "qnorm(0.05, lower.tail = FALSE)"
+#   b. "1 - pexp(0.25)" and "pexp(0.25, lower.tail = FALSE)"
+#
+# 4. (Graph)
+#   a. What library do these functions "hist()" and "boxplot()" belong to?
+#   b. What are these functions "pdf()", "bitmap()", and "png()" for?
+#
+# 5. (Statistics)
+#   a. What purpose are these functions "wilcox.test", "anova()", "lm()" for?
+#   b. Use Google to find which library the function "lme()" belong to.
+#

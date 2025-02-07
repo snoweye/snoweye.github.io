@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">S4 Methods</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This page collects some S4 examples.
+More details about this topic can be found on
+<a href="https://github.com/hadley/devtools/wiki/" target="_blank">
+Hadley's Wiki pages</a>
+including
+<a href="https://github.com/hadley/devtools/wiki/S3" target="_blank">S3</a>,
+<a href="https://github.com/hadley/devtools/wiki/S4" target="_blank">S4</a>,
+and
+<a href="https://github.com/hadley/devtools/wiki/R5" target="_blank">R5</a>
+systems.
+<hr>
+
+
+#### <b>Examples:</b><br>
+
+- <font color="#800000"><b>S4 Class and Method</b></font>
+
+  This is a quick example to use S4 class and method to extend functions
+  where all <code>foo.*</code> need to have the same number of arguments.
+  S4 signature will determine the input type and call the corresponding
+  function.
+
+  ```
+  rm(list = ls(all.names = TRUE))
+  
+  foo.default <- function(x, y, z) cat("call foo.default\n")
+  foo.double <- function(x, y, z) cat("call foo.double\n")
+  foo.myobj <- function(x, y = NULL, z = NULL) cat("call foo.myobj\n")
+  
+  setClass("myobj", representation(x = "numeric"))
+  setGeneric(name = "foo", useAsDefault = foo.default)
+  setMethod(f = "foo",
+            signature = signature(x = "myobj"),
+            definition = foo.myobj)
+  setMethod(f = "foo",
+            signature = signature(x = "numeric", y = "numeric", z = "numeric"),
+            definition = foo.double)
+  a <- new("myobj")
+  foo(a)
+  foo(1)
+  foo(1, 2, 3)
+  ```
+
+
+- <font color="#800000"><b>More S4 Methods</b></font>
+
+  This is a silly example, but somehow useful in some cases with
+  different number and different type of input arguments.
+
+  ```
+  rm(list = ls(all.names = TRUE))
+  
+  foo.default <- function(x, dim, bldim, ctxt){
+    if(!missing(ctxt)){
+      stop("Input is incorrect.")
+    } else{
+      foo.2(NULL, x, dim, bldim)
+    }
+    cat("cat foo.default\n")
+  }
+  foo.1 <- function(x, dim = NULL, bldim = NULL, ctxt = NULL){
+    cat("call foo.1\n")
+  }
+  foo.2 <- function(x = NULL, dim, bldim, ctxt){
+    cat("call foo.2\n")
+  }
+  foo.3 <- function(x, dim = NULL, bldim = NULL, ctxt = NULL){
+    cat("call foo.3\n")
+  }
+  
+  setClass("myobj", representation(x = "numeric"))
+  setGeneric(name = "ownany", useAsDefault = foo.default)
+  setMethod(f = "ownany",
+            signature = signature(x = "myobj"),
+            definition = foo.1)
+  setMethod(f = "ownany",
+            signature = signature(dim = "numeric", bldim = "numeric", ctxt = "numeric"),
+            definition = foo.2)
+  setMethod(f = "ownany",
+            signature = signature(x = "numeric", dim = "missing", bldim = "missing", ctxt = "missing"),
+            definition = foo.3)
+  
+  a <- new("myobj")
+  ownany(a)
+  ownany(dim = 1, bldim = 2, ctxt = 3)
+  ownany(1)
+  ownany(1, 2, 3)
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

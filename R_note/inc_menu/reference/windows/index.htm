@@ -1,0 +1,152 @@
+<html lang="en"><head>
+<title>Building R for Windows</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name=description content="R for Windows FAQ">
+<link rel=stylesheet href="Rtech.css">
+</head>
+
+<body>
+
+<h1 align="center">Building R for Windows</h1>
+
+This document is a collection of resources for building packages for R
+under Microsoft Windows, or for building R itself (version 1.9.0 or later).  The original
+collection was put together by Prof. Brian Ripley; it is currently being maintained by
+Duncan Murdoch.
+
+<h2>The essentials</h2>
+
+<p>
+You will need suitable versions of several Unix tools, and we have
+bundled a set at <a
+href="tools.zip">http://www.murdoch-sutherland.com/Rtools/tools.zip</a>
+(<a href="sources-tools/">sources</a>).
+Beware that many other sets have problems: in particular cygwin 1.3.21
+causes tar to malfunction.
+
+<p>
+You will need the Windows port of Perl 5 (preferably 5.8.0 or later) which is available from
+<a
+href="http://www.activestate.com/Products/ActivePerl/Download.html">http://www.activestate.com/Products/ActivePerl/Download.html</a>.
+Note carefully the dependencies shown.
+
+<p>
+If you have a vanilla Windows 95 system you may need
+<tt>MSVCRT.dll</tt> from <a
+href="ftp://ftp.microsoft.com/softlib/mslfiles/msvcrt.exe">ftp://ftp.microsoft.com/softlib/mslfiles/msvcrt.exe</a>,
+but it is very likely that some other software has installed it for you.
+
+<h3>Compilers</h3>
+
+<p>
+If your package contains C and/or Fortran code you will need suitable
+compilers.  We recommend that you use the MinGW port of gcc via <a
+href="http://www.mingw.org/">http://www.mingw.org/</a>.
+</p>
+
+
+<p>
+The packaged version <a
+href="http://prdownloads.sourceforge.net/mingw/MinGW-3.1.0-1.exe"><tt>
+MinGW-3.1.0-1.exe</tt></a> is what is currently used to build and test
+R.  It is a self-extracting installer: just install it and put its
+<tt>bin</tt> directory in your path <em>after</em> our tools.  There
+may be updates available (see <a
+href="http://www.mingw.org/download.shtml">http://www.mingw.org/download.shtml</a>)
+and we suggest you do install them, especially the
+<tt>mingw-runtime</tt> and <tt>w32api</tt> updates.  The releases of
+<tt>gcc-3.3.1</tt> have been tested and are used by the core
+developers, but the candidates of <tt>gcc-3.3.3</tt> did not work when
+tested.
+</p>
+
+<p>
+Earlier MinGW ports of gcc may work but are no longer tested.  Those more
+than a year old probably will not work.
+
+<h3>Cross-Compilers</h3>
+
+<p> Prof. Ripley will continue to maintain the ix86 Linux cross-compiler as time permits.
+For requirements and instructions please see his web page <a
+href="http://www.stats.ox.ac.uk/pub/Rtools/">http://www.stats.ox.ac.uk/pub/Rtools/</a>.
+
+
+<h3>To build Windows help</h3>
+
+<p>
+If you want to make compiled html (<tt>.chm</tt>) files you will need
+the Microsoft HTML Help Workshop, at one time available for download
+at <a
+href="http://msdn.microsoft.com/library/en-us/htmlhelp/html/hwmicrosofthtmlhelpdownloads.asp">http://msdn.microsoft.com/library/en-us/htmlhelp/html/hwmicrosofthtmlhelpdownloads.asp</a>
+or <a
+href="http://www.microsoft.com/office/ork/xp/appndx/appa06.htm">http://www.microsoft.com/office/ork/xp/appndx/appa06.htm</a>.
+<br>
+In case these disappear again, we have put a copy <a
+href="htmlhelp.exe">here</a>.
+
+
+<h2>Building R itself</h2>
+
+<p>
+Do remember to unpack the sources by using our <tt>tar</tt>: WinZip will not
+respect the symbolic links in the file.  A typical tar command line would be:</p>
+
+<pre>
+    tar xzvf R-1.8.1.tgz
+</pre>
+
+
+<h3>To build the documentation</h3>
+
+<p>
+To build the documentation you will need <tt>makeinfo</tt>, version
+4.5 or later.  We compiled one from the sources for our <a
+href="tools.zip"><tt>tools.zip</tt></a>.
+You will also need a working LaTeX system including <tt>pdftex</tt>.  We
+recommend the <a href="http://www.fptex.org/">fptex</a> port, and have
+also successfully used <a href="http://www.miktex.org/">MiKTeX</a>.
+Recent versions of MiKTeX require some changes from the default setup;
+those are <a href="miktex.html">described here</a>.
+
+
+<h3>Tcl/Tk support</h3>
+
+<p>
+The binary distribution of R for Windows comes with a compiled version
+of Tcl/Tk 8.4.6.  Currently we have only succeeded in building it with
+Visual C++, and the <a href="R_Tcl.zip">zip file</a> mentioned in
+<tt>INSTALL</tt> is available from here.  (We can build it under
+MinGW, but our build does not work correctly, nor does that on the
+MinGW site.)
+
+
+<h3>Bitmap graphics devices</h3>
+
+<p>
+To build the DLL <tt>Rbitmap.dll</tt> for bit-mapped graphics devices
+you will need <tt>libpng</tt> and <tt>jpeg</tt> sources (available,
+e.g., from <a
+href="ftp://ftp.uu.net/graphics/">ftp://ftp.uu.net/graphics/</a><tt>[png,jpeg]</tt>
+and many mirrors).  You will need files
+<tt>libpng-1.2.5.tar.gz</tt> and <tt>jpegsrc.v6b.tar.gz</tt> or later.
+
+Some currently active links are
+<a href="http://www.libpng.org/pub/png/libpng.html">libpng</a> and
+<a href="http://www.ijg.org/files/">jpeg</a>.
+
+
+<h2>Building the installers</h2>
+
+<p>
+To build the installers you will need Inno Setup 4.1.5 or later
+from <a href="http://jrsoftware.org/isinfo.php">JR Software</a>.
+
+
+<h2>Extras</h2>
+
+<p>
+Modified <a href="gdbm.zip">sources</a> of <tt>gdbm-1.8.3</tt> are available
+for experiments with Luke Tierney's <tt>gdbm</tt> package.
+
+</body></html>
+

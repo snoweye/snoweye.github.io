@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bootstrap a seq.data from a Fitted Model.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bootstrap.seq.data {phyclust}"><tr><td>bootstrap.seq.data {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bootstrap a seq.data from a Fitted Model.</h2>
+
+<h3>Description</h3>
+
+<p>This function simplifies the bootstrap function
+<code>bootstrap.star.trees.seq()</code>, and only
+return a list object with class <code>seq.data</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bootstrap.seq.data(ret.phyclust, min.n.class = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ret.phyclust</code></td>
+<td>
+<p>a phyclust object in <code>Class phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>min.n.class</code></td>
+<td>
+<p>minimum number of sequences for a cluster.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ret.phyclust</code> is a phyclust object in <code>Class phyclust</code> which is usually
+fitted by <code>phyclust</code>, or returned by <code>phyclust.m.step</code>.
+</p>
+<p><code>min.n.class</code> is a boundary condition to avoid degenerate clusters
+when some population proportions, <i>eta_k</i>, are small in the
+fitted model.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return an object in <code>Class seq.data</code> as
+the result from <code>read.*()</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="bootstrap.star.trees.html">bootstrap.star.trees</a></code>,
+<code><a href="seq.data.html">Class seq.data</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+EMC.1 &lt;- .EMC
+EMC.1$EM.iter &lt;- 1
+# the same as EMC.1 &lt;- .EMControl(EM.iter = 1)
+
+ret.1 &lt;- phyclust(seq.data.toy$org, 2, EMC = EMC.1)
+(ret.all &lt;- bootstrap.seq.data(ret.1))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,72 @@
+
+<br>
+<font size=+1 color="green"><b>Example 2 -- PHP display the plot created by R</b></font>
+<br><br>
+<font color="red"><b>This page is for Linux only!!</b></font> <br>
+
+<ol>
+<li> <font color="#800000"><b>PHP code (ex_2.php)</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+&lt;?
+
+  $cmd = "echo 'argv <- \"ex_2.r\"; source(argv)' | " .
+         "/usr/bin/R --vanilla --slave";
+
+  $handle = popen($cmd, "r");
+  $ret = "";
+  do{
+    $data = fread($handle, 8192);
+    if(strlen($data) == 0){
+      break;
+    }
+    $ret .= $data;
+  }
+  while(true);
+  pclose($handle);
+
+  header("Content-type:image/png");
+  echo $ret;
+
+?&gt;
+</pre>
+</code>
+</table>
+<br>
+This <code>PHP</code> file use shell command <code>echo</code> pipe arguments to <code>R</code> and accept the return image from <code>R</code> and show it on web page.
+<br><br>
+
+<li> <font color="#800000"><b>R script (ex_2.r)</b></font><br>
+If the "ex_2.r" as the follows, it will return a rainbow pie chart.
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  dev.off.wrap <- function(){
+    dev.off()
+    invisible()
+  }
+
+  bitmap(file = "%stdout", type="png256")
+  pie(rep(1, 24), col = rainbow(24))
+  dev.off.wrap()
+</pre>
+</code>
+</table>
+<br>
+This <code>R</code> script just print the arguments.
+<br><br>
+
+<li> <font color="#800000"><b>Browse</b></font><br>
+Put the "ex_2.php" and "ex_2.r" into the same directory and open web browser to link "ex_2.php". <br>
+Click <a href="./ex_2.php?file=a.png" target="_blank">here</a> to see the pie chart from <code>R</code> script "ex_2.r".
+
+</ol>

@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Dots Plots of Sequences for Visual Comparisons</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotdots {phyclust}"><tr><td>plotdots {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Dots Plots of Sequences for Visual Comparisons</h2>
+
+<h3>Description</h3>
+
+<p>This function provides dots plots of data set given an idea how diverse
+the sequences are by drawing dots with different colors for all mutations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotdots(X, X.class = NULL, Mu = NULL, code.type = .code.type[1],
+    diff.only = TRUE, fill = FALSE, label = TRUE, with.gap = FALSE,
+    xlim = NULL, ylim = NULL, main = "Dots Plot", xlab = "Sites",
+    ylab = "Sequences", missing.col = "gray95", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>numerical data matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>X.class</code></td>
+<td>
+<p>class ids indicated for all sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>Mu</code></td>
+<td>
+<p>a center sequence with length <i>L</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>diff.only</code></td>
+<td>
+<p>draw the segregating sites only, default = TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p>fill in all dots, default = FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>indicate segregating sites, default = TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>with.gap</code></td>
+<td>
+<p>pass to <code>find.consensus</code> if <code>Mu</code> is <code>NULL</code>, default = FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>limit of x-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>limit of y-axis.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main label, default = &quot;Dots Plot&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis label, default = &quot;Sites&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-axis label, default = &quot;Sequences&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>missing.col</code></td>
+<td>
+<p>color for the missing allele, default = NA. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other options passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The first rows in <code>Mu</code> will be drawn entirely on dots plots
+in colors which are &quot;green3&quot;, &quot;blue2&quot;, &quot;\#CC00CC&quot;, &quot;red2&quot;, &quot;gray&quot;,
+and &quot;white&quot;, according the ids + 1. If <code>fill</code> is FALSE, other sequences
+will be drawn by the mutation sites comparing to the first sequences.
+Otherwise, they be drawn entirely.
+</p>
+<p>If <code>X.class</code> is set, the sequences will be drawn in cluster order.
+</p>
+<p>If <code>Mu</code> is <code>NULL</code>, the consensus sequence of <code>X</code> will be drawn.
+</p>
+<p>If <code>label</code> is TRUE, the bottom row will be drawn in color &quot;orange&quot;
+to indicate segregating sites.
+</p>
+<p><code>with.gap</code> is only used when <code>Mu</code> is <code>NULL</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A dots plot will be drawn.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqgen.html">seqgen</a></code>,
+<code><a href="plothist.html">plothist</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# For nucleotide
+X &lt;- seq.data.toy$org
+par(mfrow = c(2, 2))
+plotdots(X)
+plotdots(X, diff.only = FALSE)
+plotdots(X, diff.only = FALSE, label = FALSE)
+plotdots(X, fill = TRUE, diff.only = FALSE, label = FALSE)
+
+# With class ids
+X.class &lt;- as.numeric(gsub(".*-(.*)", "\\1", seq.data.toy$seqname))
+plotdots(X, X.class)
+
+# For SNP
+X.SNP &lt;- nid2sid(X)
+plotdots(X.SNP, X.class)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

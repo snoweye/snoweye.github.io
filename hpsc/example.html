@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class="active"><a href="#">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### A Quick Example (NOT Hellow World!)
+
+This is a standard example coming with <code>Rmpi</code> to approximate
+$\pi \approx 3.1415926$
+
+
+---
+#### SPMD Basic Steps:
+
+- Step:
+  0. Initialize. (<code>init</code>)
+  1. Read data partially by workers.
+  2. Compute.
+     (<code>send</code>, <code>recv</code>, <code>barrier</code>, ...)
+  3. Receive results among workers.
+     (<code>gather</code>, <code>allgather</code>, <code>reduce</code>,
+      <code>allreduce</code>, ...)
+  4. Finalize (<code>finalize</code>).
+
+
+---
+#### Parallel (SPMD) code:
+
+See <a href="./cookbook/ex_pi_spmd.r" target="_blank">ex_pi_spmd.r</a>
+for ultra-large/unlimited $N$
+
+```
+# File name: ex_pi_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_pi_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Compute pi.
+n <- 1000
+totalcpu <- .comm.size
+id <- .comm.rank + 1
+mypi <- 4*sum(1/(1+((seq(id,n,totalcpu)-.5)/n)^2))/n    # The example from Rmpi.
+mypi <- reduce(mypi, op = "sum")
+
+### Output from RANK 0 since mpi.reduce(...) will dump only to 0 by default.
+comm.print(mypi)
+finalize()
+```
+
+
+---
+#### Run SPMD code in a command mode: (Batch Job)
+
+Note that the possible commands to invoke MPI could be <code>mpiexec</code>,
+<code>mpiexec</code>, <code>orterun</code>, or <code>mpiexec.exe</code>
+which are totally dependent on the operating systems and the MPI systems.
+Also, see <a href="./rscript.html">Rscript</a> for the usages.
+
+```
+SHELL> mpiexec -np 2 Rscript --vanilla ex_pi_spmd.r
+```
+
+
+---
+#### Run SPMD code in an interactive mode: (Master/Worker)
+
+For OpenMPI, you need a file <font
+color="red"><b><code>.Rprofile</code></b></font> in the working directory
+or your home directory. This file can be copied from the installed
+directory of <code>Rmpi</code>. By default, it is located at <font
+color="red"><b><code>$R_HOME/library/Rmpi/Rprofile</code></b></font>.
+Then, you can have an interactive mode
+by initial <code>mpirun</code> and <code>R</code>
+(NOT <code>Rscript</code>) at which <code>.Rprofile</code> is located.
+
+```
+SHELL> mpirun -np 2 R --no-save -q
+###
+### Some messages will show the workers are running.
+### The "spawn" is no needed for OpenMPI anymore.
+###
+R> # library(Rmpi)
+R> # mpi.spawn.Rslaves()                    # Require for LAM/MPI.
+
+R> mpi.bcast.cmd(source("ex_pi_spmd.r"))    # Worker go first and wait Manager.
+R> source("ex_pi_spmd.r")                   # Manager runs and collects results.
+
+### Remark mpi.quit() in "ex_pi_spmd.r" to avoid terminate mpirun and R.
+```
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+

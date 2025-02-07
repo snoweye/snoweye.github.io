@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Environment</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<p>
+This section will talk about how we use environments and it's utility
+functions including <code>environment()</code>, <code>assign()</code>,
+<code>eval()</code>, <code>get()</code>,
+etc.
+Basically, your current working environment is in <code>.GlobalEnv</code>,
+and each function has it's own environment.
+
+<hr>
+
+#### <b>Examples:</b><br>
+
+- <font color="#800000"><b>Environment</b></font>
+
+  ```
+  rm(list = ls())
+  .GlobalEnv
+  parent.env(a.new.env <- new.env())
+  parent.env(an.env <- environment())
+  parent.env(a.base <- baseenv())
+  parent.env(a.new.env <- new.env(parent = a.base))
+  ls()
+  ```
+
+  At the end, there are 3 environments in the current environment
+  <code>.GlobalEnv</code>.
+  <font color="red">
+  Note that the parent of "a.new.env" is "&lt;environment: base&gt;" rather than
+  "a.base"!!
+  </font>
+  The following example fixes this.
+
+
+- <font color="#800000"><b>assign(), eval(), and get()</b></font>
+
+  ```
+  rm(list = ls())
+  .GlobalEnv
+  parent.env(a.parent.env <- new.env())
+  
+  ### Two of the followings are the same.
+  assign("a.children.env", new.env(), envir = a.parent.env)
+  eval(parse(text = "a.children.env <- new.env()"), envir = a.parent.env)
+  
+  ### Two of the followings are the same.
+  ls()
+  eval(ls(), envir = a.parent.env)
+  
+  ### There is a object inside "a.parent.env".
+  ls(envir = a.parent.env)
+  
+  assign("a.value", 10, envir = a.parent.env)
+  eval(parse(text = "a.value <- a.value + 1"), envir = a.parent.env)
+  
+  ### There are two objects now.
+  ls(envir = a.parent.env)
+  
+  ### This should return 11.
+  get("a.value", envir = a.parent.env)
+  ```
+
+  There is a parent environment attached in <code>.GlobalEnv</code>,
+  and a childrend
+  environment attached inside the parent environment.
+  In different environment,
+  the <code>assign()</code> and <code>eval()</code> can alter the objects, and
+  <code>get()</code> can access the object values.
+
+
+- <font color="#800000"><b>Function is a TEMPORARY environment</b></font>
+
+  ```
+  rm(list = ls())
+  parent.env(.GlobalEnv)      ### This is an interesting result.
+  
+  a.function <- function(){
+    a <- 1
+    print(environment())      ### print current environment
+    environment()
+  }
+  an.env <- a.function()      ### This is an interesting environment.
+  an.env                      ### This should be the same as the above.
+  
+  ls(envir = an.env)
+  get("a", envir = an.env)
+  ```
+
+  I create an environment where is created by <code>a.function()</code>
+  and executing itself,
+  then I store the environment in </code>.GlobalEnv</code>.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

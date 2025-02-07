@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Gaps Plots of Sequences for Visual Comparisons</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for plotgaps {phyclust}"><tr><td>plotgaps {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Gaps Plots of Sequences for Visual Comparisons</h2>
+
+<h3>Description</h3>
+
+<p>This function provides gaps plots of data set to identify regions where
+gaps enriched. The plot show the proportions of context by sites and the
+diverse may be caused by mutations, sequencing errors, or alignment
+errors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+plotgaps(X, code.type = .code.type[1], main = "Gaps Plot",
+    xlab = "Sites", ylab = "Proportion", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>numerical data matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>main label, default = &quot;Gaps Plot&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x-axis label, default = &quot;Sites&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>y-axis label, default = &quot;Proportion&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other options passed to <code>plot</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Proportions of gaps will be drawn.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A gaps plot will be drawn.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotdots.html">plotdots</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# For nucleotide
+set.seed(1234)
+X &lt;- seq.data.toy$org
+X[sample(c(T, F), length(X), replace = TRUE, prob = c(0.05, 0.95))] &lt;-
+  .nucleotide$nid[.nucleotide$code == "-"]
+plotgaps(X)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

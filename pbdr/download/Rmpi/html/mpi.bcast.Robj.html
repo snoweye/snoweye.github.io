@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Extensions of MPI\_Bcast API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.bcast.Robj {Rmpi}"><tr><td>mpi.bcast.Robj {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Extensions of MPI\_Bcast API</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.bcast.Robj</code> and <code>mpi.bcast.Robj2slave</code> are used to move 
+a general R object around among master and all slaves. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.bcast.Robj(obj = NULL, rank = 0, comm = 1)
+mpi.bcast.Robj2slave(obj, comm = 1, all = FALSE)
+mpi.bcast.Rfun2slave(comm = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj</code></td>
+<td>
+<p>an R object to be transmitted from the sender</p>
+</td></tr>
+<tr valign="top"><td><code>rank</code></td>
+<td>
+<p>the sender.</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number.</p>
+</td></tr>
+<tr valign="top"><td><code>all</code></td>
+<td>
+<p>a logical. If TRUE, all R objects on master are transmitted to slaves.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>mpi.bcast.Robj</code> is an extension of <code><a href="mpi.bcast.html">mpi.bcast</a></code> for 
+moving a general R object around from a sender to everyone. 
+<code>mpi.bcast.Robj2slave</code> does an R object transmission from 
+master to all slaves unless all=TRUE in which case, all master's objects with 
+the global enviroment are transmitted to all slavers.  
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.bcast.Robj</code> returns no value for the sender and the 
+transmitted one for others. <code>mpi.bcast.Robj2slave</code> returns no value for the master 
+and the transmitted R object along its name on slaves. <code>mpi.bcast.Rfun2slave</code> 
+transmits all master's functions to slaves and returns no value.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.send.Robj.html">mpi.send.Robj</a></code>,
+<code><a href="mpi.send.Robj.html">mpi.recv.Robj</a></code>,
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

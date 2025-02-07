@@ -1,0 +1,114 @@
+
+<br>
+<font size=+1 color="green"><b>Example 3 -- More plots created by R</b></font>
+<br><br>
+<font color="red"><b>This page is for Linux only!!</b></font> <br>
+
+<ol>
+<li> <font color="#800000"><b>About R script</b></font><br>
+Here just a demostrate that use <code>PHP</code> to receive and show the plot which automaticly created by <code>R</code>.
+And all the scripts can be finded in the R Help or see the R website
+<a href="http://www.r-project.org" target="_blank">R-project</a> and
+<a href="http://cran.r-project.org" target="_blank">R-CRAN</a>.
+<br><br>
+
+<li> <font color="#800000"><b>Lowess (cars)</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  data(cars)
+  plot(cars, main = "lowess(cars)")
+  lines(lowess(cars), col = 2)
+  lines(lowess(cars, f=.2), col = 3)
+  legend(5, 120, c(paste("f = ", c("2/3", ".2"))), lty = 1, col = 2:3)
+</pre>
+</code>
+</table>
+<br>
+Click <a href="./ex_3.php?item=lowess" target="_blank">here</a> to see the plot created by <code>R</code>.
+<br><br>
+
+<li> <font color="#800000"><b>Kmeans Clustering (2D example)</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  # a 2-dimensional example
+  library(mva)
+  x <- rbind(matrix(rnorm(100, sd = 0.3), ncol = 2),
+             matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2))
+  cl <- kmeans(x, 2, 20)
+  plot(x, col = cl$cluster)
+  points(cl$centers, col = 1:2, pch = 8)
+</pre>
+</code>
+</table>
+<br>
+Click <a href="./ex_3.php?item=kmeans" target="_blank">here</a> to see the plot created by <code>R</code>.
+<br><br>
+
+<li> <font color="#800000"><b>Hierarchical Clustering</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  library(mva)
+  data(USArrests)
+  hc <- hclust(dist(USArrests), "ave")
+  plot(hc)
+  plot(hc, hang = -1)
+</pre>
+</code>
+</table>
+<br>
+Click <a href="./ex_3.php?item=hierarchical" target="_blank">here</a> to see the plot created by <code>R</code>.
+<br><br>
+
+<li> <font color="#800000"><b>Survival Curve</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  library(survival)
+  data(aml)
+  leukemia.surv <- survfit(Surv(time, status) ~ x, data = aml)
+  plot(leukemia.surv,lty=1:2,legend.pos=0,col=c("Red","Blue"),
+       legend.text=c("Maintenance", "No Maintenance"))
+</pre>
+</code>
+</table>
+<br>
+Click <a href="./ex_3.php?item=survival" target="_blank">here</a> to see the plot created by <code>R</code>.
+<br><br>
+
+<li> <font color="#800000"><b>Scatterplot Matrices</b></font>
+<br><br>
+<table cellpadding="5">
+<tr>
+<td> &nbsp;&nbsp;&nbsp;&nbsp;
+<td bgcolor="#dddddd">
+<code>
+<pre>
+  data(iris)
+  pairs(iris[1:4], main = "Anderson's Iris Data -- 3 species", 
+        pch = 21, bg = c("red", "green3", "blue")[unclass(iris$Species)])
+</pre>
+</code>
+</table>
+<br>
+Click <a href="./ex_3.php?item=pairs" target="_blank">here</a> to see the plot created by <code>R</code>.
+
+</ol>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../example.html">Example</a></li> /
+    <li class="active">ex_io</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### File I/O -- Input and output sequence data.
+
+---
+##### Input <code>Phyclust</code> accepts three types of input:
+
+- Data read from a text file in PHYLIP format.
+- Data read from a text file in FASTA format.
+- Data simulated by the
+  <a href="./ex_msseqgen.html"><code>ms+seqgen</code></a>
+  approach.
+
+The data reading functions <code>read.*()</code> will return a list object of 
+class <code>seq.data</code>.
+Suppose we call the returned list object <code>ret</code>.
+Then, <code>ret$org.code</code> and <code>ret$org</code> are two matrices that
+store the data.
+Matrix <code>ret$org.code</code> contains the original data, e.g. A,G,C,T for
+nucleotide, and
+<code>ret$org</code> contains the data formatted for
+the computer, e.g. 0,1,2,3 for nucleotide.
+
+Matrix <code>ret$org</code> is translated from <code>ret$org.code</code>
+according to the standard encoding of the chosen data type, and most
+calculations are done with <code>ret$org</code>.
+
+
+---
+##### Output <code>Phyclust</code> outputs sequence data in two formats: PHYLIP or FASTA.
+
+We use "<code>Great pony EIAV rev datasets</code>" as examples,
+<a href="./pony524.txt" target="_blank">pony524.phy</a>
+in <code>PHYLIP</code> format and
+<a href="./pony625.txt" target="_blank">pony625.fas</a>
+in <code>FASTA</code> format.
+The other example for the data sets can be found at
+<a href="./ex_eiav.html">here</a>.
+The following code will read in two file, create objects with class
+<code>seq.data</code>, and save the data matrix in two new files in
+the working directory.
+
+
+---
+##### Read a PHYLIP file
+
+```
+> data.path <- paste(.libPaths()[1], "/phyclust/data/pony524.phy", sep = "")
+> (my.pony.524 <- read.phylip(data.path))
+code.type: NUCLEOTIDE, n.seq: 146, seq.len: 405.
+> str(my.pony.524)
+List of 7
+ $ code.type: chr "NUCLEOTIDE"
+ $ info     : chr " 146 405"
+ $ nseq     : num 146
+ $ seqlen   : num 405
+ $ seqname  : Named chr [1:146] "AF314258" "AF314259" "AF314260" "AF314261" ...
+  ..- attr(*, "names")= chr [1:146] "1" "2" "3" "4" ...
+ $ org.code : chr [1:146, 1:405] "g" "g" "g" "g" ...
+ $ org      : num [1:146, 1:405] 1 1 1 1 1 1 1 1 1 1 ...
+ - attr(*, "class")= chr "seq.data"
+```
+
+
+---
+##### Read a FASTA file
+
+```
+> data.path <- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
+> (my.pony.625 <- read.fasta.nucleotide(data.path))
+code.type: NUCLEOTIDE, n.seq: 62, seq.len: 406.
+> str(my.pony.625)
+List of 6
+ $ code.type: chr "NUCLEOTIDE"
+ $ nseq     : num 62
+ $ seqlen   : int 406
+ $ seqname  : chr [1:62] "AF512608" "AF512609" "AF512610" "AF512611" ...
+ $ org.code : chr [1:62, 1:406] "G" "G" "G" "G" ...
+ $ org      : num [1:62, 1:406] 1 1 1 1 1 1 1 1 1 1 ...
+ - attr(*, "class")= chr "seq.data"
+```
+
+
+---
+##### Save files
+
+```
+> # PHYLIp
+> write.phylip(my.pony.625$org, "new.625.txt")
+> edit(file = "new.625.txt")
+> # FASTA
+> write.fasta(my.pony.524$org, "new.524.txt")
+> edit(file = "new.524.txt")
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

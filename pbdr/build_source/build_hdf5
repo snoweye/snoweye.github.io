@@ -1,0 +1,12 @@
+./configure \
+  --prefix=/home/pbdr/work-my/local/hdf5/ \
+  --enable-parallel \
+  --enable-shared \
+  --disable-largefile \
+  CC="mpicc -g" \
+  CFLAGS="-fPIC -I/home/pbdr/work-my/local/ompi/include" \
+  CPPFLAGS="-fPIC -I/home/pbdr/work-my/local/ompi/include" \
+  LDFLAGS="-L/home/pbdr/work-my/local/ompi/lib -lmpi"
+
+make
+make install

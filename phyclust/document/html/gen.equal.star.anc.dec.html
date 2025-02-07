@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate Comprehensive Trees.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gen.equal.star.anc.dec {phyclust}"><tr><td>gen.equal.star.anc.dec {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate Comprehensive Trees.</h2>
+
+<h3>Description</h3>
+
+<p>Generate comprehensive trees for simulation studies.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gen.equal.star.anc.dec(K, N.K, rate.f = 0.5)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>K</code></td>
+<td>
+<p>number of clusters, <i>K</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>N.K</code></td>
+<td>
+<p>number of sequences for each cluster, a vector with length <code>K</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>rate.f</code></td>
+<td>
+<p><i>r_f</i>, growth rate ratio of ancestral and descendent trees.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions generates an ancestral tree in K tips and
+generates descendent trees according to <code>N.K</code> tips.
+All trees, ancestral and descendent, are coerced to star shapes
+and scaled their heights to fit the ratio <code>rate.f</code>, and
+the final tree has total height 1.
+The returns are stored in a list, and the final tree is stored
+with a name <code>equal.star</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list contains all information of generation and results including:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>'K'</code></td>
+<td>
+<p>number of clusters.</p>
+</td></tr>
+<tr valign="top"><td><code>'N.K</code></td>
+<td>
+<p>number of sequences for each cluster.</p>
+</td></tr>
+<tr valign="top"><td><code>'rate.f'</code></td>
+<td>
+<p><i>r_f</i>, growth rate ratio of ancestral and descendent trees.</p>
+</td></tr>
+<tr valign="top"><td><code>'anc'</code></td>
+<td>
+<p>an ancestral tree.</p>
+</td></tr>
+<tr valign="top"><td><code>'dec'</code></td>
+<td>
+<p>all descendent trees.</p>
+</td></tr>
+<tr valign="top"><td><code>'equalstar'</code></td>
+<td>
+<p>a tree that descendants are equal star trees.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="gen.unit.K.html">gen.unit.K</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(1234)
+tree.K &lt;- gen.equal.star.anc.dec(6, rep(3:5, 2),
+                                 rate.f = 0.7)
+X.class &lt;- as.numeric(gsub("d(.).(.)", "\\1",
+                           tree.K$equal.star$tip.label))
+
+# Plot results
+plotnj(tree.K$equal.star, X.class, type = "p",
+       edge.width.class = 2, main = "equal.star")
+axis(1)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

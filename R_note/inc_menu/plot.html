@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Plot</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+- <font color="#800000"><b>Plot</b></font>
+
+  The <code>plot()</code> function is defined as, 
+  ```
+  plot(x, y, xlim=range(x), ylim=range(y), type="p",
+       main, xlab, ylab, ...)
+  ```
+
+  In file "<a href="./example/plot/plot_1.r" target="_blank">plot_1.r</a>" will be a simple X-Y plot, 
+
+  ```
+  # File name: plot_1.r
+  
+  data(cars)
+  
+  plot(cars)
+  plot(cars, type="l")
+  ```
+
+  In file "<a href="./example/plot/plot_2.r" target="_blank">plot_2.r</a>" will be a user defined X-Y plot, 
+
+  ```
+  # File name: plot_2.r
+  
+  data(cars)
+  
+  windows()
+  
+  plot(cars, axes = FALSE, xlab = "", ylab = "")
+  lines(cars)
+  points(cars, pch = 23, cex = 1.5, col = 2)
+  
+  axis(1, lwd = 2, lty = 2)
+  axis(2, col = 3, las = 2)
+  box(lty = 3)
+  title(main = "cars", xlab = "x-axis", ylab = "y-axis")
+  legend(5, 100, "cars", lty = 1)
+  
+  dev.list()
+  dev.cur()
+  dev.off()
+  ```
+
+
+- <font color="#800000"><b>Layout</b></font>
+
+  Here, in file "<a href="./example/plot/plot_3.r" target="_blank">plot_3.r</a>"
+  put the 4 plots in the same graph for simple layout,
+
+  ```
+  # File name: plot_3.r
+  
+  data(cars)
+  
+  par(mfrow = c(2, 2))
+  
+  plot(cars, main = "Cars")
+  hist(cars[, 1], xlab = "speed", main = "Histogram of speed")
+  hist(cars[, 2], xlab = "dist", nclass = 10, main = "Histogram of dist")
+  plot(density(cars[, 2]), main = "Density of dist")
+  ```
+
+  And, the file "<a href="./example/plot/plot_4.r" target="_blank">plot_4.r</a>"
+  put the 4 plots in the same graph for user defined layout,
+
+  ```
+  # File name: plot_4.r
+  
+  data(cars)
+  
+  layout(matrix(c(2, 4, 1, 3), nrow = 2, byrow = TRUE), c(2, 1), c(1, 2))
+  
+  par(mar = c(3, 3, 1, 1))
+  plot(cars, xlab = "", ylab = "")
+  
+  par(mar = c(3, 3, 1, 1))
+  hist(cars[, 1], main = "", xlab = "", ylab = "")
+  
+  par(mar = c(0, 3, 1, 1))
+  hist(cars[, 2], nclass = 10, main = "", xlab = "", ylab = "")
+  
+  par(mar = c(3, 3, 1, 1))
+  plot(density(cars[, 2]), main = "", xlab = "", ylab = "")
+  ```
+
+
+- <font color="#800000"><b>Save</b></font>
+
+  The bitmap function require a command <code>gs</code>, a software
+  <a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GhostScript</a>,
+  to transform `.ps` image file to another type. <br>
+  About plot graph save function has follows,
+
+  ```
+  postscript(file = ifelse(onefile, "Rplots.ps", "Rplot%03d.ps"),
+             onefile = TRUE,
+             paper, family, encoding, bg, fg,
+             width, height, horizontal, pointsize,
+             pagecentre, print.it, command, title = "R Graphics Output")
+  
+  bitmap(file, type = "png256", height = 6, width = 6, res = 72,
+         pointsize, ...)
+  
+  bmp(filename = "Rplot%03d.bmp", width = 480, height = 480, pointsize = 12,
+      bg = "white")
+  jpeg(filename = "Rplot%03d.jpg", width = 480, height = 480, pointsize = 12,
+       quality = 75, bg = "white")
+  png(filename = "Rplot%03d.png", width = 480, height = 480, pointsize = 12,
+      bg = "white")
+  ```
+
+  The file "<a href="./example/plot/plot_5.r" target="_blank">plot_5.r</a>" will save the graph in "plot_4.r" as a jpeg file
+  "<a href="./example/plot/plot_5.png" target="_blank">plot_5.png</a>",
+
+  ```
+  # File name: plot_5.r
+  
+  data(cars)
+  
+  bitmap("plot_5.png", height = 8, width = 8)
+  # In Windows, use bmp() or jpeg()
+  
+  layout(matrix(c(2, 4, 1, 3), nrow = 2, byrow = TRUE), c(2, 1), c(1, 2))
+  
+  par(mar = c(3, 3, 1, 1))
+  plot(cars, xlab = "", ylab = "")
+  
+  par(mar = c(3, 3, 1, 1))
+  hist(cars[, 1], main = "", xlab = "", ylab = "")
+  
+  par(mar = c(0, 3, 1, 1))
+  hist(cars[, 2], nclass = 10, main = "", xlab = "", ylab = "")
+  
+  par(mar = c(3, 3, 1, 1))
+  plot(density(cars[, 2]), main = "", xlab = "", ylab = "")
+  
+  dev.off()
+  ```
+
+
+- <font color="#800000"><b>More</b></font>
+
+  See Package <code>grid</code>.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evolution Distance of Sequences</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phyclust.edist {phyclust}"><tr><td>phyclust.edist {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evolution Distance of Sequences</h2>
+
+<h3>Description</h3>
+
+<p>This computes pair wised evolution distance of sequences.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phyclust.edist(X, edist.model = .edist.model[1])
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>edist.model</code></td>
+<td>
+<p>evolution distance model.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>X</code> should be a numerical matrix containing sequence data that
+can be transfered by <code>code2nid</code> or <code>code2sid</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns a object with class <code>dist</code>.
+</p>
+
+
+<h3>ToDo(s)</h3>
+
+
+<ul>
+<li><p> incorporate <code>dist.dna</code> of <span class="pkg">ape</span>.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.edist.model.html">.edist.model</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+X &lt;- rbind(c(0, 2, 1, 3, 0, 2, 2, 0, 3, 2, 2),
+           c(0, 0, 1, 3, 2, 2, 1, 0, 3, 1, 2),
+           c(0, 2, 1, 1, 0, 2, 1, 3, 0, 0, 1),
+           c(2, 2, 1, 1, 0, 0, 2, 3, 0, 2, 1),
+           c(2, 2, 1, 1, 0, 0, 2, 3, 1, 2, 0))
+(ret &lt;- phyclust.edist(X, edist.model = "D_HAMMING"))
+str(ret)
+as.matrix(ret)
+plot(nj(ret), type = "u", no.margin = TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

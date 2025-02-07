@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write Data to Files by Formats</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for file.write {phyclust}"><tr><td>file.write {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write Data to Files by Formats</h2>
+
+<h3>Description</h3>
+
+<p>Two major file formats are supported in <span class="pkg">phyclust</span>,
+<code>Format phylip</code> and <code>Format fasta</code>.
+<strong>These functions only write files in basic syntax.</strong>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+write.fasta(seqdata, filename, classid = NULL, seqname = NULL,
+    width.line = 60, lower.case = FALSE, code.type = .code.type[1],
+    sep = "")
+write.fasta.format(seqdata, filename, classid = NULL, seqname = NULL,
+    width.line = 60, sep = "")
+
+write.phylip(seqdata, filename, classid = NULL, seqname = NULL,
+    width.seqname = 10, width.line = 60, lower.case = FALSE,
+    code.type = .code.type[1], sep = "")
+
+write.phylip.format(seqdata, filename, classid = NULL, seqname = NULL,
+    width.seqname = 10, width.line = 60, sep = "")
+
+
+write.paml(seqdata, filename, classid = NULL, seqname = NULL,
+    width.seqname = 10, width.line = 60, lower.case = FALSE,
+    code.type = .code.type[1], sep = "")
+write.paml.format(seqdata, filename, classid = NULL, seqname = NULL,
+    width.seqname = 10, width.line = 60, sep = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>seqdata</code></td>
+<td>
+<p>a matrix contains sequence ids as <code>X</code> in <code>phyclust</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>a file name where data is written to.</p>
+</td></tr>
+<tr valign="top"><td><code>classid</code></td>
+<td>
+<p>class id of sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>seqname</code></td>
+<td>
+<p>sequence names.</p>
+</td></tr>
+<tr valign="top"><td><code>width.seqname</code></td>
+<td>
+<p>number of characters of sequence names to be stored.</p>
+</td></tr>
+<tr valign="top"><td><code>width.line</code></td>
+<td>
+<p>width of lines for breaking lines.</p>
+</td></tr>
+<tr valign="top"><td><code>lower.case</code></td>
+<td>
+<p>use lower case of letters to write</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>sep</code></td>
+<td>
+<p>a character to split sites, &quot;&quot; (default) and &quot;,&quot; for &quot;CODON&quot;.</p>
+</td></tr>
+</table>
+
+
+
+<h3>Details</h3>
+
+<p><code>write.fasta</code>, <code>write.phylip</code>, and <code>write.paml</code> are general
+functions call <code>write.fasta.format</code>, <code>write.phylip.format</code> and
+<code>write.paml.format</code>.
+</p>
+<p><code>write.fasta.format</code>, <code>write.phylip.format</code>, and
+<code>wirte.paml.format</code> will not do any transformation for input sequences,
+but directly write them into the file as <code>code.type = NULL</code> in
+<code>write.fasta</code>, <code>write.phylip</code> and <code>write.paml</code>.
+</p>
+<p>Note that PAML uses one of PHYLIP format to deal with sequence files, so
+<code>write.paml.format</code> is to write files in a different format of
+<code>write.phylip.format</code>. The main purpose of <code>write.paml</code> and
+<code>write.paml.format</code> is to generate files for <code>pamle.baseml</code>.
+</p>
+<p><code>sep</code> can specify a character which is used to split sites in file.
+By default, &quot;&quot; denote no character between sites. Only &quot;CODON&quot; id requires
+a character to avoid ambiguity.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Save a text file.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="file.read.html">read.fasta</a></code>,
+<code><a href="file.read.html">read.phylip</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+# PHYLIP
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/crohn.phy", sep = "")
+my.snp &lt;- read.phylip(data.path, code.type = "SNP")
+write.phylip(my.snp$org, "new.crohn.phy", code.type = "SNP")
+
+# FASTA
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
+(my.pony &lt;- read.fasta(data.path))
+write.fasta(my.pony$org, "new.pony.fas")
+
+# PAML
+write.paml(my.pony$org, "new.pony.pam")
+
+# Amino acid in PHYLIP
+aa.aid &lt;- nid2aid(my.pony$org)
+aa.acode &lt;- aid2acode(aa.aid)
+write.phylip(aa.aid, "new.pony.aa.phy", code.type = "AMINO_ACID")
+write.phylip.format(aa.aid, "new.pony.aa.aid.phy", sep = ",")
+write.phylip.format(aa.acode, "new.pony.aa.acode.phy")
+
+# Amino acid in FASTA
+write.fasta(aa.aid, "new.pony.aa.phy", code.type = "AMINO_ACID")
+write.fasta.format(aa.aid, "new.pony.aa.aid.phy", sep = ",")
+write.fasta.format(aa.acode, "new.pony.aa.acode.fas")
+
+# Amino acid in PAML
+write.paml(aa.aid, "new.pony.aa.pam", code.type = "AMINO_ACID")
+write.paml.format(aa.aid, "new.pony.aa.aid.pam", sep = ",")
+write.paml.format(aa.acode, "new.pony.aa.acode.pam")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

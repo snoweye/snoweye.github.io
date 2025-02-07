@@ -1,0 +1,79 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="style.css" tppabs="http://www.dfu.min.dk/uht/Software/css/style.css">
+<title>OO with C++</title>
+</head>
+
+<body>
+
+<p><b>Question</b>: How can I write C++ code that defines classes, and make
+corresponding objects accesible to R?</p>
+
+<p><b>Answer</b>: Here is an example (file oo.cpp). I assume the
+Borland compiler, but it should be easy to change to your C(++)
+development environment.
+</p>
+
+<pre class="csource">
+class X 
+{
+ public: 
+ int n;
+};
+
+static X x;
+
+extern "C" __declspec(dllexport) 
+void setX(int * a)
+{
+ x.n = *a;
+};
+
+extern "C" __declspec(dllexport) 
+void getX(int * a)
+{
+ *a = x.n;
+};
+</pre>
+
+<p>This C++ code defines a class X, declares a static instance x of that class,
+and the&nbsp; wrapper functions getX and setX make the object accesible to R.</p>
+<p>Here is the associated makefile (oo.mak)</p>
+
+<pre class="prompt">
+oo.dll: oo.cpp
+bcc32 -tWD oo.cpp
+</pre>
+
+<p>To recap, the -tWD switch tells bcc32 to produce a DLL for output.</p>
+
+<p>Here is the R side of the interface: (file oo.r)</p>
+
+<pre class="rsource">
+# MAKE the dll, and load it
+if(is.loaded(&quot;_getX&quot;)) dyn.unload(&quot;oo.dll&quot;)
+shell(&quot;make -foo.mak&quot;)
+dyn.load(&quot;oo.dll&quot;)
+
+# Define wrapper functions
+setX &lt;- function(a)
+{
+ .C(&quot;_setX&quot;,as.integer(a))
+ return()
+}
+
+getX &lt;- function()
+{
+ .C(&quot;_getX&quot;,as.integer(0))[[1]]
+}
+
+print(getX())
+print(setX(42))
+print(getX())
+</pre>
+
+</body>
+
+</html>

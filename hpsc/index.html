@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2556553-9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2556553-9');
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### HPSC -- High Performance Statistical Computing for Data Intensive Research
+
+<blockquote class="blockquote-reverse">
+  <font color="green" size=+1><i><b>
+    Distributed Read, Compute, Statistics, and Output ...
+  </i></b></font>
+</blockquote>
+
+
+---
+#### What Is This?
+
+This web page introduces a simple computing framework for "Big Data" called
+<a href="./spmd.html">single program multiple data (SPMD)</a>, and many
+statistical methodology can be fairly easily redesigned in the same way.
+We aim to introduce ideas in the sense of
+<font color="green">STATISTICS</font>,
+and provide
+<a href="./cookbook.html">Cookbook</a>
+to illustrate the framework covering from
+fundamental statistics to advance methodology.
+Tentatively, the pages will cover basic ideas of parallel computing,
+statistical computing, and R programming, and they will be illustrated
+in a simple manner.
+<font color="green"><b>"Have a Big dream of Bigger than Big."</b></font>
+
+
+---
+#### About Computing Environment
+
+By default, all examples of this website are illustrated in the Unix/Linux
+system with
+<a href="http://r-pbd.org/" target="_blank">pbdMPI</a>.
+<code>pbdMPI</code> is mainly developed and tested under
+<a href="http://www.open-mpi.org/" target="_blank">OpenMPI</a> in
+<a href="http://xubuntu.org" target="_blank">xubuntu</a> system.
+Also, all examples are assumed running under the
+<a href="./spmd.html">single program multiple data (SPMD)</a>
+framework.
+
+For Mac users,
+OpenMPI is suggested for <code>pbdMPI</code>.
+For MS Windows users,
+<a href="http://www.mcs.anl.gov/research/projects/mpich2/"
+target="_blank">MPICH2</a>
+is suggested and working very well with <code>pbdMPI</code>.
+
+
+If you don't have many machines/processors,
+the easier way you can test and learn is to install
+<a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>
+with Unix/Linux system. The VirtualBox allows to generate simultaneously
+multiple virtual computers in most common systems.
+You can duplicate the virtual machines/processors
+inside VirtualBox as many as you want.
+Therefore, a parallel
+computing environment can be done in a single machine.
+Regardless of computing performance,
+it is helpful for testing programs and for building projects in
+a consistent environment.
+
+
+---
+#### Authors
+
+<a href="../index.html">Wei-Chen Chen</a> and
+<a href="http://www.csm.ornl.gov/~ost/"
+target="_blank"> George Ostrouchov</a>.
+
+
+---
+#### Acknowledgment
+
+<a href="../index.html">Wei-Chen</a> thanks
+<a href="http://www.csm.ornl.gov/~ost"
+target="_blank">Dr. George Ostrouchov</a>
+of
+<a href="http://www.ornl.gov/"
+target="_blank">Oak Ridge National Laboratory</a>
+for helpful discussion, and
+provide insightful suggestions and materials about general parallel computing.
+The contents are outcomes part of the project
+"Visual Data Exploration and Analysis of Ultra-large Climate Data"
+supported by
+<a href="http://science.energy.gov/"
+target="_blank">U.S. DOE Office of Sience</a>.
+
+Wei-Chen also thanks
+<a href="http://www.stats.uwo.ca/faculty/yu/"
+target="_blank">Dr. Hao Yu</a>,
+the author of
+<a href="http://www.stats.uwo.ca/faculty/yu/Rmpi/"
+target="_blank">Rmpi</a>,
+for great discussion about Rmpi design and parallel programming in Rmpi.
+Also, Wei-Chen thanks
+<a href="http://www.oreillynet.com/pub/au/4980"
+target="_blank">Stephen Weston</a>,
+one author of
+<a href="http://shop.oreilly.com/product/0636920021421.do"
+target="_blank">Parallel R</a> Data Analysis in the Distributed World,
+for sharing MPI and <code>snow</code> information in <code>R</code>.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

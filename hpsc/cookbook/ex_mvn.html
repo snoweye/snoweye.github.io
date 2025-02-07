@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_mvn</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### MVN -- Log Likelihood of Multivariate Normal Distribution.
+
+Suppose
+$\\{\boldsymbol{X}\_i : i = 1, 2, \ldots, N\\}$
+are independent and identically distributed from
+$MVN\_p(\boldsymbol{\mu}, \boldsymbol{\Sigma})$
+where the dimensions are
+$\boldsymbol{\mu}\_{p \times 1}$
+and
+$\boldsymbol{\Sigma}\_{p \times p}$.
+The density of MVN is
+$(2\pi)^{-\frac{p}{2}} | \boldsymbol{\Sigma} |^{-\frac{1}{2}}
+ e^{-\frac{1}{2} (\boldsymbol{x} - \boldsymbol{\mu})^{t}
+ \boldsymbol{\Sigma}^{-1} (\boldsymbol{x} - \boldsymbol{\mu})}$
+and the details can be found at
+"<a href="http://en.wikipedia.org/wiki/Multivariate_normal_distribution"
+ target="_blank">Multivariate Normal Distribution</a>"
+on Wikipedia.
+Then, the total log likelihood is
+$-\frac{Np}{2} \log(2 \pi) -\frac{N}{2} \log |\boldsymbol{\Sigma}|
+ -\frac{1}{2} \sum_{i=1}^N (\boldsymbol{x}\_i - \boldsymbol{\mu})^{t}
+ \boldsymbol{\Sigma}^{-1} (\boldsymbol{x}\_i - \boldsymbol{\mu})$.
+
+
+---
+#### Tricks:
+
+1. Apply Cholesky decomposition to obtain
+   $\boldsymbol{\Sigma} = \boldsymbol{U}^t\boldsymbol{U}$
+   where
+   $\boldsymbol{U}$
+   is an upper triangular matrix with strictly positive diagonal entries.
+2. Then,
+   $\log |\boldsymbol{\Sigma}| = 2 \sum \log(\mbox{diag}(\boldsymbol{U}))$
+3. Back solve the linear system
+  $\boldsymbol{b}\_i\boldsymbol{U} = (\boldsymbol{x}\_i - \boldsymbol{\mu})^t$
+  to obtain
+  $\boldsymbol{b}\_i$
+  for all
+  $i$
+  (Avoid inversion and utilize Cholesky again.)
+4. Then,
+  $(\boldsymbol{x}\_i - \boldsymbol{\mu})^{t} \boldsymbol{\Sigma}^{-1}
+   (\boldsymbol{x}\_i - \boldsymbol{\mu}) =
+   \boldsymbol{b}\_i^t \boldsymbol{b}\_i$
+
+See Wikipedia for more details about
+"<a href="http://en.wikipedia.org/wiki/Cholesky_decomposition"
+ target="_blank">Cholesky Decomposition</a>".
+
+
+---
+#### Serial code: (<a href="./ex_mvn_serial.r" target="_blank">ex_mvn_serial.r</a>)
+
+```
+# File name: ex_mvn_serial.r
+# Run: Rscript --vanilla ex_mvn_serial.r
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+mu <- c(0.1, 0.2)
+Sigma <- matrix(c(0.9, 0.1, 0.1, 0.9), ncol = p)
+
+### Cholesky decomposition.
+U <- chol(Sigma)
+logdet <- sum(log(abs(diag(U))))
+B <- t(X) - mu
+A <- backsolve(U, B, upper.tri = TRUE, transpose = TRUE)
+distval <- colSums(A * A)
+
+(total.logL <- -0.5 * (N * (p * log(2 * pi) + logdet * 2) + sum(distval)))
+```
+
+
+---
+#### Parallel (SPMD) code: (<a href="./ex_mvn_spmd.r" target="_blank">ex_mvn_spmd.r</a> for ultra-large/unlimited $N$)
+
+```
+# File name: ex_mvn_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_mvn_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+mu <- c(0.1, 0.2)
+Sigma <- matrix(c(0.9, 0.1, 0.1, 0.9), ncol = p)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+X.spmd <- matrix(X[id.get, ], ncol = p)
+
+### Cholesky decomposition.
+U <- chol(Sigma)
+logdet <- sum(log(abs(diag(U))))
+B.spmd <- t(X.spmd) - mu
+A.spmd <- backsolve(U, B.spmd, upper.tri = TRUE, transpose = TRUE)
+distval.spmd <- colSums(A.spmd * A.spmd)
+
+### The following two ways have equivalent results, but meanings are different.
+# distval <- allgather(distval.spmd, double(N))
+# total.logL <- -0.5 * (N * (p * log(2 * pi) + logdet * 2) + sum(distval))
+sum.distval <- allreduce(sum(distval.spmd), op = "sum")
+total.logL <- -0.5 * (N * (p * log(2 * pi) + logdet * 2) + sum.distval)
+
+### Output.
+comm.print(total.logL)
+finalize()
+```
+
+
+#### Exercise:
+
+1. Try the R function <code>qr()</code> or <code>eigen()</code>
+   to substitute <code>chol()</code>.
+2. Try the R function <code>optim()</code> or other optimization functions
+   to find the maximum likelihood estimators. Compare the estimators to
+   the analytic solutions.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

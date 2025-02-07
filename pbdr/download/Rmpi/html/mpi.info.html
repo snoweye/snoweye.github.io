@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Info\_create, MPI\_Info\_free, MPI\_Info\_get,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.info.create {Rmpi}"><tr><td>mpi.info.create {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Info\_create, MPI\_Info\_free, MPI\_Info\_get, MPI\_Info\_set APIs</h2>
+
+<h3>Description</h3>
+
+<p>Many MPI APIs take an info argument for additional information passing. An info 
+is an object which consists of many (key,value) pairs. Rmpi uses an internal 
+memory to store an info object.
+</p>
+<p><code>mpi.info.create</code> creates a new info object.
+</p>
+<p><code>mpi.info.free</code> frees an info object and sets it to MPI\_INFO\_NULL.
+</p>
+<p><code>mpi.info.get</code>  retrieves the value associated with key in an info.
+</p>
+<p><code>mpi.info.set</code> adds the key and value pair to info.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  mpi.info.create(info = 0)
+  mpi.info.free(info = 0)
+  mpi.info.get(info = 0, key, valuelen)
+  mpi.info.set(info = 0, key, value)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>an info number.</p>
+</td></tr>
+<tr valign="top"><td><code>key</code></td>
+<td>
+<p>a char (length 1).</p>
+</td></tr>
+<tr valign="top"><td><code>valuelen</code></td>
+<td>
+<p>the length (nchar) of a key</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>a char (length 1).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.info.create</code>, <code>mpi.info.free</code>, and <code>mpi.info.set</code>  return 
+1 if success and 0 otherwise.
+</p>
+<p><code>mpi.info.get</code> returns the value (a char) for a given info and valuelen.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.spawn.Rslaves.html">mpi.spawn.Rslaves</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

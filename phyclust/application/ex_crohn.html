@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../application.html">Application</a></li> /
+    <li class="active">ex_crohn</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Crohn's Disease -- An application for SNP data.
+
+The R script
+(<a href="./ex_crohn.r" target="_blank">ex_crohn.r</a>)
+demonstrates the settings for SNP data set, runs the <code>phyclust()</code>
+by two clusters, calculates distances, builds
+a neighbor-joining tree, and applies the <code>plotnj()</code>
+to draw the tree by the <code>HAMMING</code> distance.
+The data set has 1102 SNP sequences in 8 loci, and 39 sequences are unique.
+In the following,
+
+1. The data set is available in <code>phyclust</code> and
+   original from Hugot, J.P., et al. (2001).
+
+2. The left plot draws the leaf edges in a standard scale, and clusters are
+   showed in colors but only the unique sequences are clear.
+
+3. The right plot draws the leaf edges in a larger scale, and the duplicated
+   sequences are condensed to the unique sequences.
+
+<center>
+  <table>
+    <tbody>
+      <tr>
+        <td> <img src="./ex_crohn_stand.png"></img> </td>
+        <td> <img src="./ex_crohn_large.png"></img> </td>
+      </tr>
+    </tbody>
+  </table>
+</center>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Gather, MPI\_Gatherv, MPI\_Allgather, and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.gather {Rmpi}"><tr><td>mpi.gather {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Gather, MPI\_Gatherv, MPI\_Allgather, and MPI\_Allgatherv APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.gather</code> and <code>mpi.gatherv</code> (vector variant) gather each 
+member's message to the member specified by the argument <code>root</code>.
+The root member receives the messages and stores them in rank 
+order. <code>mpi.allgather</code> and <code>mpi.allgatherv</code> are the same as
+<code>mpi.gather</code> and <code>mpi.gatherv</code> except that all members receive
+the result instead of just the root.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.gather(x, type, rdata, root = 0, comm = 1) 
+mpi.gatherv(x, type, rdata, rcounts, root = 0, comm = 1) 
+
+mpi.allgather(x, type, rdata, comm = 1) 
+mpi.allgatherv(x, type, rdata, rcounts, comm = 1) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data to be gathered. Must be the same type.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>1 for integer, 2 for double, and 3 for character. Others are not 
+supported.</p>
+</td></tr>
+<tr valign="top"><td><code>rdata</code></td>
+<td>
+<p>the receive buffer. Must be the same type as the sender and big 
+enough to include all message gathered.</p>
+</td></tr>
+<tr valign="top"><td><code>rcounts</code></td>
+<td>
+<p>int vector specifying the length of each message.</p>
+</td></tr>
+<tr valign="top"><td><code>root</code></td>
+<td>
+<p>rank of the receiver</p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>mpi.gather</code> and <code>mpi.allgather</code>, the message to be gathered 
+must be the same dim and the same type. The receive buffer can be prepared as 
+either integer(size * dim) or double(size * dim), where size is the total 
+number of members in a comm. For <code>mpi.gatherv</code> and <code>mpi.allgatherv</code>, 
+the message to be gathered can have different dims but must be the same type. 
+The argument <code>rcounts</code> records these different dims into an integer vector 
+in rank order. Then the receive buffer can be prepared as either 
+integer(sum(rcounts)) or double(sum(rcounts)).  
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>mpi.gather</code> or <code>mpi.gatherv</code>, it returns the gathered 
+message for the root member. For other members, it returns what is in rdata, 
+i.e., rdata (or rcounts) is ignored. For <code>mpi.allgather</code> or 
+<code>mpi.allgatherv</code>, it returns the gathered message for all members. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.scatter.html">mpi.scatter</a></code>, <code><a href="mpi.scatter.html">mpi.scatterv</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Need 3 slaves to run properly
+#Or use mpi.spawn.Rslaves(nslaves=3)
+ mpi.bcast.cmd(id &lt;-mpi.comm.rank(.comm), comm=1)
+mpi.bcast.cmd(mpi.gather(letters[id],type=3,rdata=string(1)))
+mpi.gather(letters[10],type=3,rdata=string(4))
+
+ mpi.bcast.cmd(x&lt;-rnorm(id))
+ mpi.bcast.cmd(mpi.gatherv(x,type=2,rdata=double(1),rcounts=1))
+ mpi.gatherv(double(1),type=2,rdata=double(sum(1:3)+1),rcounts=c(1,1:3))
+
+mpi.bcast.cmd(out1&lt;-mpi.allgatherv(x,type=2,rdata=double(sum(1:3)+1),
+		rcounts=c(1,1:3)))
+mpi.allgatherv(double(1),type=2,rdata=double(sum(1:3)+1),rcounts=c(1,1:3))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

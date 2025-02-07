@@ -1,0 +1,7 @@
+export R_DEVEL=/home/pbdr/work-my/local/R-devel
+export OMPI=/home/pbdr/work-my/local/ompi
+export HDF5=/home/pbdr/work-my/local/hdf5
+export NETCDF=/home/pbdr/work-my/local/netcdf
+
+export PATH=$R_DEVEL/bin:$OMPI/bin:$HDF5/bin:$NETCDF/bin:$PATH
+export LD_LIBRARY_PATH=$OMPI/lib:$HDF5/lib:$NETCDF/lib:$LD_LIBRARY_PATH

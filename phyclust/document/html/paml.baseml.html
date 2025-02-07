@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Phylogenetic Analysis by Maximum Likelihood for Nucleotide...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for paml.baseml {phyclust}"><tr><td>paml.baseml {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Phylogenetic Analysis by Maximum Likelihood for Nucleotide Sequences</h2>
+
+<h3>Description</h3>
+
+<p>This function modifies the original standalone code of <code>baseml</code>
+in PAML developed by Yang (1997) for phylogenetic analysis by maximum
+likelihood. This function provides a way to generate an ancestral tree
+for given central sequences clustered by <code>phyclust</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+paml.baseml(X, seqname = NULL, opts = NULL, newick.trees = NULL)
+paml.baseml.control(...)
+paml.baseml.show.default()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>seqname</code></td>
+<td>
+<p>sequence names.</p>
+</td></tr>
+<tr valign="top"><td><code>opts</code></td>
+<td>
+<p>options as the standalone version, provided by <code>paml.baseml.contol</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newick.trees</code></td>
+<td>
+<p>a vector/list contains NEWICK trees for <code>runmode = 2</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>for other possible opts and values. See PAML manual for details.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>show opts and values.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The function <code>paml.baseml</code> directly reuses the C code of <code>baseml</code>
+of PAML, and the function <code>paml.baseml.control</code> is to generate controls
+for <code>paml.baseml</code> as the file <code>baseml.ctl</code> of PAML.
+</p>
+<p>The <code>seqname</code> should be consistent with <code>X</code>, and the leaf nodes
+of <code>newick.trees</code>.
+</p>
+<p>The options <code>opts</code> is followed from the original <code>baseml.ctl</code>
+except <code>seqfile</code>, <code>treefile</code> and <code>outputfile</code> will be omitted.
+</p>
+<p><code>paml.baseml.control</code> generates default <code>opts</code>, and
+<code>paml.baseml.show.default</code> displays annotations for the default
+<code>opts</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns a list, and each element stores one line of outputs
+of <code>baseml</code> separated by newline. The list stores in a class
+<code>baseml</code>. All the output of <code>baseml</code> of PAML will be saved in
+several files, and these will be read in by <code>scan</code>. Further post
+processing can be done by parsing the returning vector. The details of
+output format can found on the website
+<a href="http://abacus.gene.ucl.ac.uk/software/paml.html">http://abacus.gene.ucl.ac.uk/software/paml.html</a> and its manual.
+</p>
+<p>Note that some functionalities of <code>baseml</code> of PAML are changed in
+<code>paml.baseml</code> due to the complexity of input and output. The changes
+include such as disable the option <code>G</code> and rename the file <code>2base.t</code>
+to <code>pairbase.t</code>.
+</p>
+<p>Typically, the list contains the original output of <code>baseml</code> including
+<code>pairbase.t</code>, <code>mlb</code>, <code>rst</code>, <code>rst1</code>, and <code>rub</code> if they
+are not empty. The best tree (unrooted by default) will be stored in
+<code>best.tree</code> parsed from <code>mlb</code> based on the highest log likelihood.
+All output to <code>STDOUT</code> are stored in <code>stdout</code>. No <code>STDIN</code> are
+allowed.
+</p>
+<p>Note that the print function for the class <code>baseml</code> will only show
+the <code>best.tree</code> only. Use <code>str</code> or <code>names</code> to see the whole
+returns of the list.
+</p>
+
+
+<h3>Warning(s)</h3>
+
+<p>Carefully read the PAML's original document before using the
+<code>paml.baseml</code> function, and <code>paml.baseml</code> may not be ported
+well from <code>baseml</code> of PAML. Please double check with the standalone
+version.
+</p>
+<p><code>baseml</code> may not be a well designed program, and may run slowly.
+If it were stuck, temporary files would all store at a directory obtained
+by <code>tempfile("/paml.baseml.")</code>.
+</p>
+<p><code>baseml</code> has its own options and settings which may be different
+than <span class="pkg">phyclust</span> and <span class="pkg">ape</span>. For example, the following is from
+the PAML's document, &ldquo;In PAML, a rooted tree has a bifurcation at the root,
+while an unrooted tree has a trifurcation or multifurcation at the root.&rdquo;
+i.e. <code>paml.baseml</code> uses a rooted result for an unrooted tree, as well
+as for a rooted tree.
+</p>
+<p><code>baseml</code> also needs a sequence file which is dumped from R (duplicated
+from memory) for <code>paml.baseml</code>, and this file can be very big if
+sequences are too long or number of sequences is too large. Also,
+<code>paml.baseml</code> may take long time to search the best tree if data are
+large or initial trees are not provided.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Yang, Z. (1997) and Yang, Z. (2007)
+</p>
+<p>Maintain: Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Yang, Z. (1997)
+&ldquo;PAML: a program package for phylogenetic analysis by maximum
+likelihood&rdquo;,
+<em>Computer Applications in BioSciences</em>, <b>13</b>, 555-556.
+</p>
+<p>Yang, Z. (2007)
+&ldquo;PAML 4: a program package for phylogenetic analysis by maximum
+likelihood&rdquo;,
+<em>Molecular Biology and Evolution</em>, <b>24</b>, 1586-1591.
+<a href="http://abacus.gene.ucl.ac.uk/software/paml.html">http://abacus.gene.ucl.ac.uk/software/paml.html</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="print.summary.html">print.baseml</a></code>,
+<code><a href="file.write.html">write.paml</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+paml.baseml.show.default()
+
+### Generate data.
+set.seed(123)
+ret.ms &lt;- ms(nsam = 5, nreps = 1, opts = "-T")
+ret.seqgen &lt;- seqgen(opts = "-mHKY -l40 -s0.2", newick.tree = ret.ms[3])
+(ret.nucleotide &lt;- read.seqgen(ret.seqgen))
+X &lt;- ret.nucleotide$org
+seqname &lt;- ret.nucleotide$seqname
+
+### Run baseml.
+opts &lt;- paml.baseml.control(model = 4, clock = 1)
+(ret.baseml &lt;- paml.baseml(X, seqname = seqname, opts = opts))
+(ret.baseml.init &lt;- paml.baseml(X, seqname = seqname, opts = opts,
+   newick.trees = ret.ms[3]))
+ret.ms[3]
+
+### Unrooted tree.
+opts &lt;- paml.baseml.control(model = 4)
+(ret.baseml.unrooted &lt;- paml.baseml(X, seqname = seqname, opts = opts))
+
+### More information.
+opts &lt;- paml.baseml.control(noisy = 3, verbose = 1, model = 4, clock = 1)
+ret.more &lt;- paml.baseml(X, seqname = seqname, opts = opts)
+# ret.more$stdout
+
+### Plot trees
+par(mfrow = c(2, 2))
+plot(read.tree(text = ret.ms[3]), main = "true")
+plot(read.tree(text = ret.baseml$best.tree), main = "baseml")
+plot(read.tree(text = ret.baseml.init$best.tree), main = "baseml with initial")
+plot(unroot(read.tree(text = ret.baseml.unrooted$best.tree)),
+     main = "baseml unrooted")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

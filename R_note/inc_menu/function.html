@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Function</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+- <font color="#800000"><b>Conclusion</b></font>
+
+  There are two conclusions for this page.
+  - R uses "Pass by value".
+  - R uses "Default initialize".
+
+
+- <font color="#800000"><b>Function 1</b></font>
+
+  First, create an R code file "<a href="./example/function/func_1.r" target="_blank">func_1.r</a>" contains this, 
+  run it and trace the result to see the difference.
+
+  ```
+  # File name: func_1.r
+  
+  hello <- function(input){
+    a <- c("Hello", "world", input, "!")
+    input <- NULL
+    molas <- "molas"
+    ret <- paste(a, collapse = " ")
+    ret
+  }
+  
+  molas <- "MOLAS"
+  input <- c("again,", molas)
+  input
+  hello(input)
+  molas
+  input
+  hello()
+  hello(NULL)
+  ```
+
+
+- <font color="#800000"><b>Function 2</b></font>
+
+  First, create an R code file "<a href="./example/function/func_2.r" target="_blank">func_2.r</a>" contains this,
+  run it and trace the result to see the difference.
+
+  ```
+  # File name: func_2.r
+  
+  hello <- function(a, ...){
+    ret <- paste(a, ...)
+    ret
+  }
+  
+  test <- function(input = "molas") {
+    a <- c("Hello", "world", input, "!")
+    input <- NULL
+    molas <- "molas"
+    ret <- hello(a, collapse = " ")
+    ret
+  }
+  
+  molas <- "MOLAS"
+  input <- c("again,", molas)
+  input
+  test(input)
+  molas
+  input
+  test()
+  test(NULL)
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

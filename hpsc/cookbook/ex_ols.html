@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_ols</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### OLS -- Ordinary Least Squares for Linear Models.
+
+<i>Ordinary Least Squares</i> (OLS) is a popular technique
+in Statistics to solve
+the problem
+$\boldsymbol{Y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon}$
+where
+$\boldsymbol{\beta}$
+is unknown.
+The dimensions are
+$\boldsymbol{Y}\_{N\times 1}$,
+$\boldsymbol{X}\_{N\times p}$,
+$\boldsymbol{\beta}\_{p\times 1}$ and
+$\boldsymbol{\epsilon}\_{N\times 1}$
+respectively, and
+$N >> p$.
+Under some fair assumptions,
+a standard solution with a few linear algebra is
+$\boldsymbol{\hat{\beta}} = (\boldsymbol{X}^t\boldsymbol{X})^{-1} \boldsymbol{X}^t\boldsymbol{Y}$.
+This estimate also has several good statistical properties.
+
+The extensions and applications of OLS include regression,
+linear model (<code>lm</code>),
+generalized linear model (<code>glm</code>),
+mixed model (<code>lme</code>), ... etc.
+More details about OLS can be found at
+"<a href="http://en.wikipedia.org/wiki/Ordinary_least_squares"
+ target="_blank">Ordinary Least Squares</a>" on Wikipedia.
+
+
+---
+#### Serial code: (<a href="./ex_ols_serial.r" target="_blank">ex_ols_serial.r</a>)
+
+```
+# File name: ex_ols_serial.r
+# Run: Rscript --vanilla ex_ols_serial.r
+
+### Main codes stat from here.
+set.seed(1234)
+N <- 100
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+beta <- c(1, 2)
+epsilon <- rnorm(N)
+Y <- X %*% beta + epsilon
+
+### Obtain beta hat.
+(beta.hat <- solve(t(X) %*% X) %*% t(X) %*% Y)
+```
+
+
+---
+#### Parallel (SPMD) code: (<a href="./ex_ols_spmd.r" target="_blank">ex_ols_spmd.r</a> for ultra-large/unlimited $N$)
+
+```
+# File name: ex_ols_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_ols_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100                # Pretend N is large.
+p <- 2
+X <- matrix(rnorm(N * p), ncol = p)
+beta <- c(1, 2)
+epsilon <- rnorm(N)
+Y <- X %*% beta + epsilon
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+X.spmd <- X[id.get,]
+Y.spmd <- Y[id.get]
+
+### Obtain beta hat.
+t.X.spmd <- t(X.spmd)
+A <- allreduce(t.X.spmd %*% X.spmd, op = "sum")
+B <- allreduce(t.X.spmd %*% Y.spmd, op = "sum")
+beta.hat <- solve(matrix(A, ncol = p)) %*% B
+
+### Output.
+comm.print(beta.hat)
+finalize()
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

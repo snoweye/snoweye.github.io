@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../example.html">Example</a></li> /
+    <li class="active">ex_msseqgenphyclust</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### ms+seqgen+phyclust -- Bootstrap to assess the number of clusters. 
+
+Model selection includes identifying the number of clusters,
+evolutionary models, and phyloclustering assumptions.
+We could use information criteria to choose among models,
+but the parameter space is mixed continuous and discrete, so
+the theory justifying the criteria does not apply.
+A more elaborate procedure to assess the number of clusters
+for a data set is based on the parametric bootstrap
+technique and sequential hypothesis testing (Maitra and Melnykov 2010).
+
+The basic idea is to resample data sets from the fitted model using the
+functions <code>ms()</code> and <code>seqgen()</code>,
+and refit the resampled data set by <code>phyclust()</code>.
+The same fitting method is applied to each
+data set, producing a distribution of parameter estimates.
+The <code>bootstrap.seq.data()</code> function is a tool for this procedure;
+it takes a fitted model, the output of a previous call to
+<code>phyclust()</code>.
+The following example bootstraps the toy data set once assuming
+$K = 2$ clusters.
+```
+> set.seed(1234)
+> X <- seq.data.toy$org
+> ret.4 <- phyclust(X, 2)
+> (seq.data.toy.new <- bootstrap.seq.data(ret.4))
+code.type: NUCLEOTIDE, n.seq: 100, seq.len: 200.
+> (ret.4.new <- phyclust(seq.data.toy.new$org, 2))
+Phyclust Results:
+code type: NUCLEOTIDE, em method: EM, boundary method: ADJUST.
+init procedure: exhaustEM, method: randomMu.
+model substitution: JC69, distance: D_JC69.
+iter: 30 2947 0, convergence: 0, check.param: 1.
+eps: 1.41e-14, error: 0.
+N.X.org: 100, N.X.unique: 56, L: 200, K: 2, p: 402, N.seg.site: 69.
+logL: -685.3, bic: 3222, aic: 2175, icl: 3222
+identifier: EE
+  Eta: 0.48 0.52 
+  Tt: 0.001354 
+  n.class: 48 52
+```
+
+We need to repeat the steps several times to obtain
+a distribution of parameter estimates.
+For example, the following code uses <code>B = 10</code> bootstraps to obtain
+the distributions of log-likelihood for
+$K = 1$ and
+$K = 2$ and
+we can perform a likelihood ratio test to assess the number of clusters.
+```
+> ### This code may take a long time to run.
+> set.seed(1234)
+> X <- seq.data.toy$org
+> ret.K1 <- find.best(X, 1)
+> ret.K2 <- find.best(X, 2)
+> (logL.diff <- ret.K2$logL - ret.K1$logL)
+[1] 663.2635
+> set.seed(1234)
+> B <- 10
+> boot.logL.diff <- NULL
+> for(b in 1:B){
+>   seq.data.toy.new <- bootstrap.seq.data(ret.K1)
+>   ret.H0 <- find.best(seq.data.toy.new$org, 1)
+>   ret.H1.H0 <- find.best(seq.data.toy.new$org, 2)
+>   boot.logL.diff <- c(boot.logL.diff, ret.H1.H0$logL - ret.H0$logL)
+> }
+> boot.logL.diff
+ [1] 20.17399 24.94449 25.50644 24.30299 25.94984 19.03801 19.20099 19.40565
+ [9] 18.88133 37.16275
+> sum(logL.diff < boot.logL.diff)
+[1] 0
+```
+
+Here, the difference of likelihood values <code>logL.idff</code> is
+<code>663.2635</code>
+between models
+$K = 1$ and
+$K = 2$.
+We bootstrap from a fitted model of
+$K = 1$
+and it is 0 out of 10 results indicating the
+$K = 2$
+performs better than
+$K = 1$
+As the <code>B</code> increases, we may more confident to reject
+$K = 1$.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

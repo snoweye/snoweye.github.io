@@ -1,0 +1,177 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="author" content="faust">
+<meta name="keywords"
+content="mixed language programming, fortran, c++, fortran90">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Mixed Language Programming in Fortran and C++</title>
+</head>
+
+<body bgcolor="#000000" text="#000000" link="#FF0000"
+vlink="#FF0000" alink="#FF0000">
+
+<h1><font color="#FFFFFF">Mixed Language Programming in Fortran
+and C++ with Compaq Visual Fortran (CVF)and Borland C++ Builder (BCB)</font></h1>
+
+<p><font color="#FFFFFF">I want to limit the description to
+programming with the Borland and Compaq compilers, but most of
+the elements also will apply to other compilers. Carsten Arnholm
+gives a general and detailed introduction on his </font><a
+href="javascript:if(confirm('http://home.online.no/~arnholm/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://home.online.no/~arnholm/'" tppabs="http://home.online.no/~arnholm/" target="C. Arnholm"><font
+color="#FFFFFF">page</font></a><font color="#FFFFFF">, how to mix
+Fortran and C++. Therefore I will not repeat general remarks but
+directly start with examples. I compiled the code samples with
+Borland C++ Builder 5 and Compaq Visual Fortran 6.6.</font></p>
+
+<p><font color="#FFFFFF">Let's have a look on a simple Fortran90
+routine</font></p>
+
+<p><font color="#00FF00" size="2" face="MS Sans Serif">REAL(KIND(0.d0))
+FUNCTION square(x)<br>
+! Specify that the routine name is to be made available to
+callers of the<br>
+! DLL and that the external name should not have any prefix or
+suffix<br>
+!DEC$ ATTRIBUTES DLLEXPORT :: square<br>
+!DEC$ ATTRIBUTES ALIAS:'square' :: square<br>
+REAL(KIND(0.D0)) :: x [VALUE] ! pass by value<br>
+square = x*x<br>
+END FUNCTION</font></p>
+
+<p><font color="#FFFFFF">and the C++ routine calling the Fortran90
+function</font></p>
+
+<p><font color="#00FFFF" size="2" face="MS Sans Serif">#include
+&lt;iostream.h&gt;<br>
+extern &quot;C&quot; double __stdcall square(double x);<br>
+int main(int argc, char* argv[])<br>
+{<br>
+double a=4;<br>
+double asq = square(a);<br>
+cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; asq &lt;&lt;
+endl;<br>
+return 0;<br>
+}</font><font color="#FFFFFF"><br>
+<br>
+The argument is passed <em>by value</em>. To transfer the code
+from Fortran to C++ a <em>dynamic link library</em> with the
+extension .dll is created in Compaq Visual Fortran (CVF). To
+transform the CVF library into Borland C++ Builder (BCB) form you
+have to use the BCB utility <em>implib</em>. Then you copy the
+dll and lib files to the BCB project directory and include the
+lib file into the project and start compiling and linking. That's
+it :-)</font></p>
+
+<p><font color="#FFFFFF">If you want to pass an </font><font
+color="#FF0000">array</font><font color="#FFFFFF"> you have to do
+that </font><font color="#FF0000"><em>by reference</em></font><font
+color="#FFFFFF"> in Fortran90 and use a </font><font
+color="#FF0000">pointer</font><font color="#FFFFFF"> in C++:</font></p>
+
+<p><font color="#FFFFFF">Fortran90 function:</font></p>
+
+<p><font color="#00FF00" size="2" face="MS Sans Serif">SUBROUTINE
+c_zsn(m,d,k,f,zsn,nf)<br>
+<br>
+! Specify that the routine name is to be made available to
+callers of the<br>
+! DLL and that the external name should not have any prefix or
+suffix<br>
+<br>
+!DEC$ ATTRIBUTES DLLEXPORT :: c_zsn<br>
+!DEC$ ATTRIBUTES ALIAS:'c_zsn' :: c_zsn<br>
+!DEC$ ATTRIBUTES VALUE :: m,d,k,nf<br>
+!DEC$ ATTRIBUTES REFERENCE :: f,zsn<br>
+<br>
+IMPLICIT NONE<br>
+<br>
+INTEGER :: nf,i<br>
+REAL(KIND(0.D0)) :: m,d,k,f(0:(nf-1)),zsn(0:(nf-1)),om,pi<br>
+COMPLEX(KIND(0.D0)) :: j<br>
+<br>
+j = (0.d0, 1.d0)<br>
+pi = 4.d0 * datan(1.d0)<br>
+<br>
+do i=0,nf-1<br>
+om = 2.d0*pi*f(i)<br>
+zsn(i) = abs(-om**2*m-j*om*d+k)<br>
+end do<br>
+<br>
+END SUBROUTINE</font><font color="#FFFFFF"><br>
+</font></p>
+
+<p><font color="#FFFFFF">and the C++ routine calling the Fortran90
+function</font></p>
+
+<p><font color="#00FFFF" size="2" face="MS Sans Serif">#include
+&lt;iostream.h&gt;<br>
+extern &quot;C&quot; void __stdcall c_zsn(double m,double
+d,double k,double *f,<br>
+double *zsn,int nf);<br>
+int main(int argc, char* argv[])<br>
+{<br>
+double m = 2.;<br>
+double k = 200.;<br>
+double d = 0.01;<br>
+int nf = 10;<br>
+double *f = new double[nf];<br>
+double *zsn = new double[nf];<br>
+for (int i=0; i&lt;nf; i++) f[i]=i;<br>
+c_zsn(m,d,k,f,zsn,nf);<br>
+for (int i=0; i&lt;nf; i++)<br>
+cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; f[i] &lt;&lt;
+&quot; &quot; &lt;&lt; zsn[i] &lt;&lt; endl;<br>
+delete [] f;<br>
+delete [] zsn;<br>
+return 0;<br>
+}<br>
+</font></p>
+
+<p><font color="#FFFFFF">Please have a look on the Compaq Visual
+Fortran documentation regarding passing of higher dimensional
+arrays. You have to be careful: For a arr(:) definition (deferred
+shape) the descriptor is passed but for a fixed shape definition
+arr(100)</font>I<font color="#FFFFFF">the array pointer or array
+is passed by base address, which is like passing the first
+element of an array.</font></p>
+
+<p>&nbsp;</p>
+
+<p><font color="#FFFFFF"><u>Some general remarks at the end:</u></font></p>
+
+<p><font color="#FFFFFF">If you want the Fortran and C++
+projects, please send me a </font><a
+href="mailto:Markus.Faust@t-online.de"><font color="#FFFFFF">mail.
+</font></a></p>
+
+<p><font color="#FFFFFF">I am using Fortran as a &quot;number
+cruncher&quot;. Fortran 90/95 is a wonderful and very comfortable
+tool (comparable with Matlab regarding coding speed) to write
+fast simulation applications and Borland C++ Builder is one of
+the best tools to wrap the Fortran code into a GUI. I tried
+Visual Basic and Visual C++ and from my point of view Borland C++
+Builder beats them all. It is as simple as Visual Basic but
+offers more capabilities.</font></p>
+
+<p><font color="#FFFFFF">At the moment I'm switching to Python,
+which is a simple and yet very powerful language. I'm sure Python
+will convince many scientists and engineers which at the moment
+still use Matlab. Have a look at the <a href="javascript:if(confirm('http://www.python.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.python.org/'" tppabs="http://www.python.org/">Python homepage</a> and my
+Python page for structure mechanics applications.</font></p>
+
+<p><font color="#FFFFFF"><br>
+<br>
+<!--INC:"Copyright.inc"--></font></p>
+
+<hr>
+
+<p align="center"><font color="#FFFFFF" size="2">Copyright ©2000-2002
+Markus Faust, all rights reserved <br>
+Version 0.0.4 vom 19.05.2002</font><font color="#FFFFFF"><br>
+</font></p>
+<font color="#FFFFFF"><!--/INC:"Copyright.inc"--></font>
+</body>
+</html>

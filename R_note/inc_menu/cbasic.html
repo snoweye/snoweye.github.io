@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Basic C</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<ul>
+<li> <font color="#800000"><b>Prolog</b></font>
+<br>
+An angel took the STAT580 course of ISU, so I wrote for her.
+The following books are good and easy to read and learn C and C++.
+
+<ul>
+<li>
+Davis, S.R. (1998),
+<i>C++ For Dummies</i>, 3rd,
+IDG Books Worldwide.
+
+<li>
+Rudd, A. (1994),
+<i>Mastering C</i>,
+John Wiley and Sons.
+</ul>
+<br>
+
+<li> <font color="#800000"><b>Story</b></font>
+<br>
+The idea of
+Pointer was the most confusion of C language for me when I learned it.
+Even now, I am not sure I can fully understand and manipulate it well.
+The following wordy example that I wrote for a friend is a useful code
+to clarify the idea by several tests.
+<br>
+<br>
+<center>
+<b>
+Key:
+<font size=+1 color="blue">A POINTER IS A INTERGER</font>
+(repeat 10 times.)
+</b>
+</center>
+<br>
+
+
+<li> <font color="#800000"><b>Code</b></font>
+<br>
+You can download the code
+"<a href="./example/cbasic/a.c" target="_blank">a.c</a>"
+and compile it by typing <code>gcc a.c</code> and execute it by typing
+<code>./a.out</code>.
+<br><br>
+
+
+<li> <font color="#800000"><b>Output</b></font>
+<br>
+The output of "a.out" will similar to
+the following or
+"<a href="./example/cbasic/a.c.out" target="_blank">a.c.out</a>".
+Note that the memory address at the following output
+should be different with your results.
+
+</ul>
+
+
+```
+Test 1
+MSG: Initial value: a1 = 1, a2 = 1
+	aa MSG: Value of aa1: 1
+	aa MSG: After a change, value: aa1 = 2
+MSG: after a change: a1 = 1, a2 = 2
+------------
+
+Test 2	(Pass "the address of b1" to function bb)
+MSG: Initial value: b1 = 1, b2 = 1
+MSG: Address of b1 (&b1): bfc585d4
+	bb MSG: Value of bb1: bfc585d4
+		(This should be the address of b1)
+	bb MSG: Address of bb1 (&bb1): bfc585b0
+	bb MSG: After a change, value: *bb1 = 2 (changed)
+MSG: after a change: b1 = 2, b2 = 2
+	(These should be equal to *bb1)
+------------
+
+Test 3
+MSG: Initial value: c1 = &b1 = bfc585d4
+	(This should be equal to the address of b1)
+     c1 point to b1 which has same value *c1 = b1 = 2
+	(This should be equal to the value of b2)
+     c1 is at address = bfc585d0
+
+(As Test2, but pass "c1" to function bb)
+	bb MSG: Value of bb1: bfc585d4
+		(This should be the address of b1)
+	bb MSG: Address of bb1 (&bb1): bfc585b0
+	bb MSG: After a change, value: *bb1 = 4 (changed)
+(This should be twice of b1 in the first Test 2)
+MSG: after a change: b1 = 4, b2 = 2
+	(These should be equal to *bb1)
+
+(As Test1, but pass "*c1" to function aa)
+	aa MSG: Value of aa1: 4
+	aa MSG: After a change, value: aa1 = 8
+MSG: After a change: *c1 = 4 (no changed), a3 = 8
+------------
+
+Test 4
+MSG: array d1 = {6 4 2}
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

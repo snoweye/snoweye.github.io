@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">C Call R Objects</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+
+- <font color="#800000"><b>Reference</b></font>
+
+  Read the web page <a href="http://cran.r-project.org/manuals.html" target="_blank">The R Manuals</a><br>
+  PDF document Writing R Extensions (Chapter 5) in The R Manuals
+  (my mirror <a href="./reference/R-exts.pdf" target="_blank">here</a>).
+  - <a href="http://www.sfu.ca/~sblay/present.html" target="_blank">
+    Sigal Blay's web space</a> (my mirror
+    <a href="./reference/R-C-interface.ppt" target="_blank">here</a>).
+
+
+- <font color="#800000"><b>Steps</b></font>
+
+  <b>
+  1. In R, there are two methods to directly pass the R objects to C,
+     .Call() and .External().
+  2. In C, there are two methods to handle R objects by including
+     "Rdefines.h" and "Rinternals.h" as the header files.
+  3. R objects use a structure type SEXP as a pointer in C.
+     1. Allocate R objects.
+     2. Protect R objects.
+     3. Duplicate Objects passed from R if any modification is required.
+        <font color="red"> Any objects passed from R should be read-only. </font>
+     4. After any computing, copy the results to R objects.
+     5. Unprotect R objects.
+  4. Return R objects to R from C.
+  </b>
+
+  At the following, only .Call() and "Rinternals.h" are demonstrated and
+  R's list and array will be passed to C.
+
+
+- <font color="#800000"><b>Example 1</b></font>
+
+  Available C file:
+  "<a href="./example/Call_Robj/callRobj.c" target="_blank">callRobj.c</a>".
+
+  This is a poisoned vitamin C example discussed with
+  <a href="http://rumi.gdcb.iastate.edu/" target="_blank">Dr. Karin S. Dorman</a>
+  for modifying a C pointer permanently inside an internal function.
+  Also, an R "list" object is allocated in C.
+  This object store and return a modified version of input to R.
+
+  ```
+  #include <R.h>
+  #include <Rinternals.h>
+  
+  void vitamin_c(SEXP R_n, int **C_n){
+      *C_n = INTEGER(R_n);
+  }
+  
+  SEXP poison(SEXP R_n){
+      int i, *C_n_1, *C_n_2;
+      double *C_new_1, *C_new_2;
+      SEXP new_1, new_2, ret, ret_names;
+      char *names[2] = {"new.1", "new.2"};
+  
+      /* Both have the same results. */
+      vitamin_c(R_n, &C_n_1);
+      C_n_2 = INTEGER(R_n);
+  
+      /* protect R objects in C. */
+      PROTECT(new_1 = allocVector(REALSXP, 1));
+      PROTECT(new_2 = allocVector(REALSXP, 1));
+      PROTECT(ret = allocVector(VECSXP, 2));
+      PROTECT(ret_names = allocVector(STRSXP, 2));
+    
+      /* set a list object for R. */
+      SET_VECTOR_ELT(ret, 0, new_1);
+      SET_VECTOR_ELT(ret, 1, new_2);
+  
+      /* set list's names for R. */
+      for(i = 0; i < 2; i++){
+        SET_STRING_ELT(ret_names, i, mkChar(names[i])); 
+      }
+      setAttrib(ret, R_NamesSymbol, ret_names);
+  
+      /* assign points to R objects. */
+      C_new_1 = REAL(new_1);
+      C_new_2 = REAL(new_2);
+  
+      /* update for return to R. */
+      *C_new_1 = (double) (*C_n_1 + 1);
+      *C_new_2 = (double) (*C_n_2 + 1);
+    
+      /* unprotect for R. */
+      UNPROTECT(4);
+      return(ret);
+  }
+  ```
+
+
+- <font color="#800000"><b>Outputs</b></font>
+
+  ```
+  > a <- 1
+  > ret <- .Call("poison", as.integer(a))
+  > ret
+  $new.1
+  [1] 2
+  
+  $new.2
+  [1] 2
+  ```
+
+
+- <font color="#800000"><b>Conclusion</b></font>
+  - Call by address in C.
+  - Call by address in R when <code>.Call()</code> and
+    <code>.External()</code> are used.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

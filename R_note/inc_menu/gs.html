@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Ghostscript</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+<font color="red"><b>This page is for Linux only!! But not necessary</b></font>
+
+---
+- <font color="#800000"><b>Ghostscript</b></font>
+
+  When using the function <code>bitmap()</code> in Linux, the R
+  system requires Ghostscript software
+  to translate figure from ps file to other type image file, include jpeg, png and bmp etc.
+  To download, install and get more information, see
+  <a href="http://www.cs.wisc.edu/~ghost/" target="_blank">GNU Ghostscript</a> or
+  <a href="http://www.cups.org/ghostscript.php" target="_blank">ESP Ghostscript</a>.
+
+
+- <font color="#800000"><b>In Renviron file</b></font>
+
+  Under <code>${R_HOME}/etc/Renviron</code>,
+  add an R system environment variable for ghostscript.
+  If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
+  that Renviron will be
+
+  ```
+  R_GSCMD=${R_GSCMD-'/usr/bin/gs'}
+  ```
+
+
+- <font color="#800000"><b>In Script</b></font>
+
+  If no permission to modify Renviron file, you can use the
+  R command <code>Sys.putenv()</code>
+  to setup the environment variable.
+  If the default <code>gs</code> is at <code>/usr/bin/gs</code>,
+  that environment variable can be setted by
+
+  ```
+  Sys.putenv("R_GSCMD"="/usr/bin/gs")
+  ```
+
+  See also <code>Sys.getenv()</code>.
+
+
+- <font color="#800000"><b>In MS-Windows</b></font>
+
+  Use <code>gswin32c.exe</code> to instead of <code>gs</code> in Unix.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

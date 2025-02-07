@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transition Probabilities of phyclust Given Time</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phyclust.Pt {phyclust}"><tr><td>phyclust.Pt {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transition Probabilities of phyclust Given Time</h2>
+
+<h3>Description</h3>
+
+<p>This computes transition probabilities of <code>phyclust</code> given time.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phyclust.Pt(Q, Tt, substitution.model = .substitution.model$model[1])
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>Q</code></td>
+<td>
+<p>a list according to the substitution model.</p>
+</td></tr>
+<tr valign="top"><td><code>Tt</code></td>
+<td>
+<p>total evolution time, <i>t</i>.</p>
+</td></tr>
+<tr valign="top"><td><code>substitution.model</code></td>
+<td>
+<p>substitution model.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The major models for <code>Q</code> are:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+      Model </td><td style="text-align: left;"> Author and Publication            </td><td style="text-align: left;"> Parameter </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      JC69  </td><td style="text-align: left;"> Jukes and Cantor 1969.            </td><td style="text-align: left;"> <i>t</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      K80   </td><td style="text-align: left;"> Kimura 1980.                      </td><td style="text-align: left;"> <i>kappa, t</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+      F81   </td><td style="text-align: left;"> Felsenstein 1981.                 </td><td style="text-align: left;"> <i>pi, t</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;"> 
+      HKY85 </td><td style="text-align: left;"> Hasegawa, Kishino, and Yano 1985. </td><td style="text-align: left;"> <i>kappa, pi, t</i> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+    </td>
+</tr>
+
+</table>
+
+<p>A list of <code>Q</code> should contains <code>pi</code>, <code>kappa</code> based on
+substitution models and code types. <code>Tt</code> may be separately stored.
+Depending on identifiers, <code>Q</code>s can be composite to a <code>QA</code>,
+Q matrix array.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list with class <code>Pt</code> will be returned containing several
+elements as the following:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>'Pt'</code></td>
+<td>
+<p>a transition probability matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>'log.Pt'</code></td>
+<td>
+<p>a log transition probability matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>'H'</code></td>
+<td>
+<p>a negative entropy, <code>diag(Pt %*% t(log.Pt))</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>ToDo(s)</h3>
+
+
+<ul>
+<li><p> vectorize <code>Tt</code> for repeated computation in C.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.substitution.html">.substitution.model</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>,
+<code><a href="phyclust.em.step.html">phyclust.em.step</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+Tt &lt;- 0.5
+
+Q &lt;- list(pi = c(0.25, 0.25, 0.25, 0.25), kappa = 0.5)
+phyclust.Pt(Q, Tt, "HKY85")
+
+Q &lt;- list(pi = c(0.5, 0.5), kappa = 0.5)
+phyclust.Pt(Q, Tt, "SNP_JC69")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

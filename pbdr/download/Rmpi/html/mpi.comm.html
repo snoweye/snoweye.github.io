@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Comm\_c2f, MPI\_Comm\_dup, MPI\_Comm\_rank, and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.comm.size {Rmpi}"><tr><td>mpi.comm.size {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Comm\_c2f, MPI\_Comm\_dup, MPI\_Comm\_rank, and MPI\_Comm\_size APIs</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.comm.c2f</code> converts the comm (a C communicator) and returns an integer that can be
+used as the communicator in external FORTRAN code. <code>mpi.comm.dup</code> duplicates 
+(copies) a comm to a new comm. <code>mpi.comm.rank</code> 
+returns its rank in a comm. <code>mpi.comm.size</code> returns 
+the total number of members in a comm. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  mpi.comm.c2f(comm=1)
+  mpi.comm.dup(comm, newcomm)
+  mpi.comm.rank(comm = 1)
+  mpi.comm.size(comm = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>newcomm</code></td>
+<td>
+<p>a new communicator number</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>, 
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Assume that there are some slaves running
+mpi.comm.size(comm=1)
+mpi.comm.size(comm=0)
+
+mpi.remote.exec(mpi.comm.rank(comm=1))
+mpi.remote.exec(mpi.comm.rank(comm=0))
+
+mpi.remote.exec(mpi.comm.size(comm=1))
+mpi.remote.exec(mpi.comm.size(comm=0))
+
+mpi.bcast.cmd(mpi.comm.dup(comm=1,newcomm=5))
+mpi.comm.dup(comm=1,newcomm=5)
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

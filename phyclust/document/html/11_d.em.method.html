@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: EM Methods and Algorithms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .em.method {phyclust}"><tr><td>.em.method {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>EM Methods and Algorithms</h2>
+
+<h3>Description</h3>
+
+<p>The varied EM algorithms are implemented in C.
+The first element is the default value.
+<strong>This is a read-only object and the elemental order is followed in C.</strong>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>.em.method</pre>
+
+
+<h3>Format</h3>
+
+<p>A character vector contains implemented EM algorithms in C.
+</p>
+
+
+<h3>Details</h3>
+
+<p><code>EM</code> (default) stands for the standard EM algorithm, <code>ECM</code>
+stands for Expectation/Conditional Maximization algorithm, and <code>AECM</code>
+stands for Alternating ECM algorithm.
+The performance is roughly about <code>AECM</code> &gt; <code>EM</code> ~ <code>ECM</code> which
+are dependent on the separations of data set.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Dempster, A. and Laird, N. and Rubin, D. (1977)
+&ldquo;Maximum Likelihood Estimation from Incomplete Data
+via the EM Algorithm&rdquo;,
+<em>Journal of the Royal Statistical Society Series B</em>, <b>39:3</b>, 1-38.
+</p>
+<p>Meng, X.-L. and Rubin, D. (1993)
+&ldquo;Maximum likelihood estimation via the ECM algorithm: A general
+framework&rdquo;,
+<em>Biometrika</em>, <b>80:2</b>, 511-567.
+</p>
+<p>Meng, X.-L. and van Dyk, D. (1997)
+&ldquo;The EM Algorithm &mdash; an Old Folk-song Sung to a Fast New Tune
+(with discussion)&rdquo;,
+<em>Journal of the Royal Statistical Society Series B</em>, <b>59</b>, 511-567.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.EMC.html">.EMC</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+.em.method
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

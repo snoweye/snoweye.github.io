@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../example.html">Example</a></li> /
+    <li class="active">ex_msseqgen</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### <code>ms+seqgen</code> -- Simulation sequences according a tree. 
+
+In the following, we demonstrate the <code>ms+seqgen</code> approach
+to generate sequences. The result is a character
+vector of class <code>seqgen</code>, which contains 5 sequences, 
+each of 40 bases (<code>seq-gen</code> option <code>-l40</code>).
+The option <code>-mHKY</code> specifies the HKY85
+model of evolution (Hasegawa et al. 1985).
+Without further options, HKY85 is equivalent to the JC69
+model (Jukes and Cantor 1969).
+Note that the <code>seqgen()</code> function requires a rooted tree
+in NEWICK format or an object of class <code>phylo</code>.
+```
+> set.seed(123)
+> ret.ms <- ms(nsam = 5, nreps = 1, opts = "-T")
+> tree.anc <- read.tree(text = ret.ms[3])
+> set.seed(123)
+> seqgen(opts = "-mHKY -l40", newick.tree = ret.ms[3])
+ 5 40
+s1        CTCTCATTGGACGCACACTTTAGGGGGGGATTGCACTGCA
+s5        CTCTCTCTGGACGCACACTTTAAGGGGGGATTGAACTACA
+s2        CTCTTCGGGCTCGGATAAGTTTGGAGGGTTGTTCTCTACA
+s3        CTCTGAGTGCTCGGATTAGTTAGGGGGAATGACGTCTACA
+s4        CTCTTATCTCTCGGATAAGTTGGGGGTGATGGCTTTTACA
+> set.seed(123)
+> (ret.seq <- seqgen(opts = "-mHKY -l40", rooted.tree = tree.anc))
+ 5 40
+s1        CTCTCATTGGACGCACACTTTAGGGGGGGATTGCACTGCA
+s5        CTCTCTCTGGACGCACACTTTAAGGGGGGATTGAACTACA
+s2        CTCTTCGGGCTCGGATAAGTTTGGAGGGTTGTTCTCTACA
+s3        CTCTGAGTGCTCGGATTAGTTAGGGGGAATGACGTCTACA
+s4        CTCTTATCTCTCGGATAAGTTGGGGGTGATGGCTTTTACA
+> str(ret.seq)
+Class 'seqgen'  chr [1:6] " 5 40" "s1        CTCTCATTGGACGCACACTTTAGGGGGG ...
+```
+
+
+The following example generates a tree and provides an ancestral
+sequence. Function <code>seqgen()</code> will use
+parameters $\kappa$ (<code>kappa</code>) and
+$\pi\_{A}, \pi\_{G}, \pi\_{C}, \pi\_{T}$
+(<code>pi.HKY</code>)
+to evolve the ancestral sequence
+(<code>anc.HKY</code>) down the tree.
+The function <code>read.seqgen()</code> reads the <code>seqgen()</code>
+object and returns a new data set of class <code>seq.data</code>
+for use by the function <code>phyclust()</code>.
+```
+> # Generate a tree
+> set.seed(1234)
+> ret.ms <- ms(nsam = 5, nreps = 1, opts = "-T")
+> tree.ms <- read.tree(text = ret.ms[3])
+> 
+> # Generate nucleotide sequences
+> (anc.HKY <- rep(0:3, 3))
+ [1] 0 1 2 3 0 1 2 3 0 1 2 3
+> paste(nid2code(anc.HKY, lower.case = FALSE), collapse = "")
+[1] "AGCTAGCTAGCT"
+> pi.HKY <- c(0.2, 0.2, 0.3, 0.3)
+> kappa <- 1.1
+> L <- length(anc.HKY)
+> set.seed(1234)
+> (HKY.1 <- gen.seq.HKY(tree.ms, pi.HKY, kappa, L, anc.seq = anc.HKY))
+ 5 12
+s1        AGCTTGACCGGC
+s3        AGCTTCACCGGT
+s2        ACCTCGCTAGCT
+s4        ACGACGCTCGCT
+s5        CCTACGCTAGCT
+> (ret <- read.seqgen(HKY.1))
+code.type: NUCLEOTIDE, n.seq: 5, seq.len: 12.
+```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

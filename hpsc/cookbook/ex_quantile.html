@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_quantile</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Quantile -- Quantile and Percentile.
+
+Quantile and percentile are also fundamental tool in Statistics.
+It is easy to compute in one processer for small data.
+According to the definition, a fast implementation can be done in R by
+utilizing <code>uniroot()</code>.
+Note that the cost of <code>sort()</code> may be too high for large data
+since parallel merging is required.
+Based on the same idea demonstrated here, a lot of optimization functions
+in R can be utilized in the same way for large datasets.
+
+
+---
+#### Serial code: (<a href="./ex_quantile_serial.r" target="_blank">ex_quantile_serial.r</a>)
+
+```
+# File name: ex_quantile_serial.r
+# Run: Rscript --vanilla ex_quantile_serial.r
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Obtain 95% quantile.
+quantile(y, probs = 0.95, names = FALSE)
+```
+
+
+---
+#### Parallel (SPMD) code: (<a href="./ex_quantile_spmd.r" target="_blank">ex_quantile_spmd.r</a> for ultra-large/unlimited $N$)
+
+```
+# File name: ex_quantile_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_quantile_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+y.spmd <- y[id.get]
+
+### A function for uniroot.
+f.quantile <- function(x, data.spmd, N, prob = 0.5){
+  allreduce(sum(data.spmd <= x), op = "sum") / N - prob
+} # End of f.quantile().
+
+### Obtain 95% quantile.
+ret <- uniroot(f.quantile, c(1.5, 2), y.spmd, N, prob = 0.95)
+
+### Output from RANK 0 since mpi.reduce(...) will dump only to 0 by default.
+comm.print(ret$root)
+finalize()
+```
+
+
+---
+#### Exercise:
+
+1. Try other optimization functions in R such as <code>optim()</code>,
+   <code>nlm()</code>, ... etc.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

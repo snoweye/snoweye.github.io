@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../application.html">Application</a></li> /
+    <li class="active">ex_eiav</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### EIAV -- Equine Infectious Anemia Virus, an example of DNA data</font></b>
+
+The R script
+(<a href="./ex_eiav.r" target="_blank">ex_eiav.r</a>)
+demonstrates functions to read two files,
+<a href="../example/pony524.txt" target="_blank">pony524.phy</a>
+in <code>PHYLIP</code> format and
+<a href="../example/pony625.txt" target="_blank">pony625.fas</a>
+in <code>FASTA</code> format, and
+visualize mutations. It simply runs the <code>phyclust()</code>
+by two clusters with a default setting
+
+- Both data sets are available in <code>phyclust</code> and NCBI database,
+  and original from Baccam, P., et al. (2003).
+
+
+- The left picture shows the histograms of the number of mutations with respect
+  to the center of the first cluster.
+  1. The x-axis is the number of mutations, and the y-axis is the counts.
+  2. The top plot uses all 208 sequences;
+     the middle plot uses the 137 sequences in the first cluster; and
+     the bottom plot uses the 71 sequences in the second cluster.
+  3. At least two clusters can be expected.
+
+
+- The right picture shows the mutations of 165 segregating sites,
+  out of 405 sites, in two clusters.
+  1. Colored dots represent mutation types
+     and sites with respect to the first sequence of the first cluster,
+     the only one sequence drawn entirely.
+  2. The first cluster may be able to split into several clusters.
+  3. The second cluster tends to be having more mutations than the first cluster
+     in the segregating sites from 1 to 50 and 110 to 150.
+
+<center>
+  <table>
+    <tbody>
+      <tr>
+        <td> <img src="./ex_eiav_hist.png"></img> </td>
+        <td> <img src="./ex_eiav_dots.png"></img> </td>
+      </tr>
+    </tbody>
+  </table>
+</center>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

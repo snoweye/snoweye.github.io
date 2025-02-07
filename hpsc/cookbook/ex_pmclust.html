@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_pmclust</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Model-Based Clustering, Finite Mixture Model, EGM Algorithm, and K-Means.
+
+<b>References:</b>
+
+1. Chen, W.-C. and Maitra, R. (2011),
+   ``Model-based clustering of regression time series data via
+     APECM -- an AECM algorithm sung to an even faster beat'',
+   <i>Statistical Analysis and Data Mining</i>
+   <b>4</b>, 567-578.
+2. Meng, X.-L. and Van Dyk, D. (1997),
+   ``The EM Algorithm -- an Old Folk-song Sung to a Fast New Tune'',
+   <i>Journal of the Royal Statistical Society Series B</i>,
+   <b>59</b>, 511-567.
+3. <a href="http://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm"
+   target="_blnak">Expectation-Maximization Algorithm</a>
+   on Wikipedia.
+4. <a href="http://en.wikipedia.org/wiki/K-means_clustering"
+   target="_blank">K-Means Clustering</a>
+   on Wikipedia.
+
+I have to leave the details of whole algorithm behind a package we implemented,
+and a paper we are trying to finish. It is too tedious to introduce at here, but
+if you want to know the details you can search on Google with keywords
+"Parallel K-Means". This should give you some flavor what the
+"Expectation-Gathering-Maximization (EGM) algorithm"
+should be.
+
+The
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html"
+ target="_blank"><code>pmclust</code></a>
+implements both clustering methods in parallel for ultra-large dataset
+by utilizing Rmpi.
+The newest version of
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html"
+ target="_blank"><code>pmclust</code></a>
+is available on CRAN at
+<a href="http://cran.r-project.org/web/packages/pmclust/index.html"
+ target="_blank">http://cran.r-project.org/web/packages/pmclust/index.html</a>
+including source code and manuals.
+A vignette should be on-line soon at the same address, too.
+The Model-Based Clustering uses finite mixture Gaussion model with unstructured
+dispersions.
+The K-Means uses Euclidean distance.
+
+The EGM algorithm is implemented for the Model-Based Clustering,
+and other EM-alike algorithms such as AECM and APECM
+are also implemented to boost the convergence
+and reduce computing time.
+The parallel algorithm aims to reduce communications between processors by
+transferring sufficient statistics only which greatly benefits the computing
+performance.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

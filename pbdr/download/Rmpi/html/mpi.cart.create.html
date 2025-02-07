@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Cart\_create</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.cart.create {Rmpi}"><tr><td>mpi.cart.create {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Cart\_create</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.cart.create</code> creates a Cartesian structure of arbitrary dimension.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mpi.cart.create(commold=1, dims, periods, reorder=FALSE, commcart=3)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>commold</code></td>
+<td>
+<p>Input communicator</p>
+</td></tr>
+<tr valign="top"><td><code>dims</code></td>
+<td>
+<p>Integery array of size ndims specifying the number of processes in 
+each dimension</p>
+</td></tr>
+<tr valign="top"><td><code>periods</code></td>
+<td>
+<p>Logical array of size ndims specifying whether the grid is periodic
+or not in each dimension</p>
+</td></tr>
+<tr valign="top"><td><code>reorder</code></td>
+<td>
+<p>ranks may be reordered or not</p>
+</td></tr>
+<tr valign="top"><td><code>commcart</code></td>
+<td>
+<p>The new communicator to which the Cartesian topology information is attached</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If reorder = false, then the rank of each process in the new group is the same
+as its rank in the old group.  If the total size of the Cartesian grid is smaller
+than the size of the group of commold, then some processes are returned 
+mpi.comm.null.  The call is erroneous if it specifies a grid that is larger than
+the group size.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.cart.create</code> returns 1 if success and 0 otherwise.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Alek Hunchak and Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+#Need at least 9 slaves
+mpi.bcast.cmd(mpi.cart.create(1,c(3,3),c(F,T)))
+mpi.cart.create(1,c(3,3),c(F,T))
+
+## End(Not run)
+</pre>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

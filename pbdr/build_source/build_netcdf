@@ -1,0 +1,12 @@
+./configure \
+  --prefix=/home/pbdr/work-my/local/netcdf/ \
+  --enable-netcdf4 \
+  --enable-shared \
+  --disable-doxygen \
+  CC="mpicc -g" \
+  CFLAGS="-fPIC -I/home/pbdr/work-my/local/ompi/include -I/home/pbdr/work-my/local/hdf5/include" \
+  CPPFLAGS="-fPIC -I/home/pbdr/work-my/local/ompi/include -I/home/pbdr/work-my/local/hdf5/include" \
+  LDFLAGS="-L/home/pbdr/work-my/local/ompi/lib -lmpi -L/home/pbdr/work-my/local/hdf5/lib -lhdf5"
+
+make
+make install

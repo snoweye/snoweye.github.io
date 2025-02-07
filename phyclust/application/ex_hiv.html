@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">phyclust Home</a></li> /
+    <li><a href="../application.html">Application</a></li> /
+    <li class="active">ex_hiv</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### HIV -- Human Immunodeficiency Virus, an example of Next Generation Sequencing
+
+This is an application to the Next Generation Sequencing which produces
+large amount of short-read fragments. Also, this shows the capability of
+Phyloclustering to deal with large data.
+The data are available from the paper (contact author to obtain files)
+
+- Eriksson N, Pachter L, Mitsuya Y, Rhee S-Y, Wang C, et al. (2008)
+  Viral Population Estimation Using Pyrosequencing.
+  PLoS Comput Biol 4(5): e1000074.
+  doi:10.1371/journal.pcbi.1000074.
+
+This paper sequences HIV viruses collected from several patients participating
+in a clinic trial study in order to determinate the escaping ability of HIV
+virus.
+
+Here, we focus on the patient "V11909".
+The detail steps of this phyloclustering reanalysis are the following:
+
+1. obtain alignment for each fragments to a reference sequence,
+2. insert common gaps into the reference sequence and all fragments accordingly,
+3. run <code>phyclust</code> to analyze the commonly aligned fragments containing
+   large number of gaps, and
+4. plot the clustering results for the aligned fragments.
+
+The data for <code>phyclust</code> have the size of
+5177 fragments and each has 1617 bps after resembling the data.
+We conservatively pick
+$K = 3$
+as the results and display in the figures
+(click to enlarge.)
+The colored dots represent four different nucleotides and
+the gray areas are all gaps.
+In the first figure,
+we may say that
+the first cluster is the major population
+in this patient. Further, it possibly exists other two small populations.
+In the second figure,
+the three central sequences for each cluster are summarized
+where we compare the second and third central sequences against the first
+central sequence (top bar) and plot the mutation sites which are denoted
+by the origin dots in the bottom.
+
+<center>
+  <table>
+    <tbody>
+      <tr>
+        <td> <a href="./ex_hiv_dots.png"
+             target="_blank"><img src="./ex_hiv_dots.png"></img></a></td>
+        <td> <img src="./ex_hiv_center.png"></img>
+      </tr>
+    </tbody>
+  </table>
+</center>
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

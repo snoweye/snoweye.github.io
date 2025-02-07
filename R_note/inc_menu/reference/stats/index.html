@@ -1,0 +1,155 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="R.css" tppabs="http://www.cran.r-project.org/R.css">
+<title>Using external compilers with R</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h1>Using external compilers with R</h1>
+
+These web pages describe compiler-specific details about writing external code
+to use with the current version of R, from a Windows programming perspective.
+
+For instructions for other platforms, and non-compiler-specific details,
+see the <a href="R-exts.pdf" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/R-exts.pdf">Writing R Extensions</a> manual in the <tt>docs</tt>
+subdirectory of the R installation.
+
+<ul>
+<li><a href="#general">General advice and frequent problems</a>
+<li><a href="#C">C</a>
+<li><a href="#C++">C++</a>
+<li><a href="fortran.html" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/fortran.html">Fortran</a>
+<li><a href="pascal.html" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/pascal.html">Pascal/Delphi</a>
+<li><a href="#linux">Cross-compiling from Linux</a>
+</ul>
+
+<hr>
+<a name="general"><h2>General advice and frequent problems</h2></a>
+
+<a href="#conventions">Calling conventions</a><br>
+<a href="#registers">Register preservation</a><br>
+<a href="#dotcode">Differences between .C() and .Fortran()</a><br>
+<a href="#badname">is.loaded() returning FALSE</a><br>
+
+<a name="conventions"><h3>Calling conventions</h3></a>
+
+Calling conventions are the protocols used by the compiler when passing arguments to functions.  R
+always uses the "cdecl" calling convention, which passes all arguments on the stack,
+pushing the rightmost one first; the caller is responsible for
+restoring the stack afterwards.
+
+For example, the call <br>
+<br>
+<tt>.C("foo",as.integer(1), as.double(2),package="bar")</tt><br>
+<br>
+will do the following:
+<ol>
+<li> push a
+pointer to a vector containing the floating point value 2
+<li> push a pointer to a vector containing
+the integer 1
+<li>call the function <tt>foo</tt> in library <tt>bar.dll</tt>
+<li>when it returns, restore the stack pointer to its original value by adding 8 (the size of
+two pointers) to it.
+</ol>
+The standard calling convention in Windows is "stdcall", which is similar except that the routine that is
+called will remove the parameters from the stack.  There are many other calling conventions used
+by different compilers:  some or all parameters passed in CPU registers, parameters in the reverse order,
+etc.
+
+Symptoms of mismatched calling conventions are:
+<ul>
+<li>If your function uses stdcall instead of cdecl, there will likely be a crash when you return, because
+your parameters will be removed from the stack after they're already gone.
+<li>If your function uses any other calling convention, it will likely see garbage values in its arguments.
+<li>If your function calls R with stdcall, you'll be left with extra values on the stack; this is often
+harmless, but may eventually cause a stack overflow.
+<li>If your function uses some other calling convention, R will see garbage parameter values.
+</ul>
+
+<a name="registers"><h3>Register preservation</h3></a>
+
+When R calls a function, it assumes that the EBP, EBX, EDI and ESI registers will be returned unchanged.
+In addition, the direction flag must be preserved.  Programs may assume R follows these conventions across
+calls as well.
+
+<a name="dotcode"><h3>Differences between .C() and .Fortran()</h3></a>
+
+The two R functions <tt>.C("foo", ...)</tt> and <tt>.Fortran("foo", ...)</tt> differ in the following
+respects:
+<ol>
+<li>  <tt>.C("foo", ...)</tt> looks for the symbol "foo" in the external library, whereas
+<tt>.Fortran("foo", ...)</tt> looks for the symbol "foo_" (which is how g77
+would export the subroutine "foo").
+
+<li> <tt>.C("foo", arg=as.character("red","blue","green"))</tt>
+passes the character mode argument as a pointer to an array of
+pointers to the strings, whereas <tt>.Fortran("foo", arg=as.character("red","blue","green"))</tt>
+would just passes a pointer to a
+255 character buffer containing the first string, "red".  In both cases the
+strings are null-terminated.
+
+<li> Both .C and .Fortran allow arbitrary objects to be passed, but only C code which
+includes the R.h header file is likely to be able to read anything but simple vectors.
+</ol>
+
+<a name="badname"><h3>is.loaded() returning FALSE</h3></a>
+
+<p>When R uses <tt>dyn.load()</tt> to load a DLL, it relies on the DLL's export
+table to find functions.  Many compilers use fairly obscure methods to get a function name into the export
+table.  If you don't follow them exactly, your function won't be available to R.
+
+<p>Some compilers (e.g. g77, as mentioned above)
+make changes to the function names before putting them in the export table.  If
+you specify the original name, R may not be able to find the entry point.<br>
+<br>
+
+
+
+Specific instructions on both of these issues are compiler dependent.  However,
+you can diagnose the causes of errors by examining the export table of your DLL.
+There are a number of ways to do this:
+<ul><li>Use "objdump -x foo.dll" and search the output for the export tables.  The
+useful one is the one headed "[Ordinal/Name Pointer] Table", which lists the names
+of the exported functions.  Objdump is available in Brian Ripley's tool set; see
+<a href="readme.packages.txt" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/readme.packages.txt">readme.packages</a> for details.
+  <li>Use the Quick View utility that was distributed with some versions of Windows.
+  The "Export Table" lists the names of exports.
+  <li>Use "tdump -ee foo.dll", where tdump.exe is a utility that is
+  distributed with Borland compilers.
+  <li>Use the equivalent utility that came with your compiler.  (Please send me
+  details if yours is not listed here.)
+</ul>
+
+
+<hr>
+
+<a name="C"><a name="C++"><h2>C/C++</h2></a>
+
+<h3>MinGW tools</h3>
+If your code is written in reasonably portable C, then the easiest way to compile it is to
+use the R toolset together with the distributed Makefile (Makefile.packages in the source distribution).
+Instructions are in the <a href="readme.packages.txt" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/readme.packages.txt">readme.packages</a> file.
+
+<h3>Microsoft Visual C++</h3>
+
+The <a href="readme.packages.txt" tppabs="http://www.stats.uwo.ca/faculty/murdoch/software/compilingDLLs/readme.packages.txt">readme.packages</a> file contains instructions for compiling and linking
+VC++ code.
+
+<hr>
+
+<a name="linux"><h2>Cross-compiling from Linux</h2></a>
+
+If you normally do your development on Linux, then it may be easiest to compile your
+Windows DLLs there.  Instructions are available on <a href="javascript:if(confirm('http://cran.r-project.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://cran.r-project.org/'" tppabs="http://cran.r-project.org/">CRAN</a>
+in the document
+<a href="javascript:if(confirm('http://cran.r-project.org/doc/contrib/cross-build.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://cran.r-project.org/doc/contrib/cross-build.pdf'" tppabs="http://cran.r-project.org/doc/contrib/cross-build.pdf">Building Microsoft Windows Versions of R and R packages under Intel
+Linux</a> by Jun Yan and A.J. Rossini.
+
+<hr>
+<p>Last modified: April 15, 2003, by Duncan Murdoch</p>
+</body>
+</html>

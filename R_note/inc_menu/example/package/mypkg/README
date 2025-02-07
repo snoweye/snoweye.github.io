@@ -1,0 +1,13 @@
+1. Put R code in 'R' subdirectory.
+2. Put C/C++/Fortran code in 'src' subdirectory.
+3. Add .First.lib() function in 'R' subdirectory to load the shared library.
+4. Edit the help document in 'man' subdirectory.
+5. Edit the demo function in 'demo' subdirectory.
+6. Run R CMD build to create the index files.
+7. Run R CMD check to check the package.
+8. Run R CMD build to make the package file.
+
+Read "Writing R Extensions" for more information.
+And get more information from,
+SHELL> R CMD check --help
+SHELL> R CMD build --help

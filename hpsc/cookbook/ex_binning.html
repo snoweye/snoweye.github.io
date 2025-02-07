@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_benning</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Binning -- Table Cutting, Binning, and Nonparamatric Statistics.
+
+Counting is a fundamental method of Statistics including computing
+frequence, proportion, and probability, ... etc. It is also an essential tool
+for categorial data analysis. A fast implementation for binning data
+given categories/breaks is done in R efficiently for small data.
+Based on the same idea demonstrated here, a lot of statistical concepts can
+be parallelized in the same way for large datasets.
+
+
+---
+#### Serial code: (<a href="./ex_binning_serial.r" target="_blank">ex_binning_serial.r</a>)
+
+```
+# File name: ex_binning_serial.r
+# Run: Rscript --vanilla ex_binning_serial.r
+
+### A famous example from help("cut") in R.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Based on breaks to count data.
+table(cut(y, breaks = pi / 3 * (-3:3)))
+```
+
+
+#### Parallel (SPMD) code: (<a href="./ex_binning_spmd.r" target="_blank">ex_binning_spmd.r</a> for ultra-large/unlimited $N$)
+
+```
+# File name: ex_binning_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_binning_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100
+y <- rnorm(N)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+y.spmd <- y[id.get]
+
+### Based on breaks to count data.
+bin.spmd <- table(cut(y.spmd, breaks = pi / 3 * (-3:3)))
+bin <- as.array(allreduce(bin.spmd, op = "sum"))
+dimnames(bin) <- dimnames(bin.spmd)
+class(bin) <- class(bin.spmd)
+
+### Output from RANK 0 since reduce(...) will dump only to 0 by default.
+comm.print(bin)
+finalize()
+```
+
+
+---
+#### Exercise:
+
+1.  Try the R function <code>tabulate()</code> to replace <code>table()</code>.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

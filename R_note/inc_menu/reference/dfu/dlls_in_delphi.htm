@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="da">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="style.css" tppabs="http://www.dfu.min.dk/uht/Software/css/style.css">
+<title>DLL's in Delphi</title>
+</head>
+
+<body>
+
+<h1>How to write and call DLL's within Delphi</h1>
+
+<p>In this example I:</p>
+<ol>
+  <li>Create a Dynamically Linked Library (DLL) containing two functions, Min
+    and Max, which returns the largest of two integers (I know, this is not
+    rocket science).</li>
+  <li>Create an application which calls the Max function from the DLL. This is
+    done in two ways: First, using the &quot;external&quot; declaration in
+    Delphi which is easy but rigid. Second, using the Win API which involves
+    writing more code, having less checks but more control. </li>
+</ol>
+<p>You can download <a href="javascript:if(confirm('http://www.dfu.min.dk/uht/Software/images/DLLtest.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.dfu.min.dk/uht/Software/images/DLLtest.zip'" tppabs="http://www.dfu.min.dk/uht/Software/images/DLLtest.zip">all files</a> needed as a zip
+archive. This includes all source, ressources, etc. for both the DLL project and
+for the application project.</p>
+<p>If you want to start from scratch, this is the procedure</p>
+<ol>
+  <li>Start a new DLL project in Delphi (Click File-&gt;New, select DLL).</li>
+  <li>Save the project as delhpdll</li>
+  <li>Fill in the <a href="javascript:if(confirm('http://www.dfu.min.dk/uht/Software/dll/dll_source.htm  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.dfu.min.dk/uht/Software/dll/dll_source.htm'" tppabs="http://www.dfu.min.dk/uht/Software/dll/dll_source.htm">code</a> in the library </li>
+  <li>Build and Save the DLL project.</li>
+</ol>
+<p>(If you are a command line kind of guy, then you can just execute &quot;dcc32
+delhpdll.dpr&quot; from the command line ... that will give you the same DLL but
+without the IDE stuff ...)</p>
+<p>OK, then you need the application which should call the DLL:</p>
+<ol>
+  <li>Start up a new &quot;main&quot; application project.</li>
+  <li>Make whatever GUI controls you need to test the DLL</li>
+  <li>Fill in the <a href="javascript:if(confirm('http://www.dfu.min.dk/uht/Software/dll/application_source.htm  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.dfu.min.dk/uht/Software/dll/application_source.htm'" tppabs="http://www.dfu.min.dk/uht/Software/dll/application_source.htm">source code</a> for
+    interfacing the DLL.</li>
+  <li>Go, fly, run.</li>
+</ol>
+
+</body>
+
+</html>
+
+
+
+
+

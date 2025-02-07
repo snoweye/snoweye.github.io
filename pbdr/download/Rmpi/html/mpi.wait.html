@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Nonblocking completion operations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.wait {Rmpi}"><tr><td>mpi.wait {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Nonblocking completion operations</h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.cancel</code> cancels a nonblocking send or receive request.
+</p>
+<p><code>mpi.test.cancelled</code> tests if <code>mpi.cancel</code> cancels or not.
+</p>
+<p><code>wait</code>, <code>waitall</code>, <code>waitany</code>, and <code>waitsome</code> are used 
+to complete nonblocking send or receive requests. They are not local.
+</p>
+<p><code>test</code>, <code>testall</code>, <code>testany</code>, and <code>testsome</code> are used 
+to complete nonblocking send and receive requests. They are local.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.cancel(request)
+mpi.test.cancelled(status=0)
+mpi.test(request, status=0)
+mpi.testall(count)
+mpi.testany(count, status=0)
+mpi.testsome(count)
+mpi.wait(request, status=0)
+mpi.waitall(count)
+mpi.waitany(count, status=0)
+mpi.waitsome(count)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>count</code></td>
+<td>
+<p>total number of nonblocking operations.</p>
+</td></tr>
+<tr valign="top"><td><code>request</code></td>
+<td>
+<p>a request number.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>a status number.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>mpi.wait</code> and <code>mpi.test</code> are used to complete a nonblocking 
+send and receive request: use the same request number by <code>mpi.isend</code> 
+or <code>mpi.irecv</code>. Once completed, the associated request is set to 
+MPI\_REQUEST\_NULL and status contains information such as source, tag, 
+and length of message.
+</p>
+<p>If multiple nonblocking sends or receives are initiated, the following 
+calls are more efficient. Make sure that request numbers are used 
+consecutively as request=0, request=1, request=2, etc. In this way, the 
+following calls can find request information in system memory.
+</p>
+<p><code>mpi.waitany</code> and <code>mpi.testany</code> are used to complete one out of 
+several requests. 
+</p>
+<p><code>mpi.waitall</code> and <code>mpi.testall</code> are used to complete all 
+requests. 
+</p>
+<p><code>mpi.waitsome</code> and <code>mpi.testsome</code> are used to complete all 
+enabled requests. 
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>mpi.cancel</code> returns no value.
+</p>
+<p><code>mpi.test.cancelled</code> returns TRUE if a nonblocking call is cancelled; 
+FALSE otherwise.
+</p>
+<p><code>mpi.wait</code> returns no value. Instead status contains information that 
+can be retrieved by <code>mpi.get.count</code> and <code>mpi.get.sourcetag</code>.
+</p>
+<p><code>mpi.test</code> returns TRUE if a request is complete; FALSE otherwise. If 
+TRUE, it is the same as <code>mpi.wait</code>.
+</p>
+<p><code>mpi.waitany</code> returns which request (index) has been completed. In
+addition, status contains information that can be retrieved by
+<code>mpi.get.count</code> and <code>mpi.get.sourcetag</code>. 
+</p>
+<p><code>mpi.testany</code> returns a list: index&mdash; request index; flag&mdash;TRUE if 
+a request is complete; FALSE otherwise (index is no use in this case). 
+If flag is TRUE, it is the same as <code>mpi.waitany</code>.
+</p>
+<p><code>mpi.waitall</code> returns no value. Instead statuses 0, 1, ..., count-1 
+contain corresponding information that can be retrieved by 
+<code>mpi.get.count</code> and <code>mpi.get.sourcetag</code>.
+</p>
+<p><code>mpi.testall</code> returns TRUE if all requests are complete; FALSE 
+otherwise. If TRUE, it is the same as <code>mpi.waitall</code>.
+</p>
+<p><code>mpi.waitsome</code> returns a list: count&mdash; number of requests that have
+been completed; indices&mdash;an integer vector of size \$count of those 
+completed request numbers (in  0, 1 ,..., count-1). In addition, statuses 
+0, 1, ..., \$count-1 contain corresponding information that can be 
+retrieved by <code>mpi.get.count</code> and <code>mpi.get.sourcetag</code>.  
+</p>
+<p><code>mpi.testsome</code> is the same as <code>mpi.waitsome</code> except that \$count 
+may be 0 and in this case \$indices is no use.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>,  
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.send.html">mpi.isend</a></code>,
+<code><a href="mpi.send.html">mpi.irecv</a></code>,
+<code><a href="mpi.get.count.html">mpi.get.count</a></code>,
+<code><a href="mpi.get.sourcetag.html">mpi.get.sourcetag</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

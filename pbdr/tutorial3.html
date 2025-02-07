@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Programming with Big Data in R (Technical Site)">
+  <meta name="keywords" content="R,pbdMPI,pbdSLAP,pbdBASE,pbdDMAC,Statistical Computing,Parallel Computing">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-10']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About pbdR</a></li>
+    <li class=""><a href="./tutorial1.html">Tutorial 1</a></li>
+    <li class=""><a href="./tutorial2.html">Tutorial 2</a></li>
+    <li class="active"><a href="#">Tutorial 3</a></li>
+    <li class=""><a href="./tutorial4.html">Tutorial 4</a></li>
+    <li class=""><a href="./tutorial5.html">Tutorial 5</a></li>
+    <li class=""><a href="./tutorial6.html">Tutorial 6</a></li>
+    <li class=""><a href="./vm.html">VirtualBox</a></li>
+    <li class=""><a href="./multiple_nodes.html">Multiple Nodes</a></li>
+    <li class=""><a href="./windows.html">For Windows</a></li>
+    <li class=""><a href="./aws_ec2.html">Using AWS EC2</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+This Tutorial 3 was originally designed in part for
+<a href="http://www.nimbios.org/" target="_blank">NIMBioS</a>
+Tutorial,
+"<a href="http://www.nimbios.org/tutorials/TT_cloud"
+ target="_blank">Computing in the Cloud</a>"
+on April 6-8, 2014.
+The idea was suggested by and discussed with Dr. Russell Zaretzki
+at University of Tennessee, Knoxville.
+I reserved codes for parallel statistical applications
+focusing on intensive computation algorithms.
+The application can be found in a book
+``Mixed Effects Models and Extensions in Ecology with R'' (2009)
+Zuur, Ieno, Walker, Saveliev and Smith. Springer.
+(ZIWSS)
+
+
+Suppose the model is
+<center>
+$Y\_{ij} \sim B(1, p\_{ij})$
+<br><br>
+$
+logit(p\_{ij})
+ = \beta\_0 + \beta\_1 (Length)\_{ij} + \beta\_2 (Sex)\_{ij} +
+ \beta\_3 (Length)\_{ij} (Sex)\_{ij} + a\_i
+$
+<br><br>
+$a\_i \sim N(0, \sigma^2\_a)$
+<br><br>
+</center>
+where
+$Y\_{ij}$
+is independent bernoulli distribution,
+is 1 if dear
+$j$
+in farm
+$i$
+has E. cervi L1 and 0 otherwise,
+$p\_{ij}$
+is the observing probability,
+Length and Sex are explanatory variables via
+logit link function, and
+$a\_i$
+is the independent random intercept for farm
+$i$.
+The main task is to fit generalized linear model (GLM) and generalized
+linear mixed-effect model (GLMM) to a Deer dataset
+via penalized quasi-likelihood (glmmPQL)
+and MCMC algorithm to find fixed/random effects and variance parameters of
+random effects.
+
+
+The details are described in the Chapter 13 of the ZIWSS book, and
+the source of Deer dataset can be found from the ZIWSS book's website at
+``<a href="http://www.highstat.com/book2.htm"
+  target="_blank">www.highstat.com/book2.htm</a>''.
+All files next are given in
+<a href="./tutorial3/tutorial3.tar.gz" target="_blank">tutorial3.tar.gz</a> or
+<a href="./tutorial3/tutorial3.zip" target="_blank">tutorial3.zip</a>.
+The detais of <code>R</code> codes, data and relative information are:
+
+<table>
+  <thead>
+    <tr>
+      <th> File Name </th>
+      <th> Purpose </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/00-readme.txt"
+           target="_blank">00-readme.txt</a> </td>
+      <td> A read me first file that describe the models, data set, and
+           rest of files. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/DeerEcervi.txt"
+           target="_blank">DeerEcervi.txt</a> </td>
+      <td> Original Deer data set from the ZIWSS book. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/01-max_pql.r"
+           target="_blank">01-max_pql.r</a> </td>
+      <td> Maximize penalized quasi-likelihood for GLMM. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/11-npbs_for.r"
+           target="_blank">11-npbs_for.r</a> </td>
+      <td>
+        <ul>
+          <li> Bootstrap confidence interval for standard deviation of random
+               effects. </li>
+          <li> Using the <code>for()</code> loop. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/12-npbs_lapply.r"
+           target="_blank">12-npbs_lapply.r</a> </td>
+      <td>
+        <ul>
+          <li> Bootstrap confidence interval for standard deviation of random effects. </li>
+          <li> Using the <code>lapply()</code> function. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/13-npbs_mclapply.r"
+           target="_blank">13-npbs_mclapply.r</a> </td>
+      </td>
+      <td>
+        <ul>
+          <li> Bootstrap confidence interval for standard deviation of random
+               effects. </li>
+          <li> Using the <code>mclapply()</code> function from the
+               <b>parallel</b> package. </li>
+          <li> Parallelization is done in the level of multiple independent
+               bootstrap samples. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/14-npbs_pbdR.r"
+           target="_blank">14-npbs_pbdR.r</a> </td>
+      <td>
+        <ul>
+          <li> Bootstrap confidence interval for standard deviation of
+               random effects. </li>
+          <li> Using the <code>task.pull()</code> functions from the
+               <b>pbdMPI</b> package. </li>
+          <li> Parallelization is done in the level of multiple independent
+               bootstrap samples. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/21-mcmc_glm.r"
+           target="_blank">21-mcmc_glm.r</a> </td>
+      <td>
+        <ul>
+          <li> MCMC approach for GLM (no random effects). </li>
+          <li> Using the <code>lapply()</code> function. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/22-mcmc_glm_mclapply.r"
+           target="_blank">22-mcmc_glm_mclapply.r</a> </td>
+      <td>
+        <ul>
+          <li> MCMC approach for GLM (no random effects). </li>
+          <li> Using the <code>mclapply()</code> function from the
+               <b>parallel</b> package. </li>
+          <li> Parallelization is done in the level of multiple independent
+               chains. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/23-mcmc_glm_pbdR.r"
+           target="_blank">23-mcmc_glm_pbdR.r</a> </td>
+      <td>
+        <ul>
+          <li> MCMC approach for GLM (no random effects). </li>
+          <li> Using the <code>task.pull()</code> functions from the
+               <b>pbdMPI</b> package. </li>
+          <li> Parallelization is done in the level of multiple independent
+               chains. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/31-mcmc_glmm.r"
+           target="_blank">31-mcmc_glmm.r</a> </td>
+      <td> MCMC approach for GLMM (random intercepts). </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/41-mcmc_glmm_mclapply.r"
+           target="_blank">41-mcmc_glmm_mclapply.r</a> </td>
+      <td>
+        <ul>
+          <li> MCMC approach for GLMM (random intercepts). </li>
+          <li> Using the <code>mclapply()</code> function from the
+               <b>parallel</b> package. </li>
+          <li> Parallelization is done within the iterations of MCMC. </li>
+          <li> See u4-mcmc_glmm_mclapply.r for details. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/42-mcmc_glmm_pbdR.r"
+           target="_blank">42-mcmc_glmm_pbdR.r</a> </td>
+      <td>
+        <ul>
+          <li> MCMC approach for GLMM (random intercepts). </li>
+          <li> Using the <code>task.pull()</code> functions from the
+               <b>pbdMPI</b> package. </li>
+          <li> Parallelization is done within the iterations of MCMC. </li>
+          <li> See u4-mcmc_glmm_pbdR.r for details. </li>
+        </ul>
+      </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u0-deer.r"
+           target="_blank">u0-deer.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u1-npbs.r"
+           target="_blank">u1-npbs.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u2-mcmc_glm.r"
+           target="_blank">u2-mcmc_glm.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u3-mcmc_glmm.r"
+           target="_blank">u3-mcmc_glmm.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u4-mcmc_glmm_mclapply.r"
+           target="_blank">u4-mcmc_glmm_mclapply.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+
+    <tr>
+      <td> <a href="./tutorial3/tutorial3/u4-mcmc_glmm_pbdR.r"
+           target="_blank">u4-mcmc_glmm_pbdR.r</a> </td>
+      <td> Utility. </td>
+    </tr>
+  </tbody>
+</table>
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

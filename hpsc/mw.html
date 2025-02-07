@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class=""><a href="./rscript.html">Rscript</a></li>
+    <li class="active"><a href="#">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Why Master/Worker?
+
+- Tons of small tasks need intercommunication among processors.
+- Processors are not efficient equally, e.g. some may be slower than others.
+- MPI systems allow to spawn workers.
+
+
+---
+#### More Information
+
+A quick example implementing manager and workers can be found at
+the page
+<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=Rmpi">LAM/MPI/Rmpi</a>
+in the
+<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/">R_note</a>
+web site.
+This page will describe the manager and workers computing in
+<a href="http://www.stats.uwo.ca/faculty/yu/Rmpi/" target="_blank">Rmpi</a>.
+The manager and workers computing is a style of
+"<a href="http://en.wikipedia.org/wiki/MIMD"
+ target="_blank">Multiple Instruction Multiple Data</a>" (MIMD) in
+parallel programming, while it can be written in the
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a> style
+where the manager is one of the workers.
+
+
+---
+#### Rmpi
+
+By default, <code>Rmpi</code> runs as the "manager and workers" framework
+in an interaction mode of R.
+This makes debugging extremely difficult.
+However, it is possible to run as the "workers" framework
+in an interaction mode of R.
+In MPI computing,
+the "workers" framework simplifies communications different than the
+"manager" and "workers" framework.
+In general, the "workers" framework make a perfect computing environment
+in a command mode of R, as well as
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a>.
+
+<code>LAM/MPI</code>, <code>MPICH</code>, <code>MPICH2</code>
+or <code>OpenMPI</code>
+is a MPI system requirement for the <code>R</code> package
+<code>Rmpi</code>.
+The <code>LAM/MPI</code>
+is recommended for Unix-based system, but is not available on
+Windows system.
+The <code>MPICH2</code> is recommended for Windows system.
+The <code>OpenMPI</code> needs some instructions to execute in the
+Master/Worker
+style in an interactive mode of <code>R</code>.
+All the MPI systems are supposed to execute smoothly in the
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a> style
+in a command mode of <code>R</code> through
+<a href="./rscript.html">Rscript</a>.
+
+Some starting examples (Master/Worker) can be found in
+
+1. Section
+   "<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=Rmpi">LAM/MPI/Rmpi</a>" of
+   <a href="http://www.math.ncu.edu.tw/~chenwc/R_note/">R_note</a>
+2. <a href="http://math.acadiau.ca/ACMMaC/Rmpi/"
+   target="_blank">Rmpi Tutorial</a>
+3. <a href="http://www.stats.uwo.ca/faculty/yu/Rmpi/"
+   target="_blank">Rmpi for R</a>
+
+More useful implementations can be found in the
+<a href="./cookbook.html">Cookbook</a>.
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

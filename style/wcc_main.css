@@ -1,0 +1,60 @@
+/*
+body{
+  font-family:Sans-serif;
+}
+
+input.button, select, textarea{
+  border-style:solid;
+  border-color:#99ccff;
+  background-color:#dfefff;
+  scrollbar-face-color:#d3f0fe;
+  scrollbar-shadow-color:#dfefff;
+  scrollbar-highlight-color:white;
+  scrollbar-3dlight-color:#99ccff;
+  scrollbar-darkshadow-color:#39cbfb;
+  scrollbar-track-color:#f0f8ff;
+  scrollbar-arrow-color:white;
+}
+*/
+
+a:link{text-decoration: none; color: #0000ff}
+a:visited{text-decoration: none; color: #0000ff}
+a:hover{text-decoration: underline; color: #ff0000}
+
+a.hint{text-decoration: none; color: green}
+a.hint:link{text-decoration: none; color: green}
+a.hint:visited{text-decoration: none; color: green}
+a.hint:hover{text-decoration: underline; color: #ff0000}
+
+/* p{text-indent: 1.5em;} */
+
+ol#custom {
+  counter-reset: item;
+  display: flex;
+  flex-direction: column;
+}
+li#ref {
+  display: block;
+  list-style-position: outside;
+}
+li#ref::before {
+  content: "[" counter(item) "]";
+  counter-increment: item -1;
+  display: inline-block;
+  list-style-position: outside;
+  text-indent: 0.5em;
+  margin-left: -2.5em;
+  width: 2.3em;
+}
+li#rev {
+  display: block;
+  list-style-position: outside;
+}
+li#rev::before {
+  content: counter(item) ".";
+  counter-increment: item -1;
+  display: inline-block;
+  list-style-position: outside;
+  margin-left: -1.2em;
+  width: 1.2em;
+}

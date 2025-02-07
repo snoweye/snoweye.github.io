@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Initialization Procedures for EM Algorithms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .init.procedure {phyclust}"><tr><td>.init.procedure {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Initialization Procedures for EM Algorithms</h2>
+
+<h3>Description</h3>
+
+<p>The varied initialization procedures are implemented in C.
+The first element is the default value.
+<strong>This is a read-only object and the elemental order is followed in C.</strong>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>.init.procedure</pre>
+
+
+<h3>Format</h3>
+
+<p>A character vector contains implemented initialization procedures in C.
+</p>
+
+
+<h3>Details</h3>
+
+<p><code>exhaustEM</code>, <code>emEM</code>, <code>RndEM</code>, and <code>RndpEM</code> are
+implemented. Based on initialization states given by a initialization
+method, see <code>.init.method</code> for more information. These procedures
+will search a better starting states for final EM steps.
+</p>
+
+<ul>
+<li><p>'exhaustEM'runs each initialization with EM steps
+until convergent, and pick the best one of the
+convergence as the return result.
+</p>
+</li>
+<li><p>'emEM'uses few short EM steps to improve initialization, then
+pick the best of initialization state for long EM steps,
+and returns the final result.
+</p>
+</li>
+<li><p>'RandEM'bases on initialization methods to generate initialization
+states, the number is equal to short EM steps,
+then pick the best of initialization state for long EM steps,
+and returns the final result.
+</p>
+</li>
+<li><p>'RandEM'bases on initialization methods to generate initialization
+states and run a fixed number of EM steps,
+until total steps exhaust short EM steps,
+then pick the best of initialization state for long EM steps,
+and returns the final result.
+</p>
+</li></ul>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Biernacki, C. and Celeux, G. and Govaert, G. (2003)
+&ldquo;Choosing starting values for the EM algorithm for getting the
+highest likelihood in multivariate Gaussian mixture models&rdquo;,
+<em>Computational Statistics and Data Analysis</em>, <b>41:3</b>, 561-575.
+</p>
+<p>Maitra, R. (2009)
+&ldquo;Initializing partition-optimization algorithms&rdquo;,
+<em>IEEE/ACM Transactions on Computational Biology and Bioinformatics</em>,
+<b>6:1</b>, 114-157.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="11_d.show.option.html">.show.option</a></code>,
+<code><a href="11_d.init.method.html">.init.method</a></code>,
+<code><a href="11_d.EMControl.html">.EMControl</a></code>,
+<code><a href="phyclust.html">phyclust</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+.init.procedure
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-3']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About phyclust</a></li>
+    <li class="active"><a href="#">Overview</a></li>
+    <li class=""><a href="./method.html">Method</a></li>
+    <li class=""><a href="./download.html">Download</a></li>
+    <li class=""><a href="./document.html">Document</a></li>
+    <li class=""><a href="./jargon.html">Jargon</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./application.html">Application</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+#### Overview
+<i>Phylogenetic clustering (phyloclustering)</i>
+is an evolutionary Continuous Time Markov Chain (CTMC) model-based
+approach that identifies population
+structure from molecular data without assuming linkage equilibrium.
+The goal is to use a statistical approach to find the population
+structure from tones of sequences which can be
+SNPs, DNAs, codons, ... etc, to cluster individuals into
+subpopulations, and to identify molecular sequences representative
+of those subpopulations.
+It is an approximate solution to the
+NP-complete problem of estimating phylogenetic trees.
+It also benefits varied research fields such as
+
+- Virology -- identifying key sequences for disease diagnostics and
+  vaccine design,
+- Ecology -- detecting structure and gene flow in endangered population
+  or invasive species, and
+- Human Genetics -- searching for genes associated with complex diseases
+  including potential environmental interactions.
+
+Details and references can be found in <a href="./method.html">Method</a> and
+<a href="./document.html">Document</a>.
+
+
+---
+#### Purpose
+The major goals of phyloclustering are:
+
+1. to distinguish ancestors where sequences evolve from,
+2. to determine population structure based on classifications,
+3. to avoid possible sequencing or alignment discrepancy, and
+4. to aggregate trustworthy sequence information.
+
+In phyloclusterng,
+the similarity of sequences in a group is characterized by
+mutation processes rather than nucleotide frequency.
+A naive example is illustrated in the table below to
+illustrate phyloclustering.
+
+- The first column contains the id for six sequences shown
+  in the second column. The third column shows the potential
+  ancestors for two groups.
+  The fourth column indicates the classifications.
+- The sequences in the first group have a higher chance mutating
+  from the first ancestor than mutating from the second ancestor.
+- The two row blocks show the difference of two possible populations
+  behind the data.
+- The first site of the fourth sequence is
+  <b><font color="#555555">T</font></b>
+  which may be a sequencing error, but can be "rounded" as
+  the first ancestor.
+- To get a phylogenetic tree based on the two ancestors is easier then
+  based on the six sequences. The final tree may reveal the structural
+  phylogeny of population.
+  <table class="table table-striped table-hover ">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Sequence</th>
+        <th>Ancestor</th>
+        <th>Group</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td> 
+          1 <br>
+          2 <br>
+          3 <br>
+          4 <br>
+        </td>
+        <td>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#EE0000">T</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#00CD00">A</font>
+          <font color="#EE0000">T</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <br>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#0000EE">G</font>
+          <font color="#EE0000">T</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#EE0000">T</font>
+          <font color="#0000EE">G</font>
+          <font color="#CC00CC">C</font>
+          <br>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#0000EE">G</font>
+          <font color="#EE0000">T</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#EE0000">T</font>
+          <font color="#0000EE">G</font>
+          <font color="#CC00CC">C</font>
+          <br>
+          <font color="#EE0000">T</font>
+          <font color="#00CD00">A</font>
+          <font color="#0000EE">G</font>
+          <font color="#EE0000">T</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#EE0000">T</font>
+          <font color="#0000EE">G</font>
+          <font color="#CC00CC">C</font>
+        </td>
+        <td>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#0000EE">G</font>
+          <font color="#EE0000">T</font>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#EE0000">T</font>
+          <font color="#0000EE">G</font>
+          <font color="#CC00CC">C</font>
+        </td>
+        <td>1</td>
+      </tr>
+      
+      <tr>
+        <td>
+          5 <br>
+          6 <br>
+        </td>
+        <td>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#EE0000">T</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <br>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#EE0000">T</font>
+          <font color="#0000EE">G</font>
+          <font color="#CC00CC">C</font>
+          <font color="#00CD00">A</font>
+        </td>
+        <td>
+          <font color="#CC00CC">C</font>
+          <font color="#CC00CC">C</font>
+          <font color="#0000EE">G</font>
+          <font color="#0000EE">G</font>
+          <font color="#00CD00">A</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#EE0000">T</font>
+          <font color="#00CD00">A</font>
+          <font color="#CC00CC">C</font>
+          <font color="#00CD00">A</font>
+        </td>
+        <td>2</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,61 @@
+[molas@molas1 package]$ R CMD build --force ./mypkg
+* checking for file './mypkg/DESCRIPTION' ... OK
+* preparing './mypkg':
+* cleaning src
+* checking whether 'INDEX' is up-to-date ... OK
+* removing junk files
+* building 'mypkg_0.1-1.tar.gz'
+
+[molas@molas1 package]$ R CMD check ./mypkg
+* checking for working latex ... OK
+* using log directory '/home/molas/public_html/R_note/example/package/mypkg.Rcheck'
+* checking for file 'mypkg/DESCRIPTION' ... OK
+* checking if this is a source package ... OK
+
+* Installing *source* package 'mypkg' ...
+** libs
+gcc -I/usr/lib/R/include   -D__NO_MATH_INLINES -mieee-fp  -fPIC  -O3 -fomit-frame-pointer -pipe -mcpu=pentiumpro -march=i586 -fno-fa
+st-math -fno-strength-reduce -c call_c.c -o call_c.o
+g77 -mieee-fp  -O3 -fomit-frame-pointer -pipe -mcpu=pentiumpro -march=i586 -fno-fast-math -fno-strength-reduce  -O3 -fomit-frame-poi
+nter -pipe -mcpu=pentiumpro -march=i586 -fno-fast-math -fno-strength-reduce -c call_f.f -o call_f.o
+gcc -shared -L/usr/local/lib -o mypkg.so call_c.o call_f.o  -L/usr/local/lib -L/usr/lib/gcc-lib/i586-mandrake-linux-gnu/3.2 -L/usr/l
+ib/gcc-lib/i586-mandrake-linux-gnu/3.2/../../.. -lfrtbegin -lg2c -lm -lgcc_s -L/usr/lib/R/bin -lR
+** R
+** demo
+** help
+ >>> Building/Updating help pages for package 'mypkg'
+     Formats: text html latex example
+  test.c                            text    html    latex   example
+  test.f                            text    html    latex   example
+* DONE (mypkg)
+
+* DONE (INSTALL)
+
+* checking package directory ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking package dependencies ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for syntax errors ... OK
+* checking R files for library.dynam ... OK
+* checking generic/method consistency ... OK
+* checking for assignment functions with final arg not named 'value' ... OK
+* checking Rd files ... OK
+* checking for undocumented objects ... OK
+* checking for code/documentation mismatches ... OK
+* checking for undocumented arguments in \usage ... OK
+* checking for CRLF line endings in C sources/headers ... OK
+* creating mypkg-Ex.R ... OK
+* checking examples ... OK
+* creating mypkg-manual.tex ... OK
+* checking mypkg-manual.tex ... OK
+
+[molas@molas1 package]$ R CMD build ./mypkg
+* checking for file './mypkg/DESCRIPTION' ... OK
+* preparing './mypkg':
+* cleaning src
+* checking whether 'INDEX' is up-to-date ... OK
+* removing junk files
+* building 'mypkg_0.1-1.tar.gz'
+

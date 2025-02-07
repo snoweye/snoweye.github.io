@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Great Pony 625 EIAV rev Dataset in the Fasta Format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for data.fasta.pony {phyclust}"><tr><td>data.fasta.pony {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Great Pony 625 EIAV rev Dataset in the Fasta Format</h2>
+
+<h3>Description</h3>
+
+<p>Great pony 625 EIAV dataset is published by Baccam, P., et al. (2003),
+and they are also available on NCBI database.
+This is a follow-up study of <code>Data Pony 618</code>.
+</p>
+
+
+<h3>Format</h3>
+
+<p>A text file in fasta format is stored in the data subdirectory.
+</p>
+
+
+<h3>Details</h3>
+
+<p>EIAV rev dataset contains 62 nucleotide sequences and 406 sites.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Baccam, P., et al. (2003).
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Baccam, P., et al. (2003)
+&ldquo;Subpopulations of Equine Infectious Anemia Virus Rev Coexist
+In Vivo and Differ in Phenotype&rdquo;,
+<em>Journal of Virology</em>, <b>77</b>, 12122-12131.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="file.read.html">read.phylip</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+data.path &lt;- paste(.libPaths()[1], "/phyclust/data/pony625.fas", sep = "")
+# edit(file = data.path)
+my.pony.625 &lt;- read.fasta(data.path)
+str(my.pony.625)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

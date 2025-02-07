@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Phyloclustering -- Phylogenetic Clustering">
+  <meta name="keywords" content="phylogenetic,clustering,phyloclustering,phylogenetics,evolution,phylogeny,tree,unrooted,statistics,model-based,R,phyclust,ms,seq-gen,PAML,baseml,Hap-Clustering,EM,finite mixture model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li><a href="../index.html">HPSC Home</a></li> /
+    <li><a href="../cookbook.html">Cookbook</a></li> /
+    <li class="active">ex_basic</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### Basic -- Sample Mean and Sample Variance. 
+
+This topic will introduce two essential statistics, sample mean
+$\bar{x} = \frac{1}{N}\sum\_{i = 1}^N x\_i$
+and sample variance
+$s\_x = \frac{1}{N - 1}\sum\_{i = 1}^N (x\_i - \bar{x})^2$
+for a dataset with a large number
+$N$
+of observations
+$\\{x\_1, x\_2, \ldots, x\_N\\}$.
+The data
+are stored in a standard <code>vector</code>, <code>matrix</code>,
+or <code>data.frame</code> format in R, and are
+distributed in several processors. i.e. Each processor owns a part of
+dataset. The direct benefit of this approach is one don't need to worry
+about the memory, length, or dimension limitations such as
+$2^{31} - 1$
+in R.
+
+
+---
+#### Tricks:
+
+1. By default, R uses double for most of the variables.
+2. <code>length(...)</code> returns an integer in R.
+3. <code>as.double(...)</code> makes a copy for the input object, so it is
+   not good for big object.
+
+More fantastic algorithms about calculating variance can be found at
+"<a href="http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance"
+ target="_blank">Algorithms for calculating variance</a>" on Wikipedia.
+One-pass algorithms are achievable for higher moments of statistics, and
+they will reduce computing a lot and better than two or more pass algorithms
+for ultra-large dataset. Of course, lost precision is possible.
+For example,
+
+- J. Bennett, R. Grout, P. Pebay, D. Roe, and D. Thompson (2009),
+  ``Numerically Stable, Single-Pass,
+  Parallel Statistics Algorithms'',
+  In <i>Proc. 2009 IEEE International Conference on Clustering Computing</i>,
+  New Orleans, LA, Aug. 2009.
+
+The other way
+is to apply sampling techniques on ultra-large dataset.
+
+
+---
+#### Serial code: (<a href="./ex_basic_serial.r" target="_blank">ex_basic_serial.r</a>)
+
+```
+# File name: ex_basic_serial.r
+# Run: Rscript --vanilla ex_basic_serial.r
+
+### Basic implication
+my.basic <- function(x){
+  ### This is the same as mean(x).
+  N <- length(x)
+  bar.x <- sum(x / N)
+
+  ### This is the same as var(x).
+  s.x <- sum(x^2 / (N - 1)) - bar.x^2 * (N / (N - 1))
+
+  list(mean = bar.x, s = s.x)
+} # End of my.basic().
+
+### Main codes stat from here.
+set.seed(1234)
+N <- 100
+x <- rnorm(N)
+my.basic(x)
+```
+
+
+---
+#### Parallel (SPMD) code: (<a href="./ex_basic_spmd.r" target="_blank">ex_basic_spmd.r</a> for ultra-large/unlimited $N$)
+
+```
+# File name: ex_basic_spmd.r
+# Run: mpiexec -np 2 Rscript --vanilla ex_basic_spmd.r
+
+### Load pbdMPI and initial the communicator.
+library(pbdMPI, quiet = TRUE)
+init()
+
+### Basic implication for workers.
+my.basic.spmd <- function(x.spmd){
+  ### For mean(x).
+  N <- allreduce(length(x.spmd), op = "sum")
+  bar.x.spmd <- sum(x.spmd / N)
+  bar.x <- allreduce(bar.x.spmd, op = "sum")
+
+  ### For var(x).
+  s.x.spmd <- sum(x.spmd^2 / (N - 1))
+  s.x <- allreduce(s.x.spmd, op = "sum") - bar.x^2 * (N / (N - 1))
+
+  list(mean = bar.x, s = s.x)
+} # End of my.basic.spmd().
+
+### Main codes start from here.
+set.seed(1234)
+N <- 100                # Pretend N is large.
+x <- rnorm(N)
+
+### Load data partially by processors if N is ultra-large.
+id.get <- get.jid(N)
+x.spmd <- x[id.get]
+ret.spmd <- my.basic.spmd(x.spmd)
+
+### Output.
+comm.print(ret.spmd)
+finalize()
+```
+
+
+---
+#### Exercise:
+
+1. Try to compute standard deviation.
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script type="text/javascript" src="../../style/strapdown.js"></script>
+<script>
+  w3IncludeHTML();
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" src="../../style/MathJax/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+</body>
+</html>
+
+

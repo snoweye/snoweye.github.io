@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find the Consensus Sequence</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for find.consensus {phyclust}"><tr><td>find.consensus {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find the Consensus Sequence</h2>
+
+<h3>Description</h3>
+
+<p>Based on the input data, this function will search all data along
+all sites to find a consensus sequence which may be or may not be
+one of the data.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+find.consensus(X, code.type = .code.type[1], with.gap = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>X</code></td>
+<td>
+<p>nid/sid matrix with <i>N</i> rows/sequences and <i>L</i> columns/sites.</p>
+</td></tr>
+<tr valign="top"><td><code>code.type</code></td>
+<td>
+<p>either &quot;NUCLEOTIDE&quot; (default) or &quot;SNP&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>with.gap</code></td>
+<td>
+<p>FALSE (default) for no gap in consensus sequence.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>X</code> should be a numerical matrix containing sequence data that
+can be transfered by <code>code2nid</code> or <code>code2sid</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A vector containing the consensus sequence with length <i>L</i>
+will be returned.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotdots.html">plotdots</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+find.consensus(seq.data.toy$org)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>

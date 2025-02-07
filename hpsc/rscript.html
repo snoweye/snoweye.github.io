@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="High Performance Statistical Computing for Data Intensive Research">
+  <meta name="keywords" content="R,Statistical Computing,Parallel Computing,SPMD">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-9']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../style/w3data.js"></script>
+</head>
+
+
+<body bgcolor="#f8f4e7">
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <ul class="nav nav-tabs">
+    <li class=""><a href="./index.html">About HPSC</a></li>
+    <li class=""><a href="./overview.html">Overview</a></li>
+    <li class="active"><a href="#">Rscript</a></li>
+    <li class=""><a href="./mw.html">Master/Worker</a></li>
+    <li class=""><a href="./spmd.html">SPMD</a></li>
+    <li class=""><a href="./example.html">Example</a></li>
+    <li class=""><a href="./cookbook.html">Cookbook</a></li>
+    <li class=""><a href="./reference.html">Reference</a></li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+In a newer version of R,
+<code>Rscript</code> or <code>Rscript.exe</code>
+is a command mode of <code>R</code>
+without a terminal and can be used as a shell script.
+It also provides a more convenient interface than traditional ways as
+
+```
+SHELL> R --vanilla < a_rscript.r
+```
+or
+```
+SHELL> R CMD BATCH --vanilla a_rscript.r
+```
+
+or in Windows System,
+
+```
+SHELL> R.exe --vanilla < a_script.r
+```
+and
+```
+SHELL> Rcmd.exe BATCH --vanilla < a_script.r
+```
+or
+```
+SHELL> R.exe CMD BATCH --vanilla a_script.r
+```
+
+where "a_script.r" is an R script file.
+<code>Rscript</code>
+is also especially useful for taking in arguments from STDIN, and it is
+easily utilized by other script language.
+In particular, it can be a shell script as shown in the Example 1 below.
+For parallel computing, "Rscript" provides an elegant way to perform
+a common programming design,
+<a href="./spmd.html">Single Program Multiple Data (SPMD)</a>.
+More examples about batch jobs can be found at
+the section
+"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch">Batch jobs</a>"
+and
+"<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/index.php?item=batch_more">Batch more</a>"
+on the
+<a href="http://www.math.ncu.edu.tw/~chenwc/R_note/">R_note</a>
+website.
+
+
+---
+#### Example 1:
+
+1. <b>Hello world !</b>
+
+   In a Unix, one can put the following in a file "an_rscript.r", then
+   execute as scripts in perl, php, python or any other shell scripts.
+   ```
+   #!/usr/bin/Rscript --vanilla --slave
+
+   a <- c("Hello", "world", "!")
+   print(a)
+   b <- paste(a, collapse = " ")
+   print(b)
+   ```
+   Executing the script by
+   ```
+   SHELL> chmod u+x an_rscript.r
+   SHELL> ./an_rscript.r
+   ```
+
+2. <b>Batch From Command</b>
+
+   Note that the first line <code>#!/usr/bin/Rscript --vanilla --slave</code>
+   is not necessary for <code>Rscript</code>.
+   Of course, one can still use
+   ```
+   SHELL> Rscript an_rscript.r
+   ```
+   or
+   ```
+   SHELL> Rscript -e 'source("an_rscript.r")'
+   ```
+   in command mode, too.
+
+
+---
+#### Example 2:
+
+1. <b>Hello world, Cottontail !</b>
+
+   Make a file called "a_cottontail.r" containing the following.
+   ```
+   # File name: a_cottontail.r
+   a <- c("Hello", "world,", argv, "!")
+   print(a)
+   b <- paste(a, collapse = " ")
+   print(b)
+   ```
+   Executing the script by
+   ```
+   SHELL> Rscript -e 'argv <- "Cottontail"; source("a_cottontail.r")'
+   ```
+
+2. <b>More Cottontails !</b>
+
+   There is the other way to take in arguments from STDIN by using
+   <code>commandArgs()</code> in R. Let's make a file named
+   "cottontails.r" as the following.
+
+   ```
+   # File name: cottontails.r
+   eval(parse(text = rev(commandArgs())[1]))
+
+   a <- c("Hello", "world,", argv, "!")
+   print(a)
+   b <- paste(a, collapse = " ")
+   print(b)
+   ```
+   Executing the script by
+   ```
+   SHELL> Rscript cottontails.r 'argv <- "Cottontails"'
+   ```
+
+
+---
+<div w3-include-html="./preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+

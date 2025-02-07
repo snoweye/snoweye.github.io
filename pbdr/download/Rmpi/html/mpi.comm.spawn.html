@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: MPI\_Comm\_spawn API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.comm.spawn {Rmpi}"><tr><td>mpi.comm.spawn {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>MPI\_Comm\_spawn API </h2>
+
+<h3>Description</h3>
+
+<p><code>mpi.comm.spawn</code> tries to start <code>nslaves</code> identical copies of 
+<code>slaves</code>, establishing communication with them and returning an 
+intercommunicator. The spawned slaves are referred to as children, and the 
+process that spawned them is called the parent (master). The children have 
+their own MPI\_COMM\_WORLD represented by comm 0. To make communication 
+possible among master and slaves, all slaves should use 
+<code><a href="mpi.comm.inter.html">mpi.comm.get.parent</a></code> to find their parent and use 
+<code><a href="mpi.intercomm.merge.html">mpi.intercomm.merge</a></code> to merger an intercomm to a comm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ mpi.comm.spawn(slave, slavearg = character(0),
+                nslaves = mpi.universe.size(), info = 0,
+                root = 0, intercomm = 2, quiet = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>slave</code></td>
+<td>
+<p>a file name to an executable program.</p>
+</td></tr>
+<tr valign="top"><td><code>slavearg</code></td>
+<td>
+<p>an argument list (a char vector) to slave.</p>
+</td></tr>
+<tr valign="top"><td><code>nslaves</code></td>
+<td>
+<p>number of slaves to be spawned.</p>
+</td></tr>
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>an info number.</p>
+</td></tr>
+<tr valign="top"><td><code>root</code></td>
+<td>
+<p>the root member who spawns slaves.</p>
+</td></tr>
+<tr valign="top"><td><code>intercomm</code></td>
+<td>
+<p>an intercomm number.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>a logical. If TRUE, do not print anything unless an error occurs.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Unless <code>quiet = TRUE</code>, a message is printed to indicate how many slaves are successfully 
+spawned and how many failed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Hao Yu
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.lam-mpi.org/">http://www.lam-mpi.org/</a>, 
+<a href="http://www-unix.mcs.anl.gov/mpi/www/www3/">http://www-unix.mcs.anl.gov/mpi/www/www3/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.comm.inter.html">mpi.comm.get.parent</a></code>,
+<code><a href="mpi.intercomm.merge.html">mpi.intercomm.merge</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="description" content="Advance note for statistics software R">
+  <meta name="keywords" content="statistics software R,C,Fortran,package,library,php,MySQL,LAM,MPI,parallel computation">
+  <link rel="stylesheet" href="../../style/wcc_main.css" media="screen">
+  <link rel="stylesheet" href="../../style/wcc_navbar.css" media="screen">
+
+<!-- Google Analytics Tracking. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2556553-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+<script src="../../style/w3data.js"></script>
+
+</head>
+
+
+<!-- body bgcolor="#f8f4e7" -->
+<body>
+
+<div w3-include-html="./preamble_head_nav.html"></div>
+<div class="container-fluid">
+  <div w3-include-html="./preamble_head_nav_tabs.html"></div>
+  <ul class="breadcrumb"> //
+    <li class=""><a href="../lists_notes.html">List of All Notes</a></li> /
+    <li class="active">Standalone</li>
+  </ul>
+</div>
+
+
+<xmp theme="readable" style="display:none;">
+
+
+#### <font color="red"><b>Basic Ideas:</b></font>
+
+For standardlone, it may usually requires
+
+- "R.dll", "Rmath.dll", "Rblas.dll", and "Rlapack.dll" for Windows, or
+- "libR.a", "libRmath.a", "libRblas.a", and "libR.a" for Linux shared library, or
+- "libR.so", "libRmath.so", "libRblas.so", and "libR.so" for Linux static library.
+
+"Rmath", "Rblas", and "Rlapac" may not necessary for every situation which is
+dependent on what functions are called inside C or Fortan codes.
+
+
+---
+#### <font color="red"><b>For Windows:</b></font>
+
+- <font color="#800000"><b>Tools</b></font>
+
+  The tools in the section <a href="<? echo "$PHP_SELF?item=windows"; ?>">Windows</a> are all required.
+  Also, "mingw32-make.exe" for MinGW32 is also required and located at "Rtools\MinGW\bin\make.exe".
+  (my mirror <a href="./source/standalone/windows/Rmath.dll">here</a>)
+
+- <font color="#800000"><b>Reference</b></font>
+
+  This part is only testing on R-2.7.1 and Windows XP version.
+  See the section 9.2 in the
+  <a href="http://cran.r-project.org/doc/manuals/R-admin.html" target = "_blank">R Installation and Administration</a>
+  (my mirror <a href="./reference/R-admin.pdf" target="_blank">here</a>)
+   for detail.
+
+- <font color="#800000"><b>Recompile</b></font>
+
+  After you install the R from the executable file, there are "R.dll", "Rblas.dll", "Rlapack.dll" inside the
+  "C:\Progra~1\R\R-2.7.1\bin\",
+  and also "R.h", "Rmath.h" inside the "C:\Progra~1\R\R-2.7.1\include".
+  We need a further file "Rmath.dll" for building standardlone codes on Windows.
+  Download the R source code, and uncompress the source.
+
+  - At "R-2.7.1\src\include\", type
+    ```
+       SHELL> make -f Makefile.win config.h Rconfig.h Rmath.h
+    ```
+
+  - At "R-2.7.1\src\nmath\standatdlone\", type
+    ```
+       SHELL> make -f Makefile.win
+    ```
+
+  - After previous steps, the shared library and static library,
+    "<a href="./source/standalone/windows/Rmath.dll">Rmath.dll</a>" and
+    "<a href="./source/standalone/windows/libRmath.a">libRmath.a</a>"
+    are located at "R-2.7.1\src\nmath\standatdlone\"
+  - Copy them to "<font color="red">C:\Progra~1\R\R-2.7.1\bin\</font>".
+  - Then, you can do the same compiling procedure as Linux version at the following.
+
+
+---
+#### <font color="red"><b>For Linux:</b></font>
+
+- <font color="#800000"><b>Reference</b></font>
+
+  For the detail, read the web page <a href="http://cran.r-project.org/manuals.html" target="_blank">The R Manuals</a> and
+  the PDF document Writing R Extensions (Chapter 5.13) in The R Manuals
+  (my mirror <a href="./reference/R-exts.pdf" target="_blank">here</a>).
+
+- <font color="#800000"><b>Recompile</b></font>
+
+  The default installation (RPM or compile from source) of R doesn't build the standalone library,
+  so you have to do it by yourself.
+  Download the source <a href="http://cran.r-project.org/src/base/R-1.7.1.tgz">R-1.7.1.tgz</a> (9MB)
+  (my mirror <a href="./source/R-1.7.1.tgz">here</a>).
+
+  ```
+    SHELL> tar zxvf R-1.7.1.tgz <br>
+    SHELL> cd R-1.7.1/ <br>
+    SHELL> ./configure; make <br>
+    SHELL> cd src/nmath/standalone/ <br>
+    SHELL> make shared <br>
+    SHELL> cp libRmath.so /usr/lib/R/bin/ <br>
+    SHELL> cd /usr/lib <br>
+    SHELL> ln -s /usr/lib/libRmath.so ./R/bin/libRmath.so <br>
+  ```
+
+  1. The subdirectory "src/nmath/standalone/" is the source of Mathlib for standalone library "libRmath".
+  2. The "Rmath.h" (in /usr/lib/R/include/) is the R set of mathematical functions.
+  3. The fils "<a href="./source/standalone/linux/libRmath.so">libRmath.so</a>" is the sared library for Linux.
+  4. Suggest to copy the library files to "<font color="red">/usr/lib/R/bin/</font>".
+
+- <font color="red">Related information for this topic:</font> <br>
+  1. The file "<a href="./source/standalone/linux/libRmath.a">libRmath.a</a>" is the static library for Linux.
+     Use "make static" to subsitute "make shared".
+  2. The file "Rmath.dll" is the dynamic loaded library for MS Windows.
+
+
+- <font color="#800000"><b>Main code</b></font>
+
+  The C code "<a href="./example/standalone/stand.c" target="_blank">stand.c</a>" will
+  set the seed and generate 10 random variables from standard normal (mu = 0, sigma = 1)
+  and compute the cumulative probability. <br>
+
+  ```
+  #define MATHLIB_STANDALONE
+  #include <Rmath.h>
+  
+  int main(){
+    int i;
+    unsigned int SEED1, SEED2;
+    double mu, sigma, PHI_X, *X;
+  
+    mu = 0;
+    sigma = 1;
+    SEED1 = 12345;
+    SEED2 = 67890;
+    set_seed(SEED1, SEED2);
+  
+    X = (double *) malloc(10);
+    for(i = 0; i < 10; i++){
+      X[i] = rnorm(mu, sigma);
+      PHI_X = pnorm(X[i], mu, sigma, 1, 0);
+      printf("X: %f, PHI(X): %f\n", X[i], PHI_X);
+    }
+  }
+  ```
+
+
+- <font color="#800000"><b>Compile</b></font>
+
+  - <b>Linux:</b><br>
+
+    ```
+      SHELL> gcc -o stand stand.c -I/usr/lib/R/include/ -lRmath -lm
+    ```
+
+    Make sure the required libraries are all in the path, otherwise
+    you have to do the followings.
+
+    ```
+      SHELL> gcc -o stand stand.c -I/usr/lib/R/include/ -L/usr/lib/R/lib/ -lRmath -lm <br>
+      SHELL> LD_LIBRARY_PATH=/usr/lib/R/lib/:$LD_LIBRARY_PATH
+    ```
+
+    The output will be a executable file "<a href="./example/standalone/stand">stand</a>" (for linux only).
+
+
+
+- <font color="#800000"><b>Output</b></font>
+
+  The output is as the following.
+
+  ```
+  X: 0.999948, PHI(X): 0.841332
+  X: -1.768380, PHI(X): 0.038499
+  X: 0.623938, PHI(X): 0.733666
+  X: 2.167754, PHI(X): 0.984911
+  X: 0.749400, PHI(X): 0.773192
+  X: -1.253019, PHI(X): 0.105099
+  X: 0.640719, PHI(X): 0.739147
+  X: 0.567502, PHI(X): 0.714814
+  X: -1.744883, PHI(X): 0.040503
+  X: 0.140647, PHI(X): 0.555925
+  ```
+
+
+---
+<div w3-include-html="../preamble_tail_date.html"></div>
+
+</xmp>
+
+
+<script src="../../style/strapdown.js"></script>
+<script>
+w3IncludeHTML();
+</script>
+
+</body>
+</html>
+
+

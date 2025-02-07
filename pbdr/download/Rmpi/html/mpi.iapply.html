@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: (Load balancing) parallel apply with nonblocking features</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for mpi.iapplyLB {Rmpi}"><tr><td>mpi.iapplyLB {Rmpi}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>(Load balancing) parallel apply with nonblocking features</h2>
+
+<h3>Description</h3>
+
+<p>(Load balancing) parallel<code>lapply</code> and related functions. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+mpi.iapplyLB(x, fun, ..., apply.seq=NULL, comm=1, sleep=0.01)
+mpi.iparApply(x, MARGIN, fun, ..., job.num = mpi.comm.size(comm)-1,
+                    apply.seq=NULL, comm=1, sleep=0.01)
+mpi.iparLapply(x, fun, ..., job.num=mpi.comm.size(comm)-1, apply.seq=NULL, 
+		    comm=1,sleep=0.01)  
+mpi.iparSapply(x, fun, ..., job.num=mpi.comm.size(comm)-1, apply.seq=NULL, 
+		simplify=TRUE, USE.NAMES = TRUE, comm=1, sleep=0.01)  
+mpi.iparRapply(x, fun, ..., job.num=mpi.comm.size(comm)-1, apply.seq=NULL, 
+		comm=1, sleep=0.01)  
+mpi.iparCapply(x, fun, ..., job.num=mpi.comm.size(comm)-1, apply.seq=NULL, 
+		comm=1,sleep=0.01)  
+mpi.iparReplicate(n, expr, job.num=mpi.comm.size(comm)-1, apply.seq=NULL, 
+		simplify = TRUE, comm=1,sleep=0.01)
+mpi.iparMM(A, B, comm=1, sleep=0.01)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an array or matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>MARGIN</code></td>
+<td>
+<p>vector specifying the dimensions to use.</p>
+</td></tr>
+<tr valign="top"><td><code>fun</code></td>
+<td>
+<p>a function.</p>
+</td></tr>
+<tr valign="top"><td><code>simplify</code></td>
+<td>
+<p>logical; should the result be simplified to a vector or
+matrix if possible?</p>
+</td></tr>
+<tr valign="top"><td><code>USE.NAMES</code></td>
+<td>
+<p>logical; if <code>TRUE</code> and if <code>x</code> is character, use <code>x</code> as
+<code>names</code> for the result unless it had names already.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of replications.</p>
+</td></tr>
+<tr valign="top"><td><code>A</code></td>
+<td>
+<p>a matrix</p>
+</td></tr>
+<tr valign="top"><td><code>B</code></td>
+<td>
+<p>a matrix</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>expression to evaluate repeatedly.</p>
+</td></tr>
+<tr valign="top"><td><code>job.num</code></td>
+<td>
+<p>Total job numbers. If job numbers is bigger than total slave numbers (default 
+value), a load balancing approach is used.</p>
+</td></tr>
+<tr valign="top"><td><code>apply.seq</code></td>
+<td>
+<p>if reproducing the same computation (simulation) is desirable, set it 
+to the integer vector .mpi.applyLB generated in previous computation (simulation).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments to <code>fun</code></p>
+</td></tr>
+<tr valign="top"><td><code>comm</code></td>
+<td>
+<p>a communicator number</p>
+</td></tr>
+<tr valign="top"><td><code>sleep</code></td>
+<td>
+<p>a sleep interval on master node (in sec)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>mpi.iparApply</code>, <code>mpi.iparLapply</code>, <code>mpi.iparSapply</code>, <code>mpi.iparRapply</code>, 
+<code>mpi.iparCapply</code>, <code>mpi.iparSapply</code>, <code>mi.iparReplicate</code>, and <code>mpi.iparMM</code>
+are nonblocking versions of <code>mpi.parApply</code>, <code>mpi.parLapply</code>, <code>mpi.parSapply</code>, 
+<code>mpi.parRapply</code>, <code>mpi.parCapply</code>, <code>mpi.parSapply</code>, <code>mpi.parReplicate</code>, 
+and <code>mpi.parMM</code> respectively. The main difference is that <code>mpi.iprobe</code> and 
+<code>Sys.sleep</code> are used so that master node consumes almost no CPU cycles while waiting for 
+slaves results. However, due to frequent wake/sleep cycles on master, those functions are not 
+suitable for running small jobs on slave nodes. If anticipated computing time for each job is 
+relatively long, e.g., minutes or hours, setting sleep to be 1 second or longer will further 
+reduce load on master (only slightly).
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mpi.apply.html">mpi.iapply</a></code>
+</p>
+
+<hr><div align="center">[Package <em>Rmpi</em> version 0.6-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

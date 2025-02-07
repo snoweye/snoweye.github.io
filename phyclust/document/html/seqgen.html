@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Seq-Gen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqgen {phyclust}"><tr><td>seqgen {phyclust}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Seq-Gen</h2>
+
+<h3>Description</h3>
+
+<p>This function modifies the original standalone code of <code>seq-gen</code>
+developed by Rambaut, A. and Grassly, N.C. (1997).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqgen(opts = NULL, rooted.tree = NULL, newick.tree = NULL, input = NULL,
+       temp.file = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>opts</code></td>
+<td>
+<p>options as the standalone version.</p>
+</td></tr>
+<tr valign="top"><td><code>rooted.tree</code></td>
+<td>
+<p>a rooted tree which sequences are generated according to.</p>
+</td></tr>
+<tr valign="top"><td><code>newick.tree</code></td>
+<td>
+<p>a NEWICK tree which sequences are generated according to.</p>
+</td></tr>
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>optional inputs of seq-gen, e.g. ancestral sequences.</p>
+</td></tr>
+<tr valign="top"><td><code>temp.file</code></td>
+<td>
+<p>temporary file for seqgen output.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function directly reuses the C code of <code>seq-gen</code> by arguments
+as input from the STDIN. The options <code>opts</code> is followed from the
+original <code>seq-gen</code> except an input tree.
+</p>
+<p>Input either a <code>rooted.tree</code> or a <code>newick.tree</code>, and
+<code>rooted.tree</code> should have a <code>Class phylo</code>.
+</p>
+<p>For examples, options commonly used in <span class="pkg">phyclust</span> are:
+</p>
+
+<ul>
+<li><p> &quot;-m&quot;: set an evolution model, e.g. &quot;-mHKY&quot;.
+</p>
+</li>
+<li><p> &quot;-t&quot;: set transition/transversion ratio, e.g. &quot;-t0.7&quot;.
+</p>
+</li>
+<li><p> &quot;-f&quot;: equilibrium probabilities of A, C, G, and T, e.g. &quot;-f0.1,0.2,0.3,0.4&quot;.
+</p>
+</li>
+<li><p> &quot;-l&quot;: length of sequences, e.g. &quot;-l10&quot;.
+</p>
+</li>
+<li><p> &quot;-s&quot;: scale rate for the total height of input tree, &quot;-s0.2&quot;.
+</p>
+</li>
+<li><p> &quot;-k&quot;: index of ancestral sequence in input file, see <code>gen.seq.HKY</code>.
+</p>
+</li></ul>
+
+<p>These will return sequences in <code>Format phylip</code> which can be
+read by <code>read.seqgen()</code> and transfered into an object with
+<code>Class seq.data</code>.
+</p>
+<p>The maximum number of tips is 2000 in <code>seqgen()</code> by default, but an
+extra option <code>opts = "-u 2014 ..."</code> can be simply increase the size
+to 2014.
+</p>
+<p><strong>Note</strong>:
+</p>
+
+<ul>
+<li> <p><code>input</code> and <code>rooted.tree</code>/<code>newick.tree</code> can not be
+submitted at the same time.
+</p>
+</li>
+<li> <p><code>seq-gen</code> use the order A, C, G, T.
+</p>
+</li>
+<li> <p><code>-t</code> is ts/tv ratio which is not equal to <i>kappa</i>.
+</p>
+</li>
+<li><p> See more examples in <code>gen.seq.HKY()</code> and <code>gen.seq.SNP()</code>.
+</p>
+</li></ul>
+
+<p><code>temp.file</code> allows users to specify seqgen output file themselves, but
+this file will not be deleted nor converted into R after the call to
+<code>seqgen()</code>. Users should take care the readings. By default,
+<code>seqgen()</code>
+uses a system temp file to store the output which is converted into R
+after the call and is deleted after converting.
+</p>
+
+
+<h3>Value</h3>
+
+<p>This function returns a vector, and each element stores one line of STDOUT
+of <code>seq-gen</code> separated by newline. The vector stores in a class
+<code>seqgen</code>. The details of output format can found on the website
+<a href="http://tree.bio.ed.ac.uk/software/seqgen/">http://tree.bio.ed.ac.uk/software/seqgen/</a> and its manual.
+</p>
+
+
+<h3>Warning(s)</h3>
+
+<p>Carefully read the <code>seq-gen</code>'s original document before using the
+<code>seqgen()</code> function.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Rambaut, A. and Grassly, N.C. (1997).
+</p>
+<p>Maintain: Wei-Chen Chen <a href="mailto:wccsnow@gmail.com">wccsnow@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Phylogenetic Clustering Website:
+<a href="http://snoweye.github.io/phyclust/">http://snoweye.github.io/phyclust/</a>
+</p>
+<p>Rambaut, A. and Grassly, N.C. (1997)
+&ldquo;Seq-Gen: An Application for the Monte Carlo Simulation of DNA
+Sequence Evolution along Phylogenetic Trees&rdquo;,
+<em>Computer Applications In The Biosciences</em>, <b>13:3</b>, 235-238.
+<a href="http://tree.bio.ed.ac.uk/software/seqgen/">http://tree.bio.ed.ac.uk/software/seqgen/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="print.summary.html">print.seqgen</a>()</code>,
+<code><a href="../../ape/html/read.tree.html">read.tree</a>()</code>,
+<code><a href="ms.html">ms</a>()</code>,
+<code><a href="gen.seq.html">gen.seq.HKY</a>()</code>,
+<code><a href="gen.seq.html">gen.seq.SNP</a>()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(phyclust, quiet = TRUE)
+
+set.seed(123)
+ret.ms &lt;- ms(nsam = 5, nreps = 1, opts = "-T")
+seqgen(opts = "-mHKY -l40 -s0.2", newick.tree = ret.ms[3])
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>phyclust</em> version 0.1-18 <a href="00Index.html">Index</a>]</div>
+</body></html>
